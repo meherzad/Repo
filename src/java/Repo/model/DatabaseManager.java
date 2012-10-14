@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package Repo.model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,7 +23,7 @@ public class DatabaseManager {
     private Connection con;
 
     public DatabaseManager() {
-        ResourceBundle rb = ResourceBundle.getBundle("org.crudapp.Config");
+        ResourceBundle rb = ResourceBundle.getBundle("Repo.Config");
         DATABASEDRIVER = rb.getString("DatabaseVendorDriver");
         DATABASEURL = rb.getString("DatabaseURL");
     }
