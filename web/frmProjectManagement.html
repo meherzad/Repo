@@ -117,7 +117,7 @@ and open the template in the editor.
         </div>
 
         <div id="dialog_form">
-            <h1>sample</h1>
+
             <div class="row">
                 <div class="" style="margin-left: 20px;">
                     <label>Task </label>
@@ -143,6 +143,7 @@ and open the template in the editor.
                 var subTaskClose=$("#subTaskClose");
                 var txtSubTask=$("#txtSubTask");
                 var btnAddSubTask=$("#btnAddSubTask");
+                var subtaskAdd=$("#subtaskAdd");
                 $("#dialog_form").dialog(
                 {
                     autoOpen : false,
@@ -150,6 +151,17 @@ and open the template in the editor.
                     width : 500,
                     modal : true,
                     buttons : {
+                        "Add Task" : function() {
+                            $.ajaxSetup({
+                                url:"ServletAddSubtask",
+                                data: {"type":2},
+                                type: "POST",
+                                success:function(result){
+                                    alert(result.status);
+                                }
+                            }); 
+                            $.ajax();
+                        },
                         Cancel : function() {
                             $(this).dialog("close");
                         }
@@ -160,10 +172,37 @@ and open the template in the editor.
                     var  type=$(this).attr('data-taskType');
                     console.log(type);
                 });
+                $("#btnAddSubTask").click(function(){
+                    var taskName=$(txtSubTask).attr('value');
+                    $(subtaskAdd).append("<input type='checkbox' /><span>"+ taskName + "</span><br>");
+                    $(txtSubTask).attr('value','');
+                    $(subTaskClose).css('display','none');
+                    $(lblAddSubTask).css('display','inline');
+                    $(txtSubTask).css('display','none');
+                    $(btnAddSubTask).css('display','none');
+                    $.ajaxSetup({
+                        url:"ServletAddSubtask",
+                        data: {"type":1, "subTask":taskName},
+                        type: "POST",
+                        success:function(result){
+                            alert(result.status);
+                        }
+                    }); 
+                    $.ajax();
+
+                });
                 $("#lblAddSubTask").click(function(){
                     $(lblAddSubTask).css('display','none');
-                    $(txtSubTask).css('display','inline');
+                    $(txtSubTask).css('display','inline').focus();
                     $(btnAddSubTask).css('display','inline');
+                    $(subTaskClose).css('display','inline');
+                });
+                $("#subTaskClose").click(function(){
+                    $(subTaskClose).css('display','none');
+                    $(txtSubTask).attr('value','');
+                    $(lblAddSubTask).css('display','inline');
+                    $(txtSubTask).css('display','none');
+                    $(btnAddSubTask).css('display','none');
                 });
                 
             })();

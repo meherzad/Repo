@@ -16,6 +16,10 @@
         <servlet-name>mostDownload</servlet-name>
         <servlet-class>Repo.controller.mostDownload</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletAddSubtask</servlet-name>
+        <servlet-class>Repo.controller.ServletAddSubtask</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServleTCheckUserName</servlet-name>
         <url-pattern>/ServleTCheckUserName</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>mostDownload</servlet-name>
         <url-pattern>/mostDownload</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAddSubtask</servlet-name>
+        <url-pattern>/ServletAddSubtask</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -4,21 +4,50 @@
  */
 package Repo.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
  *
  * @author Meherzad
  */
-public class Projecttask{
+public class Projecttask {
 
     private Integer taskId;
     private Integer projectId;
     private Integer phaseId;
     private Date deadLine;
     private String taskDescription;
+    private ArrayList<Projecttaskdetail> subTask;
+    private ArrayList<Projecttaskmember> taskMember;
+
+    public void setSubTask(ArrayList<Projecttaskdetail> subTask) {
+        this.subTask = subTask;
+    }
+
+    public void setTaskMember(ArrayList<Projecttaskmember> taskMember) {
+        this.taskMember = taskMember;
+    }
+
+    public void addSubTask(Projecttaskdetail subTask) {
+        this.subTask.add(subTask);
+    }
+
+    public void addMember(Projecttaskmember member) {
+        this.taskMember.add(member);
+    }
+
+    public ArrayList<Projecttaskdetail> getSubTask() {
+        return subTask;
+    }
+
+    public ArrayList<Projecttaskmember> getTaskMember() {
+        return taskMember;
+    }
 
     public Projecttask() {
+        subTask = new ArrayList<Projecttaskdetail>();
+        taskMember = new ArrayList<Projecttaskmember>();
     }
 
     public Projecttask(Integer taskId) {

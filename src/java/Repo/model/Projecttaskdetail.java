@@ -88,6 +88,6 @@ public class Projecttaskdetail {
 
     @Override
     public String toString() {
-        return "EntityClass.Projecttaskdetail[ uId=" + uId + " ]";
+        return "EntityClass.Projecttaskdetail[ uId=" + subTask + " ]";
     }
 }
