@@ -24,11 +24,22 @@ public class DatabaseManager {
          DATABASEURL = rb.getString("DatabaseURL");*/
     }
 
+    /**
+     * Connect with the database
+     *
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public void connect() throws ClassNotFoundException, SQLException {
         Class.forName(DATABASEDRIVER);
         con = DriverManager.getConnection(DATABASEURL);
     }
 
+    /**
+     * Disconnect with database
+     *
+     * @throws SQLException
+     */
     public void disConnect() throws SQLException {
         con.close();
     }
@@ -54,6 +65,12 @@ public class DatabaseManager {
         return rs;
     }
 
+    /**
+     * Method to insert new user used during sign up
+     *
+     * @param user
+     * @return
+     */
     public boolean insertUser(Usermaster user) {
         boolean result;
         //DatabaseManager obj = new DatabaseManager();
@@ -86,6 +103,12 @@ public class DatabaseManager {
 
     }
 
+    /**
+     * method used for email verification of new user email
+     *
+     * @param verfID
+     * @return boolean
+     */
     public boolean userVerification(String verfID) {
         boolean result;
         ResultSet rs = null;
@@ -115,6 +138,12 @@ public class DatabaseManager {
         return result;
     }
 
+    /**
+     * method used to get most download most followed and newest project
+     *
+     * @param type (1- Most downloaded, 2- Newest, 3- Most followed)
+     * @return ArrayList<Projectmaster>
+     */
     public ArrayList<Projectmaster> getMostDownload(int type) {
         ArrayList<Projectmaster> list = new ArrayList<Projectmaster>();
         Projectmaster obj;
@@ -151,17 +180,23 @@ public class DatabaseManager {
         }
         return list;
     }
-    
-    public boolean checkUsername(Usermaster user){
+
+    /**
+     * method to check whether a particular username is available or not
+     *
+     * @param user
+     * @return
+     */
+    public boolean checkUsername(Usermaster user) {
         boolean result;
-        try{
+        try {
             connect();
-            Statement st=con.createStatement();
-            ResultSet rs = st.executeQuery("select * from usermaster where username='" + 
-                    user.getUsername() + "';");
-            result=rs.next();
-        }catch (Exception e) {
-            result=false;
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("select * from usermaster where username='"
+                    + user.getUsername() + "';");
+            result = rs.next();
+        } catch (Exception e) {
+            result = false;
             e.printStackTrace();
         } finally {
             try {
