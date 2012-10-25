@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <servlet>
+        <servlet-name>ServleTCheckUserName</servlet-name>
+        <servlet-class>Repo.controller.ServleTCheckUserName</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletAddUser</servlet-name>
+        <servlet-class>Repo.controller.ServletAddUser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserVerification</servlet-name>
+        <servlet-class>Repo.controller.UserVerification</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>mostDownload</servlet-name>
+        <servlet-class>Repo.controller.mostDownload</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServleTCheckUserName</servlet-name>
+        <url-pattern>/ServleTCheckUserName</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAddUser</servlet-name>
+        <url-pattern>/ServletAddUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserVerification</servlet-name>
+        <url-pattern>/UserVerification</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>mostDownload</servlet-name>
+        <url-pattern>/mostDownload</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+</web-app>

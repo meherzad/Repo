@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>Insert title here</title>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+
+
+    </head>
+    <body>
+        <header class="navbar">
+            <div class="navbar-inner">
+                <div class="container conatiner_support">
+                    <div class="float_left">
+                        <p id="logo">
+                            <a href="http://localhost:8080/FinalDesign/index.html">Site
+                                Logo</a> <span class="tagline">Free project hosting</span>
+                        </p>
+                    </div>
+                    <div class="float_right">
+                        <ul>
+                            <li>
+                                <ul class="ul_list" id="nav">
+                                    <li><a id="lnkSignUp"> Sign Up</a></li>
+                                    <li><a id="lnkSignIn">Sign In</a></li>
+                                </ul>
+                            </li>
+                            <li><input id="searchSite" name="searchSite" maxlength="500"
+                                       type="text" value="" autocomplete="off"
+                                       title="Search all projects"
+                                       style="color: rgb(170, 170, 170); font-style: italic;">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="container conatiner_support">
+            <div class="row" style="position: relative;">
+                <form method="post" action="ServletAddUser">
+                    <h2>Register</h2>                                
+                    <div class="row">
+                        <label class="label_heading">Email</label>
+                        <input type="text" id="txtName" name="txtName" class="register_box"/>
+                    </div>
+                    <div class="row">
+                        <span id="lblUsername" class="validation_label">Valid Email address </span>
+                    </div>
+                    <div class="row">
+                        <label class="label_heading">Password</label>
+                        <input type="password" id="txtPass" name="txtPass" class="register_box"/>
+                    </div>
+                    <div class="row">
+                        <label class="label_heading">Re-enter Password</label>
+                        <input type="password" id="txtRPass" name="txtRPass" class="register_box"/>
+                    </div>
+                    <div class="row">
+                        <label class="label_heading">Alternate Email</label>
+                        <input type="text" id="txtAltEmail" name="txtAltEmail" class="register_box"/>    
+                    </div>
+                    <div class="row">
+                        <input type="submit" id="btnSubmit" name="btnSubmit" value="Submit"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="footer">
+            <div class="row">
+                <hr style="color:">
+                <ul class="ul_list">
+                    <li class="list"></li>
+                    <li class="list"><a href="#">Get Help</a></li>
+                    <li class="list"><a href="#">Privacy Statement</a></li>
+                    <li class="list"><a href="#">Terms of Use</a></li>
+                    <li class="list"><a href="#">Code of Conduct</a></li>
+                    <li class="list"><a href="#">Advertise With Us</a></li>
+
+                </ul>
+            </div>
+        </div>
+        <script type="text/javascript">
+            (function(){
+                $("#txtName").change(function(){
+                    var value=$("#txtName").val();
+                    var length=value.length;
+                    var resp=$("#lblUsername");
+                    console.log("--?"+value);
+                    if (length >3){
+                        resp.html("<img src='images/loader.gif' />");
+                        $.post("ServleTCheckUserName",
+                        {
+                            "username":$("#txtName").val()
+                        }                          
+                        ,function(result){
+                            var res=result.resp;//  result.resp);
+                            if (res==='Success'){
+                                resp.css("color", "green")
+                                resp.html('<img src="images/accepted.png" />' + res);
+                            }
+                            else{
+                                resp.css("color", "red")
+                                resp.html( res);
+                            }
+                        }
+                    ); 
+                    }
+                    else{
+                        resp.html("Length");
+                    }
+                });
+            })();
+        </script>
+    </body>
+</html>

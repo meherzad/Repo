@@ -1,7 +1,7 @@
 <%-- 
-    Document   : index
-    Created on : Oct 19, 2012, 11:43:15 PM
-    Author     : Meherzad
+    Document   : UserInsert
+    Created on : 18 Oct, 2012, 12:02:46 PM
+    Author     : meherzad
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -9,9 +9,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>UserInsert</title>
     </head>
     <body>
-        <a href="UserVerification?verfid=b8c0d7bc879847a44f22faf23f67a04a">press</a>
+        <h1>${requestScope.status}</h1>
     </body>
 </html>

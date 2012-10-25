@@ -1,0 +1,363 @@
+.semi_light {
+    display: block;
+    float: left;
+}
+
+#intro {
+    color: #253340;
+    float: left;
+    font: 45px 'Segoe UI Semibold', 'Segoe-Semibold', Segoe UI, Tahoma,
+        Arial, Helvetica, sans-serif;
+    font-weight: lighter;
+    letter-spacing: 1px;
+    line-height: 38px;
+    position: relative;
+    top: 0;
+    width: 300px;
+    margin-bottom: 12px;
+}
+
+#intro_container {
+    float: left;
+    width: 300px;
+    color: #6A747E;
+    font: 47px 'Segoe UI Light', Segoe UI, Tahoma Light, Arial Light,
+        Helvetica, sans-serif;
+    line-height: .98em;
+}
+
+.conatiner_support {
+    width: 70% !important;
+}
+
+#create_project {
+    background-color: #7B4F9D;
+    color: white;
+    display: block;
+    float: right;
+    font: 30px 'Segoe UI Light', Segoe UI, Tahoma Light, Arial Light,
+        Helvetica, sans-serif;
+    font-weight: lighter;
+    height: 120px;
+    margin-top: 4px;
+    margin-bottom: 20px;
+    padding-top: 13px;
+    padding-bottom: 2px;
+    position: relative;
+    width: 66%;
+    max-width: 645px;
+    min-width: 230px;
+    min-height: 150px;
+}
+
+.project_create {
+    color: white;
+    font: 48px 'Segoe UI Light', Segoe UI, Tahoma Light, Arial Light,
+        Helvetica Light, sans-serif;
+    font-weight: lighter;
+    left: 30px;
+    position: relative;
+    top: 10px;
+}
+
+.start_project {
+    color: white;
+    font: 20px 'Segoe UI Light', Segoe UI, Tahoma Light, Arial Light,
+        Helvetica Light, sans-serif;
+    font-weight: lighter;
+    left: 30px;
+    position: relative;
+    top: 10px;
+}
+
+.float_left {
+    position: relative;
+    float: left;
+}
+
+.float_right {
+    position: relative;
+    float: right;
+}
+
+p#logo {
+    font: 27px 'Segoe UI Light', Segoe UI, Tahoma Light, Arial Light,
+        Helvetica, sans-serif;
+    font-weight: lighter;
+}
+
+p#logo a {
+    color: #6A747E;
+    text-decoration: none;
+}
+
+.tagline {
+    color: #6A747E;
+    font-size: 0.50em;
+    padding-left: 16px;
+    overflow: hidden;
+}
+
+body {
+    font: 0.813em/1.462em 'Segoe UI', Tahoma, Arial, Helvetica, sans-serif;
+    color: #253340;
+}
+
+.list {
+    border-right: 1 px #B7C3CE solid;
+    float: left;
+    height: 9 px;
+    font-size: 13 px;
+    line-height: 19 px;
+    list-style-type: none;
+    padding-bottom: 10 px;
+    padding-left: 10 px;
+    padding-right: 10 px;
+}
+
+.ul_list {
+    position: relative;
+    list-style: square;
+}
+
+ul#nav {
+    float: right;
+    position: relative;
+    top: 15px;
+    padding-right: 250px;
+}
+
+ul#nav li {
+    border-right: 1px #B7C3CE solid;
+    float: left;
+    height: 9px;
+    font-size: 13px;
+    line-height: 19px;
+    list-style-type: none;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+ul#nav li a {
+    color: #6A747E;
+    text-decoration: none;
+}
+
+#welcome_entry p {
+    float: left;
+    width: 300px;
+    font: 19px 'Segoe UI Light', Segoe UI, Tahoma Light, Arial Light,
+        Helvetica Light, sans-serif;
+    font-weight: lighter;
+}
+
+#tile_links {
+    clear: right;
+    float: right;
+    position: relative;
+    width: 65%;
+    top: -15px;
+}
+
+a#help,a#gethelp,a#improve,a#whatsnew,a#register,a#signin {
+    background-color: #F0F1F4;
+    color: #253340;
+    display: block;
+    float: left;
+    font: 18px 'Segoe UI', Tahoma, Arial, Helvetica, sans-serif;
+    font-weight: lighter;
+    width: 28%;
+    height: 25%;
+    margin: 0px 12px 0px 0;
+    padding: 15px 0 0 20px;
+    position: relative;
+    top: 20px;
+    min-height: 100px;
+    min-width: 100px;
+    max-height: 150px;
+    max-width: 200px ;
+}
+
+.sub_link {
+    color: #6A747E;
+    font-size: 13px;
+}
+
+a#help {
+    border-bottom: 3px #5EA8DE solid;
+}
+
+a#signin {
+    border-bottom: 3px #8DBF35 solid;
+}
+
+a#register {
+    border-bottom: 3px #F7866A solid;
+}
+
+#footer {
+    color: #6A747E;
+    left: 0;
+    margin: 0 auto;
+    position: relative;
+    width: 985px;
+}
+
+#footer ul li {
+    float: left;
+    list-style-type: none;
+    padding-right: 24px;
+}
+
+.site_categories_left {
+    clear: right;
+    float: left;
+    padding-right: 15px;
+    width: 300px;
+    overflow: visible;
+}
+
+.site_categories_right {
+    float: left;
+    
+    position: relative;
+    width: 290px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.wordWrapBreakWord {
+    word-wrap: break-word;
+}
+
+.pager_container_content {
+    position: relative;
+    margin-top: 40px;
+}
+
+#NewReleasesContainer {
+    position: relative;
+}
+
+#searchSite {
+    float: right;
+    position: relative;
+}
+
+.label_heading {
+    color: #253340;
+    font: 13px 'Segoe UI',Tahoma,Arial,Helvetica,sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    float: left;
+}
+
+.register_box{
+    float: right;
+    height: 24px;
+    width: 570px;
+    border: 1px #CDCFD5 solid;
+    font: 13px 'Segoe UI',Tahoma,Arial,Helvetica,sans-serif;
+    background-color: white;
+    color: #253340;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.validation_label{
+    float: right;
+    height: 24px;
+    width: 570px;
+    font: 13px 'Segoe UI',Tahoma,Arial,Helvetica,sans-serif;
+    background-color: white;
+    color: #253340;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.project_title{
+    display: table-cell;
+    vertical-align: middle;
+    font: 2.2em 'Segoe UI Light',Tahoma Light,Arial Light,Helvetica Light,sans-serif;
+    font-weight: lighter;
+    /*word-wrap: break-word;*/
+}
+
+h1.project_title div{
+    max-width: 500px;
+    word-wrap: break-word;
+}
+
+.project_head{
+    display: table;
+}
+
+.project_head_image{
+    display: table-cell;
+    padding: 5px 15px 5px 0px;
+    max-width: 440px !important;
+    max-height: 100px;
+}
+
+ul#project_menu{
+    width: 100%;
+    height: 20px;
+    text-align: justify;
+}
+
+ul#project_menu li{
+    float: none;
+    position: relative;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+ul#project_menu li a{
+    background-color: #F0F1F4;
+    border-bottom: 3px #D8D9DC solid;
+    color: #253340;
+    display: block;
+    font-family: 'Segoe UI',Tahoma,Arial,Helvetica,sans-serif;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    width: 100%;
+    height: 100%;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    text-decoration: none;
+}
+
+
+.project_management_base{
+    background-color: white ;
+    border-color: white;
+    border-radius: 25px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: -5px;
+}
+
+.card_base{
+    padding: 10px;
+    background-color: #F0F1F4;
+    border-color: #F0F1F4;
+    border-radius: 25px;
+    width: 98%;
+    height: 800px;
+}
+
+.card{
+    
+    background-color: #F0F1F4;
+    border-color: #F0F1F4;
+    border-radius: 25px;
+
+}

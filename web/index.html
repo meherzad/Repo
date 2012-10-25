@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>Insert title here</title>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="js/jquery-1.7.2.min.js" ></script>
+        <script type="text/javascript" src="http://cloud.github.com/downloads/wycats/handlebars.js/handlebars-1.0.0.beta.6.js"></script>
+    </head>
+    <body>
+        <header class="navbar">
+            <div class="navbar-inner">
+                <div class="container conatiner_support">
+                    <div class="float_left">
+                        <p id="logo">
+                            <a href="http://localhost:8080/FinalDesign/index.html">Site
+                                Logo</a> <span class="tagline">Free project hosting</span>
+                        </p>
+                    </div>
+                    <div class="float_right">
+                        <ul>
+                            <li>
+                                <ul class="ul_list" id="nav">
+                                    <li><a id="lnkSignUp" href="frmRegistration.html"> Sign Up</a></li>
+                                    <li><a id="lnkSignIn">Sign In</a></li>
+                                </ul>
+                            </li>
+                            <li><input id="searchSite" name="searchSite" maxlength="500"
+                                       type="text" value="" autocomplete="off"
+                                       title="Search all projects"
+                                       style="color: rgb(170, 170, 170); font-style: italic;">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="container conatiner_support">
+            <div class="row" style="position: relative;">
+                <div id="intro_container">
+                    <h2 id="intro">Code talks</h2>
+                    <br>
+                    <div id="intro_tagline" class="semi_light">let your voice be
+                        heard</div>
+                </div>
+                <a id="create_project" href="#"> <span class="project_create">Create
+                        Project</span> <br> <span class="start_project">start a
+                        project</span>
+                </a>
+            </div>
+
+            <div class="row">
+                <div id="welcome_entry">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                        suscipit pretium odio, a feugiat ante lobortis ut. Sed nunc nisl,
+                        ultrices adipiscing viverra sit amet, venenatis non lorem. Fusce
+                        dictum.</p>
+                </div>
+                <div id="tile_links" class="row">
+
+                    <a id="help" href="#">Join a project<br> <span
+                            class="sub_link">find projects seeking help</span></a> <a id="signin"
+                                                                              href="#">Sign In<br> <span class="signin_button"></span></a> <a
+                        id="register" href="frmRegistration.html">Register<br> <span class="sub_link">register
+                            for an account</span></a>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="container conatiner_support">
+            <div id="mainContent">
+                <div class="row">
+                    <div id="mostDownloaded" class="site_categories_left">
+                        <h2>Most Downloaded</h2>
+                        <div class="pager_container_content" >
+                            <script id="templateMostDownload" type="text/x-handlebars-template">
+                                {{#each this}}
+
+                                <p class="wordWrapBreakWord">
+                                    <a href="projectDisplay?projId={{{projId}}}" class="bold">{{projName}}</a> <br> 
+                                    {{projDesc}}
+                                </p>
+                                {{/each}}
+                                </script>
+                            </div>
+                        </div>
+
+                        <div id="newRelease" class="site_categories_right">
+                            <h2>popular Releases</h2>
+                            <div class="pager_container_content">
+                                <script id="templateNewRelease" type="text/x-handlebars-template">
+                                    {{#each this}}
+
+                                    <p class="wordWrapBreakWord">
+                                        <a href="projectDisplay?projId={{{projId}}}" class="bold">{{projName}}</a> <br> 
+                                        {{projDesc}}
+                                    </p>
+                                    {{/each}}
+                                    </script>
+                                </div>
+                            </div>
+
+                            <div id="topFollowed" class="site_categories_right">
+                                <h2>Most followed Project</h2>
+                                <div class="pager_container_content">
+                                    <script id="templateMostLike" type="text/x-handlebars-template">
+                                        {{#each this}}
+
+                                        <p class="wordWrapBreakWord">
+                                            <a href="projectDisplay?projId={{{projId}}}" class="bold">{{projName}}</a> <br> 
+                                            {{projDesc}}
+                                        </p>
+                                        {{/each}}
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="footer">
+                        <div class="row">
+                            <hr style="color:">
+                            <ul class="ul_list">
+                                <li class="list"></li>
+                                <li class="list"><a href="#">Get Help</a></li>
+                                <li class="list"><a href="#">Privacy Statement</a></li>
+                                <li class="list"><a href="#">Terms of Use</a></li>
+                                <li class="list"><a href="#">Code of Conduct</a></li>
+                                <li class="list"><a href="#">Advertise With Us</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <script>
+                        (function(){
+                            var data=$.getJSON("mostDownload?type=1", function(dt){
+                                var temp=Handlebars.compile($("#templateMostDownload").html());
+                                $("#mostDownloaded div").append(temp(dt.content));
+                            });
+                            var dat=$.getJSON("mostDownload?type=2",function(dt){
+                                var temp=Handlebars.compile($("#templateNewRelease").html());
+                                $("#newRelease div").append(temp(dt.content));
+                            });
+                            var dat=$.getJSON("mostDownload?type=3",function(dt){
+                                var temp=Handlebars.compile($("#templateMostLike").html());
+                                $("#topFollowed div").append(temp(dt.content));
+                            });
+                        })();
+            
+                    </script>
+                </body>
+            </html>

@@ -1,0 +1,172 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+        <link rel="stylesheet" href="css/jquery-ui-1.9.0.custom.min.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <script type="text/javascript" src="js/jquery-ui-1.8.24.custom.min.js"></script>
+    </head>
+    <body>
+        <header class="navbar">
+            <div class="navbar-inner">
+                <div class="container conatiner_support">
+                    <div class="float_left">
+                        <p id="logo">
+                            <a href="http://localhost:8080/FinalDesign/index.html">Site
+                                Logo</a> <span class="tagline">Free project hosting</span>
+                        </p>
+                    </div>
+                    <div class="float_right">
+                        <ul>
+                            <li>
+                                <ul class="ul_list" id="nav">
+                                    <li><a id="lnkSignUp"> Sign Up</a></li>
+                                    <li><a id="lnkSignIn">Sign In</a></li>
+                                </ul>
+                            </li>
+                            <li><input id="searchSite" name="searchSite" maxlength="500"
+                                       type="text" value="" autocomplete="off"
+                                       title="Search all projects"
+                                       style="color: rgb(170, 170, 170); font-style: italic;">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="container conatiner_support">
+            <div class="row" style="position: relative;">
+                <div class="project_head">
+                    <div class="project_head_image">
+                        <a href="#" >
+                            <img src="images/p1.jpg" />
+                        </a>
+                    </div>
+                    <h1 class="project_title">
+                        <div>
+                            <a href="#">
+                                Sample project 
+                            </a>
+                        </div>
+                    </h1>
+                </div>
+            </div>
+        </div>
+
+        <div class ="conatiner_support container">
+            <div class="row project_management_base" >
+                <div class="card_base">
+                    <div class="site_categories_left project_management_base">
+                        <div class="card"  style="text-align: center;">
+                            <h2>To Do</h2>
+                            <a id="todoAddTask" data-taskType="1">Add task</a>
+                        </div>
+                        <div class="card" style="text-align: center;">
+                            <h2>To Do</h2>
+
+                        </div>
+                    </div>
+
+
+                    <div class="site_categories_right project_management_base">
+                        <div class="card" style="text-align: center;">
+                            <h2>Doing</h2>
+                            <a id="todoAdfgdTask" data-taskType="2">Add task</a>
+                        </div>
+                        <div class="project_management_base" style="text-align: center;">
+                            <h2>To Do</h2>
+
+                        </div>
+                    </div>
+
+
+                    <div class="site_categories_right project_management_base">
+                        <div class="card" style="text-align: center;">
+                            <h2>Done</h2>
+                            <a id="todoAffddTask" data-taskType="3">Add task</a>
+                        </div>
+                        <div class="project_management_base" style="text-align: center;">
+                            <h2>To Do</h2>
+
+                        </div>
+                    </div>
+                </div>                
+            </div>           
+        </div>
+        <div id="footer">
+            <div class="row">
+                <hr style="color:">
+                <ul class="ul_list">
+                    <li class="list"></li>
+                    <li class="list"><a href="#">Get Help</a></li>
+                    <li class="list"><a href="#">Privacy Statement</a></li>
+                    <li class="list"><a href="#">Terms of Use</a></li>
+                    <li class="list"><a href="#">Code of Conduct</a></li>
+                    <li class="list"><a href="#">Advertise With Us</a></li>
+
+                </ul>
+            </div>
+        </div>
+
+        <div id="dialog_form">
+            <h1>sample</h1>
+            <div class="row">
+                <div class="" style="margin-left: 20px;">
+                    <label>Task </label>
+                    <input type="text" id="txtTaskName"/>
+                    <label>Sub task</label>
+                    <div id="subtaskAdd">
+
+                    </div>
+                    <div id="subTaskButton">
+                        <input type="text" id="txtSubTask" style="display: none;"/>
+                        <a id="lblAddSubTask">Add</a>
+                        <input type="button" id="btnAddSubTask" value="Add" style="display:none;"/>
+                        <a style="display: none;" id="subTaskClose">X</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            (function(){
+                //$("#dialog:ui-dialog").dialog("destroy");
+                var lblAddSubtask=$("#lblAddSubTask");
+                var subTaskClose=$("#subTaskClose");
+                var txtSubTask=$("#txtSubTask");
+                var btnAddSubTask=$("#btnAddSubTask");
+                $("#dialog_form").dialog(
+                {
+                    autoOpen : false,
+                    height : 600,
+                    width : 500,
+                    modal : true,
+                    buttons : {
+                        Cancel : function() {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+                $(".card a").click(function() {
+                    $("#dialog_form").dialog("open");
+                    var  type=$(this).attr('data-taskType');
+                    console.log(type);
+                });
+                $("#lblAddSubTask").click(function(){
+                    $(lblAddSubTask).css('display','none');
+                    $(txtSubTask).css('display','inline');
+                    $(btnAddSubTask).css('display','inline');
+                });
+                
+            })();
+        </script>
+    </body>
+</html>
