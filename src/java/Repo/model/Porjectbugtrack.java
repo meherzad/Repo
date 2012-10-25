@@ -2,52 +2,23 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package EntityClass;
+package Repo.model;
 
-import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  *
  * @author Meherzad
  */
-@Entity
-@Table(name = "porjectbugtrack")
-@NamedQueries({
-    @NamedQuery(name = "Porjectbugtrack.findAll", query = "SELECT p FROM Porjectbugtrack p")})
-public class Porjectbugtrack implements Serializable {
+public class Porjectbugtrack {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "bugId")
     private Integer bugId;
-    @Column(name = "projectId")
     private Integer projectId;
-    @Column(name = "issue")
     private String issue;
-    @Column(name = "timeStamp")
-    @Temporal(TemporalType.DATE)
     private Date timeStamp;
-    @Column(name = "userId")
     private Integer userId;
-    @Column(name = "bugState")
     private String bugState;
-    @Column(name = "solution")
     private String solution;
-    @Column(name = "fileUrl")
     private String fileUrl;
 
     public Porjectbugtrack() {

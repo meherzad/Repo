@@ -2,67 +2,51 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package EntityClass;
+package Repo.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  *
  * @author Meherzad
  */
-@Entity
-@Table(name = "projectfollower")
-@NamedQueries({
-    @NamedQuery(name = "Projectfollower.findAll", query = "SELECT p FROM Projectfollower p")})
-public class Projectfollower implements Serializable {
+public class Projectfollower {
 
-    private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected ProjectfollowerPK projectfollowerPK;
-    @Column(name = "jDate")
-    @Temporal(TemporalType.DATE)
+    private int projectId;
+    private int userId;
     private Date jDate;
 
     public Projectfollower() {
     }
 
-    public Projectfollower(ProjectfollowerPK projectfollowerPK) {
-        this.projectfollowerPK = projectfollowerPK;
-    }
-
-    public Projectfollower(int projectId, int userId) {
-        this.projectfollowerPK = new ProjectfollowerPK(projectId, userId);
-    }
-
-    public ProjectfollowerPK getProjectfollowerPK() {
-        return projectfollowerPK;
-    }
-
-    public void setProjectfollowerPK(ProjectfollowerPK projectfollowerPK) {
-        this.projectfollowerPK = projectfollowerPK;
-    }
-
-    public Date getJDate() {
-        return jDate;
-    }
-
-    public void setJDate(Date jDate) {
+    public Projectfollower(int projectId, int userId, Date jDate) {
+        this.projectId = projectId;
+        this.userId = userId;
         this.jDate = jDate;
+    }
+
+    public int getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (projectfollowerPK != null ? projectfollowerPK.hashCode() : 0);
+        hash += (int) projectId;
+        hash += (int) userId;
         return hash;
     }
 
@@ -73,7 +57,10 @@ public class Projectfollower implements Serializable {
             return false;
         }
         Projectfollower other = (Projectfollower) object;
-        if ((this.projectfollowerPK == null && other.projectfollowerPK != null) || (this.projectfollowerPK != null && !this.projectfollowerPK.equals(other.projectfollowerPK))) {
+        if (this.projectId != other.projectId) {
+            return false;
+        }
+        if (this.userId != other.userId) {
             return false;
         }
         return true;
@@ -81,6 +68,6 @@ public class Projectfollower implements Serializable {
 
     @Override
     public String toString() {
-        return "EntityClass.Projectfollower[ projectfollowerPK=" + projectfollowerPK + " ]";
+        return "EntityClass.Projectfollower[ projectId=" + projectId + ", userId=" + userId + " ]";
     }
 }

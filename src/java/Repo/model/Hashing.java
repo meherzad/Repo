@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package EntityClass;
+package Repo.model;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

@@ -2,67 +2,58 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package EntityClass;
+package Repo.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  *
  * @author Meherzad
  */
-@Entity
-@Table(name = "projectdetail")
-@NamedQueries({
-    @NamedQuery(name = "Projectdetail.findAll", query = "SELECT p FROM Projectdetail p")})
 public class Projectdetail implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected ProjectdetailPK projectdetailPK;
-    @Column(name = "jDate")
-    @Temporal(TemporalType.DATE)
+    private int projectId;
+    private int userId;
     private Date jDate;
+
+    public void setjDate(Date jDate) {
+        this.jDate = jDate;
+    }
+
+    public Date getjDate() {
+        return jDate;
+    }
 
     public Projectdetail() {
     }
 
-    public Projectdetail(ProjectdetailPK projectdetailPK) {
-        this.projectdetailPK = projectdetailPK;
+    public Projectdetail(int projectId, int userId, Date jDate) {
+        this.projectId = projectId;
+        this.userId = userId;
+        this.jDate=jDate;
     }
 
-    public Projectdetail(int projectId, int userId) {
-        this.projectdetailPK = new ProjectdetailPK(projectId, userId);
+    public int getProjectId() {
+        return projectId;
     }
 
-    public ProjectdetailPK getProjectdetailPK() {
-        return projectdetailPK;
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
     }
 
-    public void setProjectdetailPK(ProjectdetailPK projectdetailPK) {
-        this.projectdetailPK = projectdetailPK;
+    public int getUserId() {
+        return userId;
     }
 
-    public Date getJDate() {
-        return jDate;
-    }
-
-    public void setJDate(Date jDate) {
-        this.jDate = jDate;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (projectdetailPK != null ? projectdetailPK.hashCode() : 0);
+        hash += (int) projectId;
+        hash += (int) userId;
         return hash;
     }
 
@@ -73,7 +64,10 @@ public class Projectdetail implements Serializable {
             return false;
         }
         Projectdetail other = (Projectdetail) object;
-        if ((this.projectdetailPK == null && other.projectdetailPK != null) || (this.projectdetailPK != null && !this.projectdetailPK.equals(other.projectdetailPK))) {
+        if (this.projectId != other.projectId) {
+            return false;
+        }
+        if (this.userId != other.userId) {
             return false;
         }
         return true;
@@ -81,6 +75,6 @@ public class Projectdetail implements Serializable {
 
     @Override
     public String toString() {
-        return "EntityClass.Projectdetail[ projectdetailPK=" + projectdetailPK + " ]";
+        return "EntityClass.Projectdetail[ projectId=" + projectId + ", userId=" + userId + " ]";
     }
 }

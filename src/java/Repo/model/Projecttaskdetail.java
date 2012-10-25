@@ -2,46 +2,21 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package EntityClass;
+package Repo.model;
 
-import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
 
 /**
  *
  * @author Meherzad
  */
-@Entity
-@Table(name = "projecttaskdetail")
-@NamedQueries({
-    @NamedQuery(name = "Projecttaskdetail.findAll", query = "SELECT p FROM Projecttaskdetail p")})
-public class Projecttaskdetail implements Serializable {
+public class Projecttaskdetail {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "uId")
     private Integer uId;
-    @Column(name = "taskId")
     private Integer taskId;
-    @Column(name = "subTask")
     private String subTask;
-    @Column(name = "status")
     private String status;
-    @Column(name = "timeStamp")
-    @Temporal(TemporalType.DATE)
     private Date timeStamp;
 
     public Projecttaskdetail() {

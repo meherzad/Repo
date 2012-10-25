@@ -4,8 +4,8 @@
  */
 package Repo.controller;
 
-import EntityClass.DatabaseManager;
-import EntityClass.Usermaster;
+import Repo.model.DatabaseManager;
+import Repo.model.Usermaster;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;

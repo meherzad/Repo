@@ -2,46 +2,20 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package EntityClass;
+package Repo.model;
 
-import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  *
  * @author Meherzad
  */
-@Entity
-@Table(name = "projectdiscussion")
-@NamedQueries({
-    @NamedQuery(name = "Projectdiscussion.findAll", query = "SELECT p FROM Projectdiscussion p")})
-public class Projectdiscussion implements Serializable {
+public class Projectdiscussion {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "discussionId")
     private Integer discussionId;
-    @Column(name = "projId")
     private Integer projId;
-    @Column(name = "discussionHead")
     private String discussionHead;
-    @Column(name = "timeStamp")
-    @Temporal(TemporalType.DATE)
     private Date timeStamp;
-    @Column(name = "userId")
     private Integer userId;
 
     public Projectdiscussion() {

@@ -2,52 +2,47 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package EntityClass;
-
-import java.io.Serializable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-
-/**
+package Repo.model;
+/*
  *
  * @author Meherzad
  */
-@Entity
-@Table(name = "projecttaskmember")
-@NamedQueries({
-    @NamedQuery(name = "Projecttaskmember.findAll", query = "SELECT p FROM Projecttaskmember p")})
-public class Projecttaskmember implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected ProjecttaskmemberPK projecttaskmemberPK;
+public class Projecttaskmember {
+
+   
+    private int taskId;
+    private int userId;
 
     public Projecttaskmember() {
     }
 
-    public Projecttaskmember(ProjecttaskmemberPK projecttaskmemberPK) {
-        this.projecttaskmemberPK = projecttaskmemberPK;
-    }
-
     public Projecttaskmember(int taskId, int userId) {
-        this.projecttaskmemberPK = new ProjecttaskmemberPK(taskId, userId);
+        this.taskId = taskId;
+        this.userId = userId;
     }
 
-    public ProjecttaskmemberPK getProjecttaskmemberPK() {
-        return projecttaskmemberPK;
+    public int getTaskId() {
+        return taskId;
     }
 
-    public void setProjecttaskmemberPK(ProjecttaskmemberPK projecttaskmemberPK) {
-        this.projecttaskmemberPK = projecttaskmemberPK;
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (projecttaskmemberPK != null ? projecttaskmemberPK.hashCode() : 0);
+        hash += (int) taskId;
+        hash += (int) userId;
         return hash;
     }
 
@@ -58,7 +53,10 @@ public class Projecttaskmember implements Serializable {
             return false;
         }
         Projecttaskmember other = (Projecttaskmember) object;
-        if ((this.projecttaskmemberPK == null && other.projecttaskmemberPK != null) || (this.projecttaskmemberPK != null && !this.projecttaskmemberPK.equals(other.projecttaskmemberPK))) {
+        if (this.taskId != other.taskId) {
+            return false;
+        }
+        if (this.userId != other.userId) {
             return false;
         }
         return true;
@@ -66,6 +64,6 @@ public class Projecttaskmember implements Serializable {
 
     @Override
     public String toString() {
-        return "EntityClass.Projecttaskmember[ projecttaskmemberPK=" + projecttaskmemberPK + " ]";
+        return "EntityClass.Projecttaskmember[ taskId=" + taskId + ", userId=" + userId + " ]";
     }
 }

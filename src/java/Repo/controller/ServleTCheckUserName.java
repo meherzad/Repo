@@ -4,12 +4,10 @@ package Repo.controller;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-import EntityClass.DatabaseManager;
-import EntityClass.Usermaster;
+import Repo.model.DatabaseManager;
+import Repo.model.Usermaster;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

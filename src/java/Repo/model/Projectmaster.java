@@ -2,46 +2,20 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package EntityClass;
-
-import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+package Repo.model;
 
 /**
  *
  * @author Meherzad
  */
-@Entity
-@Table(name = "projectmaster")
-@NamedQueries({
-    @NamedQuery(name = "Projectmaster.findAll", query = "SELECT p FROM Projectmaster p")})
-public class Projectmaster implements Serializable {
+public class Projectmaster  {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "projId")
     private Integer projId;
-    @Column(name = "projName")
     private String projName;
-    @Column(name = "projDesc")
     private String projDesc;
-    @Column(name = "projOwner")
     private Integer projOwner;
-    @Column(name = "downloads")
     private Integer downloads;
-    @Column(name = "likes")
     private Integer likes;
-    @Column(name = "projType")
     private String projType;
 
     public Projectmaster() {
