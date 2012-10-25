@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.24, for debian-linux-gnu (i686)
+-- MySQL dump 10.13  Distrib 5.5.19, for Win32 (x86)
 --
 -- Host: localhost    Database: repo
 -- ------------------------------------------------------
--- Server version	5.5.24-0ubuntu0.12.04.1
+-- Server version	5.5.19
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,13 +16,13 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `PorjectBugTrack`
+-- Table structure for table `projectbugtrack`
 --
 
-DROP TABLE IF EXISTS `PorjectBugTrack`;
+DROP TABLE IF EXISTS `projectbugtrack`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `PorjectBugTrack` (
+CREATE TABLE `projectbugtrack` (
   `bugId` int(11) NOT NULL AUTO_INCREMENT,
   `projectId` int(11) DEFAULT NULL,
   `issue` varchar(500) DEFAULT NULL,
@@ -36,22 +36,22 @@ CREATE TABLE `PorjectBugTrack` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `PorjectBugTrack`
+-- Dumping data for table `projectbugtrack`
 --
 
-LOCK TABLES `PorjectBugTrack` WRITE;
-/*!40000 ALTER TABLE `PorjectBugTrack` DISABLE KEYS */;
-/*!40000 ALTER TABLE `PorjectBugTrack` ENABLE KEYS */;
+LOCK TABLES `projectbugtrack` WRITE;
+/*!40000 ALTER TABLE `projectbugtrack` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projectbugtrack` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `ProjectBugTrackComment`
+-- Table structure for table `projectbugtrackcomment`
 --
 
-DROP TABLE IF EXISTS `ProjectBugTrackComment`;
+DROP TABLE IF EXISTS `projectbugtrackcomment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ProjectBugTrackComment` (
+CREATE TABLE `projectbugtrackcomment` (
   `uId` int(11) NOT NULL AUTO_INCREMENT,
   `bugId` int(11) DEFAULT NULL,
   `userId` int(11) DEFAULT NULL,
@@ -63,22 +63,22 @@ CREATE TABLE `ProjectBugTrackComment` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ProjectBugTrackComment`
+-- Dumping data for table `projectbugtrackcomment`
 --
 
-LOCK TABLES `ProjectBugTrackComment` WRITE;
-/*!40000 ALTER TABLE `ProjectBugTrackComment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ProjectBugTrackComment` ENABLE KEYS */;
+LOCK TABLES `projectbugtrackcomment` WRITE;
+/*!40000 ALTER TABLE `projectbugtrackcomment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projectbugtrackcomment` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `ProjectDetail`
+-- Table structure for table `projectdetail`
 --
 
-DROP TABLE IF EXISTS `ProjectDetail`;
+DROP TABLE IF EXISTS `projectdetail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ProjectDetail` (
+CREATE TABLE `projectdetail` (
   `projectId` int(11) NOT NULL DEFAULT '0',
   `userId` int(11) NOT NULL DEFAULT '0',
   `jDate` date DEFAULT NULL,
@@ -87,22 +87,22 @@ CREATE TABLE `ProjectDetail` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ProjectDetail`
+-- Dumping data for table `projectdetail`
 --
 
-LOCK TABLES `ProjectDetail` WRITE;
-/*!40000 ALTER TABLE `ProjectDetail` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ProjectDetail` ENABLE KEYS */;
+LOCK TABLES `projectdetail` WRITE;
+/*!40000 ALTER TABLE `projectdetail` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projectdetail` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `ProjectDiscussion`
+-- Table structure for table `projectdiscussion`
 --
 
-DROP TABLE IF EXISTS `ProjectDiscussion`;
+DROP TABLE IF EXISTS `projectdiscussion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ProjectDiscussion` (
+CREATE TABLE `projectdiscussion` (
   `discussionId` int(11) NOT NULL AUTO_INCREMENT,
   `projId` int(11) DEFAULT NULL,
   `discussionHead` varchar(500) DEFAULT NULL,
@@ -113,22 +113,22 @@ CREATE TABLE `ProjectDiscussion` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ProjectDiscussion`
+-- Dumping data for table `projectdiscussion`
 --
 
-LOCK TABLES `ProjectDiscussion` WRITE;
-/*!40000 ALTER TABLE `ProjectDiscussion` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ProjectDiscussion` ENABLE KEYS */;
+LOCK TABLES `projectdiscussion` WRITE;
+/*!40000 ALTER TABLE `projectdiscussion` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projectdiscussion` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `ProjectDiscussionComment`
+-- Table structure for table `projectdiscussioncomment`
 --
 
-DROP TABLE IF EXISTS `ProjectDiscussionComment`;
+DROP TABLE IF EXISTS `projectdiscussioncomment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ProjectDiscussionComment` (
+CREATE TABLE `projectdiscussioncomment` (
   `uId` int(11) NOT NULL AUTO_INCREMENT,
   `discussionId` int(11) DEFAULT NULL,
   `userId` int(11) DEFAULT NULL,
@@ -140,22 +140,22 @@ CREATE TABLE `ProjectDiscussionComment` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ProjectDiscussionComment`
+-- Dumping data for table `projectdiscussioncomment`
 --
 
-LOCK TABLES `ProjectDiscussionComment` WRITE;
-/*!40000 ALTER TABLE `ProjectDiscussionComment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ProjectDiscussionComment` ENABLE KEYS */;
+LOCK TABLES `projectdiscussioncomment` WRITE;
+/*!40000 ALTER TABLE `projectdiscussioncomment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projectdiscussioncomment` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `ProjectFollower`
+-- Table structure for table `projectfollower`
 --
 
-DROP TABLE IF EXISTS `ProjectFollower`;
+DROP TABLE IF EXISTS `projectfollower`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ProjectFollower` (
+CREATE TABLE `projectfollower` (
   `projectId` int(11) NOT NULL DEFAULT '0',
   `userId` int(11) NOT NULL DEFAULT '0',
   `jDate` date DEFAULT NULL,
@@ -164,22 +164,22 @@ CREATE TABLE `ProjectFollower` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ProjectFollower`
+-- Dumping data for table `projectfollower`
 --
 
-LOCK TABLES `ProjectFollower` WRITE;
-/*!40000 ALTER TABLE `ProjectFollower` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ProjectFollower` ENABLE KEYS */;
+LOCK TABLES `projectfollower` WRITE;
+/*!40000 ALTER TABLE `projectfollower` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projectfollower` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `ProjectInvitation`
+-- Table structure for table `projectinvitation`
 --
 
-DROP TABLE IF EXISTS `ProjectInvitation`;
+DROP TABLE IF EXISTS `projectinvitation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ProjectInvitation` (
+CREATE TABLE `projectinvitation` (
   `invitationId` int(11) NOT NULL AUTO_INCREMENT,
   `fromUser` int(11) DEFAULT NULL,
   `toUser` int(11) DEFAULT NULL,
@@ -192,50 +192,51 @@ CREATE TABLE `ProjectInvitation` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ProjectInvitation`
+-- Dumping data for table `projectinvitation`
 --
 
-LOCK TABLES `ProjectInvitation` WRITE;
-/*!40000 ALTER TABLE `ProjectInvitation` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ProjectInvitation` ENABLE KEYS */;
+LOCK TABLES `projectinvitation` WRITE;
+/*!40000 ALTER TABLE `projectinvitation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projectinvitation` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `ProjectMaster`
+-- Table structure for table `projectmaster`
 --
 
-DROP TABLE IF EXISTS `ProjectMaster`;
+DROP TABLE IF EXISTS `projectmaster`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ProjectMaster` (
+CREATE TABLE `projectmaster` (
   `projId` int(11) NOT NULL AUTO_INCREMENT,
   `projName` varchar(20) DEFAULT NULL,
-  `projDesc` varchar(20) DEFAULT NULL,
+  `projdesc` varchar(500) DEFAULT NULL,
   `projOwner` int(11) DEFAULT NULL,
   `downloads` int(11) DEFAULT NULL,
   `likes` int(11) DEFAULT NULL,
   `projType` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`projId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ProjectMaster`
+-- Dumping data for table `projectmaster`
 --
 
-LOCK TABLES `ProjectMaster` WRITE;
-/*!40000 ALTER TABLE `ProjectMaster` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ProjectMaster` ENABLE KEYS */;
+LOCK TABLES `projectmaster` WRITE;
+/*!40000 ALTER TABLE `projectmaster` DISABLE KEYS */;
+INSERT INTO `projectmaster` VALUES (1,'a','aaaaaasdj asjdh jashf jas fjkh ashjkf ajksh ',2,15,55,'sample'),(2,'b','aaaaaasdj asjdh jashf jas fjkh ashjkf ajksh ',2,55,55,'sample'),(3,'b','aaaaaasdj asjdh jashf jas fjkh ashjkf ajksh ',2,5,55,'sample'),(4,'c','aaaaaasdj asjdh jashf jas fjkh ashjkf ajksh ',2,51,55,'sample'),(5,'d','aaaaaasdj asjdh jashf jas fjkh ashjkf ajksh ',2,86,55,'sample');
+/*!40000 ALTER TABLE `projectmaster` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `ProjectPhase`
+-- Table structure for table `projectphase`
 --
 
-DROP TABLE IF EXISTS `ProjectPhase`;
+DROP TABLE IF EXISTS `projectphase`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ProjectPhase` (
+CREATE TABLE `projectphase` (
   `phaseId` int(11) NOT NULL AUTO_INCREMENT,
   `phaseName` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`phaseId`)
@@ -243,22 +244,22 @@ CREATE TABLE `ProjectPhase` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ProjectPhase`
+-- Dumping data for table `projectphase`
 --
 
-LOCK TABLES `ProjectPhase` WRITE;
-/*!40000 ALTER TABLE `ProjectPhase` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ProjectPhase` ENABLE KEYS */;
+LOCK TABLES `projectphase` WRITE;
+/*!40000 ALTER TABLE `projectphase` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projectphase` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `ProjectTask`
+-- Table structure for table `projecttask`
 --
 
-DROP TABLE IF EXISTS `ProjectTask`;
+DROP TABLE IF EXISTS `projecttask`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ProjectTask` (
+CREATE TABLE `projecttask` (
   `taskId` int(11) NOT NULL AUTO_INCREMENT,
   `projectId` int(11) DEFAULT NULL,
   `phaseId` int(11) DEFAULT NULL,
@@ -269,22 +270,22 @@ CREATE TABLE `ProjectTask` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ProjectTask`
+-- Dumping data for table `projecttask`
 --
 
-LOCK TABLES `ProjectTask` WRITE;
-/*!40000 ALTER TABLE `ProjectTask` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ProjectTask` ENABLE KEYS */;
+LOCK TABLES `projecttask` WRITE;
+/*!40000 ALTER TABLE `projecttask` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projecttask` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `ProjectTaskDetail`
+-- Table structure for table `projecttaskdetail`
 --
 
-DROP TABLE IF EXISTS `ProjectTaskDetail`;
+DROP TABLE IF EXISTS `projecttaskdetail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ProjectTaskDetail` (
+CREATE TABLE `projecttaskdetail` (
   `uId` int(11) NOT NULL AUTO_INCREMENT,
   `taskId` int(11) DEFAULT NULL,
   `subTask` varchar(50) DEFAULT NULL,
@@ -295,22 +296,22 @@ CREATE TABLE `ProjectTaskDetail` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ProjectTaskDetail`
+-- Dumping data for table `projecttaskdetail`
 --
 
-LOCK TABLES `ProjectTaskDetail` WRITE;
-/*!40000 ALTER TABLE `ProjectTaskDetail` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ProjectTaskDetail` ENABLE KEYS */;
+LOCK TABLES `projecttaskdetail` WRITE;
+/*!40000 ALTER TABLE `projecttaskdetail` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projecttaskdetail` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `ProjectTaskMember`
+-- Table structure for table `projecttaskmember`
 --
 
-DROP TABLE IF EXISTS `ProjectTaskMember`;
+DROP TABLE IF EXISTS `projecttaskmember`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ProjectTaskMember` (
+CREATE TABLE `projecttaskmember` (
   `taskId` int(11) NOT NULL DEFAULT '0',
   `userId` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`taskId`,`userId`)
@@ -318,22 +319,22 @@ CREATE TABLE `ProjectTaskMember` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ProjectTaskMember`
+-- Dumping data for table `projecttaskmember`
 --
 
-LOCK TABLES `ProjectTaskMember` WRITE;
-/*!40000 ALTER TABLE `ProjectTaskMember` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ProjectTaskMember` ENABLE KEYS */;
+LOCK TABLES `projecttaskmember` WRITE;
+/*!40000 ALTER TABLE `projecttaskmember` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projecttaskmember` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `UserLog`
+-- Table structure for table `userlog`
 --
 
-DROP TABLE IF EXISTS `UserLog`;
+DROP TABLE IF EXISTS `userlog`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `UserLog` (
+CREATE TABLE `userlog` (
   `userId` int(11) DEFAULT NULL,
   `uId` int(11) NOT NULL AUTO_INCREMENT,
   `timeStamp` date DEFAULT NULL,
@@ -343,37 +344,42 @@ CREATE TABLE `UserLog` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `UserLog`
+-- Dumping data for table `userlog`
 --
 
-LOCK TABLES `UserLog` WRITE;
-/*!40000 ALTER TABLE `UserLog` DISABLE KEYS */;
-/*!40000 ALTER TABLE `UserLog` ENABLE KEYS */;
+LOCK TABLES `userlog` WRITE;
+/*!40000 ALTER TABLE `userlog` DISABLE KEYS */;
+/*!40000 ALTER TABLE `userlog` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `UserMaster`
+-- Table structure for table `usermaster`
 --
 
-DROP TABLE IF EXISTS `UserMaster`;
+DROP TABLE IF EXISTS `usermaster`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `UserMaster` (
+CREATE TABLE `usermaster` (
   `userId` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(20) DEFAULT NULL,
   `password` varchar(50) DEFAULT NULL,
   `jDate` date DEFAULT NULL,
+  `alternateEmail` varchar(20) DEFAULT NULL,
+  `verified` varchar(10) DEFAULT NULL,
+  `iUrl` varchar(10) DEFAULT NULL,
+  `verificationId` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `UserMaster`
+-- Dumping data for table `usermaster`
 --
 
-LOCK TABLES `UserMaster` WRITE;
-/*!40000 ALTER TABLE `UserMaster` DISABLE KEYS */;
-/*!40000 ALTER TABLE `UserMaster` ENABLE KEYS */;
+LOCK TABLES `usermaster` WRITE;
+/*!40000 ALTER TABLE `usermaster` DISABLE KEYS */;
+INSERT INTO `usermaster` VALUES (5,'meherzad@gmail.com','12345','2012-10-23','meherzad@hotmail.com','yes',NULL,'b8c0d7bc879847a44f22faf23f67a04a');
+/*!40000 ALTER TABLE `usermaster` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -385,4 +391,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-10-15  0:55:58
+-- Dump completed on 2012-10-25 17:36:46
