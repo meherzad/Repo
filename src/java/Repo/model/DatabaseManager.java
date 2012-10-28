@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 /**
  *
@@ -14,14 +15,14 @@ import java.util.ArrayList;
  */
 public class DatabaseManager {
 
-    private String DATABASEDRIVER = "com.mysql.jdbc.Driver";
-    private String DATABASEURL = "jdbc:mysql://localhost:3306/repo?user=root&password=12345";
+    private String DATABASEDRIVER;// = "com.mysql.jdbc.Driver";
+    private String DATABASEURL;// = "jdbc:mysql://localhost:3306/repo?user=root&password=12345";
     private Connection con;
 
     public DatabaseManager() {
-        /*        ResourceBundle rb = ResourceBundle.getBundle("Repo.Config");
-         DATABASEDRIVER = rb.getString("DatabaseVendorDriver");
-         DATABASEURL = rb.getString("DatabaseURL");*/
+        ResourceBundle rb = ResourceBundle.getBundle("Repo.Config");
+        DATABASEDRIVER = rb.getString("DatabaseVendorDriver");
+        DATABASEURL = rb.getString("DatabaseURL");
     }
 
     /**
@@ -144,7 +145,7 @@ public class DatabaseManager {
      * @param type (1- Most downloaded, 2- Newest, 3- Most followed)
      * @return ArrayList<Projectmaster>
      */
-    public ArrayList<Projectmaster> getMostDownload(int type) {
+   public ArrayList<Projectmaster> getMostDownload(int type) {
         ArrayList<Projectmaster> list = new ArrayList<Projectmaster>();
         Projectmaster obj;
         String query = null;
@@ -206,5 +207,144 @@ public class DatabaseManager {
             }
         }
         return result;
+    }
+
+    public int addTask(Projecttask task) {
+        int taskId;
+        PreparedStatement pst;
+        ArrayList<Projecttaskdetail> subTask;
+        ArrayList<Projecttaskmember> member;
+        try {
+            connect();
+            pst = con.prepareStatement("insert into projecttask (projectId, "
+                    + "phaseId, deadLine, taskDescription) values(?, ?, ?, ?);");
+            pst.setInt(1, task.getProjectId());
+            pst.setInt(2, task.getPhaseId());
+            pst.setDate(3, new java.sql.Date(task.getDeadLine().getTime()));
+            pst.setString(4, task.getTaskDescription());
+            pst.executeUpdate();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("select LAST_INSERT_ID();");
+            rs.next();
+            taskId = rs.getInt("LAST_INSERT_ID()");
+            rs.close();
+            task.setTaskId(taskId);
+            subTask = task.getSubTask();
+            member = task.getTaskMember();
+            for (Projecttaskdetail ptd : subTask) {
+                pst = con.prepareStatement("insert into projecttaskdetail (taskId, "
+                        + "subTask, status, timeStamp) values(?, ?, ?, ?)");
+                pst.setInt(1, taskId);
+                pst.setString(2, ptd.getSubTask());
+                pst.setString(3, ptd.getStatus());
+                pst.setDate(4, new java.sql.Date(ptd.getTimeStamp().getTime()));
+                pst.executeUpdate();
+            }
+            for (Projecttaskmember ptm : member) {
+                pst = con.prepareStatement("Insert into projecttaskmember (taskId, "
+                        + "userId) values(?, ?);");
+                pst.setInt(1, taskId);
+                System.out.println("{{{{{{{{{{{{{   " + ptm);
+                pst.setInt(2, ptm.getUserId());
+                pst.executeUpdate();
+            }
+        } catch (Exception e) {
+            taskId = -1;
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return taskId;
+    }
+
+    public ArrayList<Projecttask> getTask(int projId, int phasId) {
+        ArrayList<Projecttask> taskList = new ArrayList<Projecttask>();
+        Projecttask task;
+        try {
+            connect();
+            PreparedStatement pst = con.prepareStatement("Select * from projecttask where projectId=?"
+                    + " and phaseId=?;");
+            pst.setInt(1, projId);
+            pst.setInt(2, phasId);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                task = new Projecttask();
+                task.setTaskId(rs.getInt("taskId"));
+                task.setProjectId(projId);
+                task.setTaskDescription(rs.getString("taskDescription"));
+                task.setDeadLine(rs.getDate("deadLine"));
+                task.setPhaseId(rs.getInt("phaseId"));
+                taskList.add(task);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return taskList;
+    }
+
+    public ArrayList<Usermaster> getProjectMembers(int projId) {
+        ArrayList<Usermaster> members = new ArrayList<Usermaster>();
+        Usermaster user = null;
+        try {
+            connect();
+            PreparedStatement pst = con.prepareCall("select * from projectmember where projId=?;");
+            pst.setInt(1, projId);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                user = new Usermaster();
+                user.setUserId(rs.getInt("userId"));
+                user.setNick(rs.getString("memberName"));
+                members.add(user);
+            }
+            rs.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return members;
+    }
+
+    public ArrayList<Projecttaskdetail> getSubTask(int taskId) {
+        ArrayList<Projecttaskdetail> subTask = new ArrayList<Projecttaskdetail>();
+        Projecttaskdetail st=null;
+        try {
+            connect();
+            PreparedStatement pst=con.prepareCall("select * from projecttaskdetail where taskId=?");
+            pst.setInt(1, taskId);
+            ResultSet rs=pst.executeQuery();
+            while(rs.next()){
+                st=new Projecttaskdetail();
+                st.setSubTask(rs.getString("subTask"));
+                st.setStatus(rs.getString("status"));
+                st.setTimeStamp(rs.getDate("timeStamp"));
+                st.setUId(rs.getInt("uId"));
+                subTask.add(st);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return subTask;
     }
 }

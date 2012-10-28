@@ -4,8 +4,10 @@
  */
 package Repo.controller;
 
+import Repo.model.DatabaseManager;
 import Repo.model.Projecttask;
 import Repo.model.Projecttaskdetail;
+import Repo.model.Projecttaskmember;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
@@ -92,7 +95,7 @@ public class ServletAddSubtask extends HttpServlet {
         String resp, str = request.getParameter("type");
         HttpSession session = request.getSession(true);
         JSONObject result = new JSONObject();
-        int type = Integer.parseInt(str);
+        int r, type = Integer.parseInt(str);
         Projecttaskdetail subTask = null;
         if (type == 1) {
             subTask = new Projecttaskdetail();
@@ -100,14 +103,64 @@ public class ServletAddSubtask extends HttpServlet {
             subTask.setSubTask(request.getParameter("subTask"));
             subTask.setTimeStamp(new Date());
             task.addSubTask(subTask);
-        } else {
+            r = 0;
+        } else if (type == 2) {
+            String members = request.getParameter("members");
+            String[] mem = members.split("---");
+            String id, name;
+            int userId;
+            Projecttaskmember member = null;
+            for (String a : mem) {
+                a = a.replaceAll("---", "");
+                System.out.println("----------->" + a);
+                userId = Integer.parseInt(a.split(",")[0]);
+                name = a.split(",")[1];
+                member = new Projecttaskmember();
+                System.out.println("----------->" + userId);
+                member.setUserId(userId);
+                task.addMember(member);
+            }
+            task.setDeadLine(new java.util.Date(request.getParameter("deadLine")));
+            task.setTaskDescription(request.getParameter("taskName"));
+            task.setPhaseId(Integer.parseInt(request.getParameter("phaseId")));
+            System.out.println("servlet add subtask =====  " + request.getParameter("projId"));
+            task.setProjectId(Integer.parseInt(request.getParameter("projId")));
+            DatabaseManager obj = new DatabaseManager();
+            r = obj.addTask(task);
             System.out.println("++++++++++++");
             ArrayList<Projecttaskdetail> list = task.getSubTask();
             for (Projecttaskdetail subtask : list) {
                 System.out.println(subtask);
             }
+            result.put("taskId", r);
+        } else {
+            try {
+                DatabaseManager obj = new DatabaseManager();
+                int taskId = Integer.parseInt(request.getParameter("taskId"));
+                ArrayList<Projecttaskdetail> subTaskList = obj.getSubTask(taskId);
+                //JSONObject json = new JSONObject();
+                JSONArray jArray = new JSONArray();
+                JSONObject task = null;
+                for (Projecttaskdetail ptd : subTaskList) {
+                    task = new JSONObject();
+                    task.put("status", ptd.getStatus());
+                    task.put("subTask", ptd.getSubTask());
+                    task.put("timeStamp", ptd.getTimeStamp().toString());
+                    task.put("uId", ptd.getUId());
+                    jArray.add(task);
+                }
+                r = 0;
+                result.put("subTask", jArray);
+            } catch (Exception e) {
+                r = -1;
+            }
         }
-        result.put("status", "success");
+        if (r == -1) {
+            resp = "Fail";
+        } else {
+            resp = "success";
+        }
+        result.put("status", resp);
         System.out.println(result);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

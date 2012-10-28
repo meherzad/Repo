@@ -18,6 +18,15 @@ public class Usermaster {
     private String password;
     private Date jDate;
     private String alternateEmail;
+    private String nick;
+
+    public void setNick(String nick) {
+        this.nick = nick;
+    }
+
+    public String getNick() {
+        return nick;
+    }
 
     public Usermaster() {
     }

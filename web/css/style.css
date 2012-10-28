@@ -214,15 +214,16 @@ a#register {
     clear: right;
     float: left;
     padding-right: 15px;
-    width: 300px;
+    width: 30%;
     overflow: visible;
+
 }
 
 .site_categories_right {
     float: left;
-    
     position: relative;
-    width: 290px;
+    width: 30%;
+    margin-left: 10px;
 }
 
 .bold {
@@ -355,7 +356,14 @@ ul#project_menu li a{
 }
 
 .card{
-    
+
+    background-color: #F0F1F4;
+    border-color: #F0F1F4;
+    border-radius: 25px;
+
+}
+
+.cardNew{
     background-color: #F0F1F4;
     border-color: #F0F1F4;
     border-radius: 25px;

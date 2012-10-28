@@ -20,6 +20,14 @@
         <servlet-name>ServletAddSubtask</servlet-name>
         <servlet-class>Repo.controller.ServletAddSubtask</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletGetUser</servlet-name>
+        <servlet-class>Repo.controller.ServletGetUser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletShowTask</servlet-name>
+        <servlet-class>Repo.controller.ServletShowTask</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServleTCheckUserName</servlet-name>
         <url-pattern>/ServleTCheckUserName</url-pattern>
@@ -39,6 +47,14 @@
     <servlet-mapping>
         <servlet-name>ServletAddSubtask</servlet-name>
         <url-pattern>/ServletAddSubtask</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletGetUser</servlet-name>
+        <url-pattern>/ServletGetUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletShowTask</servlet-name>
+        <url-pattern>/ServletShowTask</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
