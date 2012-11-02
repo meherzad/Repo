@@ -30,7 +30,7 @@ public class ServletAddSubtask extends HttpServlet {
 
     public ServletAddSubtask() {
         super();
-        task = new Projecttask();
+
     }
 
     /**
@@ -90,14 +90,18 @@ public class ServletAddSubtask extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("-------------------");
         PrintWriter out = response.getWriter();
         String resp, str = request.getParameter("type");
         HttpSession session = request.getSession(true);
         JSONObject result = new JSONObject();
         int r, type = Integer.parseInt(str);
+        System.out.println("-------------------kkkkkk  " + str);
+
         Projecttaskdetail subTask = null;
         if (type == 1) {
+            if (task == null) {
+                task = new Projecttask();
+            }
             subTask = new Projecttaskdetail();
             subTask.setStatus("Incomplete");
             subTask.setSubTask(request.getParameter("subTask"));
@@ -127,12 +131,8 @@ public class ServletAddSubtask extends HttpServlet {
             task.setProjectId(Integer.parseInt(request.getParameter("projId")));
             DatabaseManager obj = new DatabaseManager();
             r = obj.addTask(task);
-            System.out.println("++++++++++++");
-            ArrayList<Projecttaskdetail> list = task.getSubTask();
-            for (Projecttaskdetail subtask : list) {
-                System.out.println(subtask);
-            }
             result.put("taskId", r);
+            task = null;
         } else {
             try {
                 DatabaseManager obj = new DatabaseManager();
@@ -153,6 +153,8 @@ public class ServletAddSubtask extends HttpServlet {
                 result.put("subTask", jArray);
             } catch (Exception e) {
                 r = -1;
+                System.out.println("servletaddsubtask");
+                e.printStackTrace();
             }
         }
         if (r == -1) {
@@ -161,7 +163,7 @@ public class ServletAddSubtask extends HttpServlet {
             resp = "success";
         }
         result.put("status", resp);
-        System.out.println(result);
+        System.out.println("servletAddsubtas" + result);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         out.println(result);

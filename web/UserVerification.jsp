@@ -1,3 +1,10 @@
+<%-- 
+    Document   : UserVerification
+    Created on : 2 Nov, 2012, 7:37:42 PM
+    Author     : meherzad
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -78,22 +85,9 @@
 
         <div class="container conatiner_support">
             <div>
-                <p>Congratulation your account has been verified. You can login to your account.</p>
-            </div>
-        </div>
-
-        <div id="footer">
-            <div class="row">
-                <hr style="color:">
-                <ul class="ul_list">
-                    <li class="list"></li>
-                    <li class="list"><a href="#">Get Help</a></li>
-                    <li class="list"><a href="#">Privacy Statement</a></li>
-                    <li class="list"><a href="#">Terms of Use</a></li>
-                    <li class="list"><a href="#">Code of Conduct</a></li>
-                    <li class="list"><a href="#">Advertise With Us</a></li>
-
-                </ul>
+                <p>
+                    A verfication email is send to your account ${requestScope.email}. Please check your inbox to verify your account
+                </p>
             </div>
         </div>
     </body>

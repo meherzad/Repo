@@ -61,14 +61,18 @@ public class UserVerification extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String verfID = request.getParameter("verfid");
-        DatabaseManager obj=new DatabaseManager();
-        if (obj.userVerification(verfID)){
+        String verfID = request.getParameter("verfId");
+        DatabaseManager obj = new DatabaseManager();
+        RequestDispatcher rd = null;
+        if (obj.userVerification(verfID)) {
+            System.out.println("success");
             request.setAttribute("result", "Success");
-        }else{
+            rd = request.getRequestDispatcher("frmVerifiedUser.jsp");
+        } else {
+            System.out.println("--->fail");
             request.setAttribute("result", "Fail");
+            rd = request.getRequestDispatcher("");
         }
-        RequestDispatcher rd=request.getRequestDispatcher("frmVerifiedUser.jsp");
         rd.forward(request, response);
     }
 

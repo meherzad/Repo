@@ -5,22 +5,25 @@
 package Repo.controller;
 
 import Repo.model.DatabaseManager;
+import Repo.model.Hashing;
 import Repo.model.Usermaster;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
  *
- * @author meherzad
+ * @author XANDER
  */
-public class ServletGetUser extends HttpServlet {
+public class ServletLoginVerification extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -40,10 +43,10 @@ public class ServletGetUser extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ServletGetUser</title>");
+            out.println("<title>Servlet LoginVerification</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ServletGetUser at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet LoginVerification at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -79,43 +82,39 @@ public class ServletGetUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int projId = 1;//Integer.parseInt(request.getParameter("projId"));
-        int type = Integer.parseInt(request.getParameter("type"));
-        
-
-        PrintWriter out = response.getWriter();
-        DatabaseManager obj = new DatabaseManager();
-        ArrayList<Usermaster> members = null;
-        JSONArray jArray = new JSONArray();
-        JSONObject json = new JSONObject();
-        JSONObject user = null;
+        Usermaster user = new Usermaster();
+        user.setUsername(request.getParameter("username"));
+        String pd = null;
+        String result, status;
         try {
-            if (type == 1) {
-                members = obj.getProjectMembers(projId);
-            } else {
-                int taskId = Integer.parseInt(request.getParameter("taskId"));
-                members = obj.getUserByTask(taskId);
-            }
-            json.put("status", "Success");
-
-        } catch (Exception e) {
-            System.out.println("servletgetuser");
-            e.printStackTrace();
-            json.put("status", "Fail");
+            pd = Hashing.getHashValue(request.getParameter("password"));
+        } catch (NoSuchAlgorithmException ex) {
+            //Logger.getLogger(LoginVerification.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
-
-        for (Usermaster us : members) {
-            user = new JSONObject();
-            user.put("userId", us.getUserId());
-            user.put("nick", us.getNick());
-            jArray.add(user);
+        user.setPassword(pd);
+        DatabaseManager dm = new DatabaseManager();
+        Usermaster verifUser = null;
+        PrintWriter out = response.getWriter();
+        try {
+            verifUser = dm.LoginVerify(user);
+            status = "success";
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            status = "fail";
         }
-        json.put("members", jArray);
-        System.out.println("ServletGetUser------>" + json);
+        if (verifUser != null) {
+            result = "Valid User";
+        } else {
+            result = "Invalid User";
+        }
+        JSONObject json = new JSONObject();
+        json.put("result", result);
+        json.put("status", status);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        out.println(json);
-
+        out.print(json);
+        
     }
 
     /**

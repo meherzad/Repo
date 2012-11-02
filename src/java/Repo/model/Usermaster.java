@@ -12,13 +12,56 @@ import java.util.Date;
  */
 public class Usermaster {
 
-    private static final long serialVersionUID = 1L;
     private Integer userId;
     private String username;
     private String password;
     private Date jDate;
-    private String alternateEmail;
+    private String iurl;
     private String nick;
+    private String aboutUser;
+    private String forgetPasswordId;
+    private String verificationId;
+    private String verified;
+
+    public void setIurl(String iurl) {
+        this.iurl = iurl;
+    }
+
+    public void setAboutUser(String aboutUser) {
+        this.aboutUser = aboutUser;
+    }
+
+    public void setForgetPasswordId(String forgetPasswordId) {
+        this.forgetPasswordId = forgetPasswordId;
+    }
+
+    public void setVerificationId(String verificationId) {
+        this.verificationId = verificationId;
+    }
+
+    public void setVerified(String verified) {
+        this.verified = verified;
+    }
+
+    public String getIurl() {
+        return iurl;
+    }
+
+    public String getAboutUser() {
+        return aboutUser;
+    }
+
+    public String getForgetPasswordId() {
+        return forgetPasswordId;
+    }
+
+    public String getVerificationId() {
+        return verificationId;
+    }
+
+    public String getVerified() {
+        return verified;
+    }
 
     public void setNick(String nick) {
         this.nick = nick;
@@ -35,16 +78,8 @@ public class Usermaster {
         this.jDate = jDate;
     }
 
-    public void setAlternateEmail(String alternateEmail) {
-        this.alternateEmail = alternateEmail;
-    }
-
     public Date getjDate() {
         return jDate;
-    }
-
-    public String getAlternateEmail() {
-        return alternateEmail;
     }
 
     public Usermaster(Integer userId) {

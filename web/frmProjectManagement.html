@@ -149,235 +149,266 @@ and open the template in the editor.
                     <div id="dialog_form">
                         <script id="templateSubtask" type="text/x-handlebars-template">
                             {{#each this}}
-                            <div>
-
-                            </div>
+                            <input type='checkbox' id="{{uId}}" checked="{{status}}"/><span> {{subTask}} </span><br>
                             {{/each}}
-                        </script>
-                        <div class="row">
-                            <div id="display"></div>
-                            <div class="" style="margin-left: 20px;">
-                                <label>Task </label>
-                                <input type="text" id="txtTaskName"/><br>
-                                <label style="float: right;">Members</label>    <label>DeadLine</label>    
-                                <input type="text" id="txtDeadLine"/>
+                            </script>
+                            <div class="row">
+                                <div id="display"></div>
+                                <div class="" style="margin-left: 20px;">
+                                    <label>Task </label>
+                                    <input type="text" id="txtTaskName"/><br>
+                                    <label style="float: right;">Members</label>    <label>DeadLine</label>    
+                                    <input type="text" id="txtDeadLine"/>
 
-                                <select style="float:right;" size="1" id="txtMember" multiple>
-                                    <option></option>
-                                </select>
+                                    <select style="float:right;" size="1" id="txtMember" multiple>
+                                        <option></option>
+                                    </select>
 
 
-                                <label>Sub task</label>
+                                    <label>Sub task</label>
 
-                                <div id="subtaskAdd">
+                                    <div id="subtaskAdd">
 
+                                    </div>
+                                    <div id="subTaskButton">
+                                        <input type="text" id="txtSubTask" style="display: none;"/>
+                                        <a id="lblAddSubTask">Add</a>
+                                        <input type="button" id="btnAddSubTask" value="Add" style="display:none;"/>
+                                        <a style="display: none;" id="subTaskClose">X</a>
+                                    </div>
                                 </div>
-                                <div id="subTaskButton">
-                                    <input type="text" id="txtSubTask" style="display: none;"/>
-                                    <a id="lblAddSubTask">Add</a>
-                                    <input type="button" id="btnAddSubTask" value="Add" style="display:none;"/>
-                                    <a style="display: none;" id="subTaskClose">X</a>
-                                </div>
+                                <input type="hidden" id="requestType"/>
                             </div>
-                            <input type="hidden" id="requestType"/>
                         </div>
-                    </div>
-                    <input type="hidden" id="hiddenPhase" />
-                    <input type="hidden" id="hiddenProjId" />
+                        <input type="hidden" id="hiddenPhase" />
+                        <input type="hidden" id="hiddenProjId" />
 
-                    <script>
-                        (function(){
-                            var lblAddSubtask=$("#lblAddSubTask");
-                            var subTaskClose=$("#subTaskClose");
-                            var txtSubTask=$("#txtSubTask");
-                            var btnAddSubTask=$("#btnAddSubTask");
-                            var subtaskAdd=$("#subtaskAdd");
-                            var members;
-                            var memberList=$("#txtMember");
-                            var selectedMember;  
-                            $('#hiddenProjId').attr('value',1);
+                        <script>
+                            (function(){
+                                var lblAddSubtask=$("#lblAddSubTask");
+                                var subTaskClose=$("#subTaskClose");
+                                var txtSubTask=$("#txtSubTask");
+                                var btnAddSubTask=$("#btnAddSubTask");
+                                var subtaskAdd=$("#subtaskAdd");
+                                var members;
+                                var memberList=$("#txtMember");
+                                var selectedMember;  
+                                $('#hiddenProjId').attr('value',1);
                            
-                            function fillTask(){
-                                $.ajax({
-                                    url:"ServletShowTask",
-                                    data: {"projId":$("#hiddenProjId").attr('value'),
-                                        "phaseId":1
-                                    },
-                                    type: "POST",
-                                    dataType: 'json',
-                                    success:function(dt){
-                                        var temp=Handlebars.compile($("#templateToDo").html());
-                                        $("#todoTask").html(temp(dt.task));
-                                    },
-                                    error:function(e){
-                                        console.log(e)
-                                    }
-                                });
-                                $.ajax({
-                                    url:"ServletShowTask",
-                                    data: {"projId":$("#hiddenProjId").attr('value'),
-                                        "phaseId":2
-                                    },
-                                    type: "POST",
-                                    dataType: 'json',
-                                    success:function(dt){
-                                        var temp=Handlebars.compile($("#templateDoing").html());
-                                        $("#doingTask").html(temp(dt.task));
-                                    },
-                                    error:function(e){
-                                        console.log(e)
-                                    }
-                                });
-                                $.ajax({
-                                    url:"ServletShowTask",
-                                    data: {"projId":$("#hiddenProjId").attr('value'),
-                                        "phaseId":3
-                                    },
-                                    type: "POST",
-                                    dataType: 'json',
-                                    success:function(dt){
-                                        var temp=Handlebars.compile($("#templateDone").html());
-                                        $("#doneTask").html(temp(dt.task));
-                                    },
-                                    error:function(e){
-                                        console.log(e)
-                                    }
-                                });
-                            };
-                            fillTask();
+                                function fillTask(){
+                                    $.ajax({
+                                        url:"ServletShowTask",
+                                        data: {"projId":$("#hiddenProjId").attr('value'),
+                                            "phaseId":1
+                                        },
+                                        type: "POST",
+                                        dataType: 'json',
+                                        success:function(dt){
+                                            var temp=Handlebars.compile($("#templateToDo").html());
+                                            $("#todoTask").html(temp(dt.task));
+                                        },
+                                        error:function(e){
+                                            console.log(e)
+                                        }
+                                    });
+                                    $.ajax({
+                                        url:"ServletShowTask",
+                                        data: {"projId":$("#hiddenProjId").attr('value'),
+                                            "phaseId":2
+                                        },
+                                        type: "POST",
+                                        dataType: 'json',
+                                        success:function(dt){
+                                            var temp=Handlebars.compile($("#templateDoing").html());
+                                            $("#doingTask").html(temp(dt.task));
+                                        },
+                                        error:function(e){
+                                            console.log(e)
+                                        }
+                                    });
+                                    $.ajax({
+                                        url:"ServletShowTask",
+                                        data: {"projId":$("#hiddenProjId").attr('value'),
+                                            "phaseId":3
+                                        },
+                                        type: "POST",
+                                        dataType: 'json',
+                                        success:function(dt){
+                                            var temp=Handlebars.compile($("#templateDone").html());
+                                            $("#doneTask").html(temp(dt.task));
+                                        },
+                                        error:function(e){
+                                            console.log(e)
+                                        }
+                                    });
+                                };
+                                fillTask();
                             
-                            $(".card").live('click',function(){
-                                // alert($(this).attr('data-taskId'));
-                                $('#requestType').attr('value',2);
-                                $.ajax({
-                                    url:"ServletAddSubtask",
-                                    data: {
-                                        "type":3,
-                                        "taskId":$(this).attr('data-taskId')
-                                    },
-                                    type: "POST",
-                                    success:function(result){
-                                        console.log(result);
-                                    } 
-                                })
+                                $(".card").live('click',function(){
+                                    // alert($(this).attr('data-taskId'));
+                                    alert();
+                                    $('#requestType').attr('value',2);
+                                    $.ajax({
+                                        url:"ServletAddSubtask",
+                                        data: {
+                                            "type":3,
+                                            "taskId":$(this).attr('data-taskId')
+                                        },
+                                        type: "POST",
+                                        success:function(result){
+                                            
+                                        } 
+                                    })
+                                    $.ajax({
+                                        url:"ServletGetUser",
+                                        data: {"projId":$("#hiddenProjId").attr('value')},
+                                        type: "POST",
+                                        success:function(result){
+                          ',                  $(memberList).html('<option></option>');
+                                            $.ajax({
+                                                url:"ServletGetUser",
+                                                data: {"projId":$("#hiddenProjId").attr('value')},
+                                                type: "POST",
+                                                success:function(result){
+                                                    jQuery.each(result, function(index, value) {
+                                                        jQuery.each(value, function(index, val){
+                                                            $(memberList).append('<option value='+val.userId+' id="select'+val.userId+'">'+val.nick+'</option>');
+                                                        });
+                                                    });
+                                                    $('#txtMember').chosen().change(function(e){
+                                                        selectedMember='';
+                                                        var selected=$("#txtMember").children("option").filter(":selected");
+                                                        $.each(selected, function(){
+                                                            selectedMember+=$(this).val()+','+$(this).text()+'---'; 
+                                                        });
+                                  
+                                                    });
+                                                    
+                                                }
+                                            }); 
+                            
+                                            jQuery.each(result, function(index, value) {
+                                                jQuery.each(value, function(index, val){
+                                                    var id = '#select'+val.userId;
+                                                    $(id).attr('selected','selected');
+                                                    console.log(id+ '  '+ $(id).attr('selected'));
+                                                });
+                                            });
+                                            //$('.chzn-container').remove();
+                                            $("#txtMember").trigger("liszt:updated");
+                                        }
+                                    });
+                                
+                                    $("#dialog_form").dialog("open");
+                                });
+                            
                                 $.ajax({
                                     url:"ServletGetUser",
                                     data: {"projId":$("#hiddenProjId").attr('value')},
                                     type: "POST",
                                     success:function(result){
-                                    
-                                    }
-                                });
-                                $("#dialog_form").dialog("open");
-                            });
-                            
-                            $.ajax({
-                                url:"ServletGetUser",
-                                data: {"projId":$("#hiddenProjId").attr('value')},
-                                type: "POST",
-                                success:function(result){
-                                    jQuery.each(result, function(index, value) {
-                                        jQuery.each(value, function(index, val){
-                                            $(memberList).append('<option value='+val.userId+'>'+val.nick+'</option>');
+                                        jQuery.each(result, function(index, value) {
+                                            jQuery.each(value, function(index, val){
+                                                $(memberList).append('<option value='+val.userId+' id="select'+val.userId+'">'+val.nick+'</option>');
+                                            });
                                         });
-                                    });
-                                    $('#txtMember').chosen().change(function(e){
-                                        selectedMember='';
-                                        var selected=$("#txtMember").children("option").filter(":selected");
-                                        $.each(selected, function(){
-                                            selectedMember+=$(this).val()+','+$(this).text()+'---'; 
-                                        });
+                                        $('#txtMember').chosen().change(function(e){
+                                            selectedMember='';
+                                            var selected=$("#txtMember").children("option").filter(":selected");
+                                            $.each(selected, function(){
+                                                selectedMember+=$(this).val()+','+$(this).text()+'---'; 
+                                            });
                                   
-                                    });
-                                }
-                            }); 
-                            
-                            $("#dialog_form").dialog(
-                            {
-                                autoOpen : false,
-                                height : 600,
-                                width : 500,
-                                modal : true,
-                                buttons : {
-                                    "Add Task" : function() {
-                                        var requestType=$("#requestType").attr('value');
-                                        
-                                        $.ajaxSetup({
-                                            url:"ServletAddSubtask",
-                                            data: {"type":2, 
-                                                "taskName": $("#txtTaskName").attr('value'),
-                                                "deadLine": $("#txtDeadLine").attr('value'),
-                                                "phaseId":  $("#hiddenPhase").attr('value'),
-                                                "projId": $("#hiddenProjId").attr('value'),
-                                                "members": selectedMember
-                                            },
-                                            type: "POST",
-                                            success:function(result){
-                                                //alert(result.status);
-                                                var taskId=result.taskId;
-                                                if (result.status.toString()=='Fail'){
-                                                    $('#display').html('Fail');
-                                                    return;
-                                                }
-                                                $("#dialog_form").dialog("close");
-                                                fillTask();
-                                            }
-                                
-                                        }); 
-                                        $.ajax();
-                                    },
-                                    Cancel : function() {
-                                        $(this).dialog("close");
-                                    }
-                                }
-                            });
-                            $(".cardNew a").click(function() {
-                                var  type=$(this).attr('data-taskType');
-                                $("#hiddenPhase").attr('value',type);
-                                $("#requestType").attr('value',1);
-                                $("#dialog_form").dialog("open");
-                        
-                            });
-                            $("#btnAddSubTask").click(function(){
-                                var taskName=$(txtSubTask).attr('value');
-                                $(subtaskAdd).append("<input type='checkbox' /><span>"+ taskName + "</span><br>");
-                                $(txtSubTask).attr('value','');
-                                $(subTaskClose).css('display','none');
-                                $(lblAddSubTask).css('display','inline');
-                                $(txtSubTask).css('display','none');
-                                $(btnAddSubTask).css('display','none');
-                                $.ajaxSetup({
-                                    url:"ServletAddSubtask",
-                                    data: {
-                                        "type":1, 
-                                        "subTask":taskName,
-                                        "projId":$("#hiddenProjId").attr('value')
-                                    },
-                                    type: "POST",
-                                    success:function(result){
-                                        $("#diplay").html(result.status);
+                                        });
                                     }
                                 }); 
-                                $.ajax();
+                            
+                                $("#dialog_form").dialog(
+                                {
+                                    autoOpen : false,
+                                    height : 600,
+                                    width : 500,
+                                    modal : true,
+                                    buttons : {
+                                        "Add Task" : function() {
+                                            var requestType=$("#requestType").attr('value');
+                                        
+                                            $.ajaxSetup({
+                                                url:"ServletAddSubtask",
+                                                data: {"type":2, 
+                                                    "taskName": $("#txtTaskName").attr('value'),
+                                                    "deadLine": $("#txtDeadLine").attr('value'),
+                                                    "phaseId":  $("#hiddenPhase").attr('value'),
+                                                    "projId": $("#hiddenProjId").attr('value'),
+                                                    "members": selectedMember
+                                                },
+                                                type: "POST",
+                                                success:function(result){
+                                                    //alert(result.status);
+                                                    var taskId=result.taskId;
+                                                    if (result.status.toString()=='Fail'){
+                                                        $('#display').html('Fail');
+                                                        return;
+                                                    }
+                                                    $("#dialog_form").dialog("close");
+                                                    fillTask();
+                                                }
+                                
+                                            }); 
+                                            $.ajax();
+                                        },
+                                        Cancel : function() {
+                                            $(this).dialog("close");
+                                        }
+                                    }
+                                });
+                                $(".cardNew a").click(function() {
+                                    var  type=$(this).attr('data-taskType');
+                                    $("#hiddenPhase").attr('value',type);
+                                    $("#requestType").attr('value',1);
+                                    $("#dialog_form").dialog("open");
+                        
+                                });
+                                $("#btnAddSubTask").click(function(){
+                                    var taskName=$(txtSubTask).attr('value');
+                                    $(subtaskAdd).append("<input type='checkbox' /><span>"+ taskName + "</span><br>");
+                                    $(txtSubTask).attr('value','');
+                                    $(subTaskClose).css('display','none');
+                                    $(lblAddSubTask).css('display','inline');
+                                    $(txtSubTask).css('display','none');
+                                    $(btnAddSubTask).css('display','none');
+                                    $.ajaxSetup({
+                                        url:"ServletAddSubtask",
+                                        data: {
+                                            "type":1, 
+                                            "subTask":taskName,
+                                            "projId":$("#hiddenProjId").attr('value')
+                                        },
+                                        type: "POST",
+                                        success:function(result){
+                                            $("#diplay").html(result.status);
+                                        }
+                                    }); 
+                                    $.ajax();
 
-                            });
-                            $("#lblAddSubTask").click(function(){
-                                $(lblAddSubTask).css('display','none');
-                                $(txtSubTask).css('display','inline').focus();
-                                $(btnAddSubTask).css('display','inline');
-                                $(subTaskClose).css('display','inline');
-                            });
-                            $("#subTaskClose").click(function(){
-                                $(subTaskClose).css('display','none');
-                                $(txtSubTask).attr('value','');
-                                $(lblAddSubTask).css('display','inline');
-                                $(txtSubTask).css('display','none');
-                                $(btnAddSubTask).css('display','none');
-                                $("#requestType").attr('value','');
-                            });
-                            $("#txtDeadLine").datepicker();
+                                });
+                                $("#lblAddSubTask").click(function(){
+                                    $(lblAddSubTask).css('display','none');
+                                    $(txtSubTask).css('display','inline').focus();
+                                    $(btnAddSubTask).css('display','inline');
+                                    $(subTaskClose).css('display','inline');
+                                });
+                                $("#subTaskClose").click(function(){
+                                    $(subTaskClose).css('display','none');
+                                    $(txtSubTask).attr('value','');
+                                    $(lblAddSubTask).css('display','inline');
+                                    $(txtSubTask).css('display','none');
+                                    $(btnAddSubTask).css('display','none');
+                                    $("#requestType").attr('value','');
+                                });
+                                $("#txtDeadLine").datepicker();
                 
-                        })();
-                    </script>
-                </body>
-            </html>
+                            })();
+                        </script>
+                    </body>
+                </html>

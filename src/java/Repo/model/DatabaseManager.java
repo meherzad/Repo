@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import model.sendMail;
 
 /**
  *
@@ -74,21 +75,37 @@ public class DatabaseManager {
      */
     public boolean insertUser(Usermaster user) {
         boolean result;
+        String verfId, email;
         //DatabaseManager obj = new DatabaseManager();
         try {
             connect();
+            email = user.getUsername();
             System.out.println("------------------------>connected");
-            PreparedStatement pst = con.prepareStatement("insert into usermaster (username, password, alternateEmail, jDate, "
-                    + "verified, verificationId )values(?, ?, ?, ?, ?, ?);");
+            PreparedStatement pst = con.prepareStatement("insert into usermaster (username, password, "
+                    + "jDate, verified, verificationId, nick )values(?, ?, ?, ?, ?, ?);");
             pst.setString(1, user.getUsername());
+
             pst.setString(2, Hashing.getHashValue(user.getPassword()));
-            pst.setString(3, user.getAlternateEmail());
-            pst.setDate(4, new java.sql.Date(user.getJDate().getTime()));
-            pst.setString(5, "no");
-            pst.setString(6, Hashing.getHashValue(user.getUsername()));
+            //pst.setString(3, user.getAlternateEmail());
+            pst.setDate(3, new java.sql.Date(user.getJDate().getTime()));
+            pst.setString(4, "no");
+            verfId = Hashing.getHashValue(user.getUsername());
+            pst.setString(5, verfId);
+            pst.setString(6, user.getNick());
             //System.out.println("======" + user);
             pst.executeUpdate();
+            String body = " Thank you for registering with XYZ. To complete the XYZ registration "
+                    + "process and activate your account we ask that you complete your registration "
+                    + "by confirming your account information at "
+                    + "<br>http://localhost:8084/Repo/UserVerification?verfId=" + verfId
+                    + "                </p>\n"
+                    + "                <br>\n"
+                    + "                <p>\n"
+                    + "                    If you experience issues, you may generate a new confirmation email or contact us for assistance.";
             //System.out.println("---" + user);
+            if (sendMail.SendEmail(email, "Verification Email", body)) {
+                sendMail.SendEmail(email, "Verification Email", body);
+            };
             result = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -116,18 +133,25 @@ public class DatabaseManager {
 
         try {
             connect();
-            Statement st = con.createStatement();
-            rs = st.executeQuery("Select * from usermaster where verificationId='" + verfID + "';");
+            PreparedStatement ps = con.prepareStatement("Select * from usermaster where "
+                    + "verificationId like ?;");
+            ps.setString(1, verfID);
+            rs = ps.executeQuery();
+            System.out.println("------>*** " + verfID);
             if (rs.next()) {
-                PreparedStatement pst = con.prepareStatement("update usermaster set verified='yes' where verificationId = ?;");
+                System.out.println("found ");
+                PreparedStatement pst = con.prepareStatement("update usermaster set "
+                        + "verified='yes' where verificationId = ?;");
                 pst.setString(1, verfID);
                 pst.executeUpdate();
                 result = true;
             } else {
+                System.out.println("not found ");
                 result = false;
             }
         } catch (Exception e) {
             result = false;
+            e.printStackTrace();
         } finally {
             try {
                 rs.close();
@@ -145,7 +169,7 @@ public class DatabaseManager {
      * @param type (1- Most downloaded, 2- Newest, 3- Most followed)
      * @return ArrayList<Projectmaster>
      */
-   public ArrayList<Projectmaster> getMostDownload(int type) {
+    public ArrayList<Projectmaster> getMostDownload(int type) {
         ArrayList<Projectmaster> list = new ArrayList<Projectmaster>();
         Projectmaster obj;
         String query = null;
@@ -298,7 +322,7 @@ public class DatabaseManager {
         Usermaster user = null;
         try {
             connect();
-            PreparedStatement pst = con.prepareCall("select * from projectmember where projId=?;");
+            PreparedStatement pst = con.prepareCall("select * from projectdetail where projectId=?;");
             pst.setInt(1, projId);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
@@ -322,14 +346,14 @@ public class DatabaseManager {
 
     public ArrayList<Projecttaskdetail> getSubTask(int taskId) {
         ArrayList<Projecttaskdetail> subTask = new ArrayList<Projecttaskdetail>();
-        Projecttaskdetail st=null;
+        Projecttaskdetail st = null;
         try {
             connect();
-            PreparedStatement pst=con.prepareCall("select * from projecttaskdetail where taskId=?");
+            PreparedStatement pst = con.prepareCall("select * from projecttaskdetail where taskId=?");
             pst.setInt(1, taskId);
-            ResultSet rs=pst.executeQuery();
-            while(rs.next()){
-                st=new Projecttaskdetail();
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                st = new Projecttaskdetail();
                 st.setSubTask(rs.getString("subTask"));
                 st.setStatus(rs.getString("status"));
                 st.setTimeStamp(rs.getDate("timeStamp"));
@@ -346,5 +370,123 @@ public class DatabaseManager {
             }
         }
         return subTask;
+    }
+
+    public ArrayList<Usermaster> getUserByTask(int taskId) {
+
+        ArrayList<Usermaster> members = new ArrayList<Usermaster>();
+        Usermaster user = null;
+        try {
+            connect();
+            PreparedStatement pst = con.prepareCall("select a.taskId, a.userId, b.nick from "
+                    + "projecttaskmember a, usermaster b  where a.userId=b.userId and taskId=?;");
+            pst.setInt(1, taskId);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                user = new Usermaster();
+                user.setUserId(rs.getInt("userId"));
+                user.setNick(rs.getString("nick"));
+                members.add(user);
+            }
+            rs.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return members;
+    }
+
+    public boolean updateStatusSubTask(Projecttaskdetail subTask) {
+        boolean result;
+        int uId = subTask.getUId();
+        String cType = subTask.getStatus();
+        System.out.println(cType);
+        if (cType.equals("checked")) {
+            cType = "Complete";
+        } else {
+            cType = "Incomplete";
+        }
+        System.out.println(cType);
+        try {
+            connect();
+            PreparedStatement pst = con.prepareStatement("Update projecttaskdetail set status=? where "
+                    + "uId=?;");
+            pst.setString(1, cType);
+            pst.setInt(2, uId);
+            pst.executeUpdate();
+            result = true;
+        } catch (Exception e) {
+            result = false;
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public boolean deleteTask(Projecttask task) {
+        boolean result;
+        PreparedStatement pst = null;
+        try {
+            connect();
+            pst = con.prepareStatement("delete from projecttask where taskId=?;");
+            pst.setInt(1, task.getTaskId());
+            pst.executeUpdate();
+            pst = con.prepareStatement("delete from projecttaskdetail where taskId=?;");
+            pst.setInt(1, task.getTaskId());
+            pst.executeUpdate();
+            pst = con.prepareStatement("delete from projecttaskmember where taskId=?;");
+            pst.setInt(1, task.getTaskId());
+            pst.executeUpdate();
+            result = true;
+        } catch (Exception e) {
+            result = false;
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public Usermaster LoginVerify(Usermaster user) throws SQLException {
+        boolean result = false;
+        Usermaster verifiedUser = null;
+        try {
+            connect();
+        } catch (ClassNotFoundException ex) {
+            // Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        }
+        Statement st = con.createStatement();
+        PreparedStatement pst = con.prepareStatement("select * from usermaster where username=? and "
+                + "password=? and verified = 'yes';");
+        pst.setString(1, user.getUsername());
+        pst.setString(2, user.getPassword());
+        ResultSet rs = pst.executeQuery();
+        if (rs.next()) {
+            verifiedUser = new Usermaster();
+            verifiedUser.setUserId(rs.getInt("userId"));
+            verifiedUser.setUsername(rs.getString("username"));
+            verifiedUser.setPassword(rs.getString("password"));
+            verifiedUser.setjDate(rs.getDate("jDate"));
+            //verifiedUser.setAlternateEmail(rs.getString("alternateEmail"));
+
+
+        }
+        System.out.println(verifiedUser);
+        return verifiedUser;
     }
 }

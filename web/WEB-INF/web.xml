@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <filter>
+        <filter-name>ServletFilter</filter-name>
+        <filter-class>Repo.controller.ServletFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ServletFilter</filter-name>
+        <url-pattern>/frmProjectDashboard.html</url-pattern>
+    </filter-mapping>
     <servlet>
         <servlet-name>ServleTCheckUserName</servlet-name>
         <servlet-class>Repo.controller.ServleTCheckUserName</servlet-class>
@@ -28,6 +36,18 @@
         <servlet-name>ServletShowTask</servlet-name>
         <servlet-class>Repo.controller.ServletShowTask</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletSubTask</servlet-name>
+        <servlet-class>Repo.controller.ServletSubTask</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletTask</servlet-name>
+        <servlet-class>Repo.controller.ServletTask</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletLoginVerification</servlet-name>
+        <servlet-class>Repo.controller.ServletLoginVerification</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServleTCheckUserName</servlet-name>
         <url-pattern>/ServleTCheckUserName</url-pattern>
@@ -55,6 +75,18 @@
     <servlet-mapping>
         <servlet-name>ServletShowTask</servlet-name>
         <url-pattern>/ServletShowTask</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletSubTask</servlet-name>
+        <url-pattern>/ServletSubTask</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletTask</servlet-name>
+        <url-pattern>/ServletTask</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletLoginVerification</servlet-name>
+        <url-pattern>/ServletLoginVerification</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

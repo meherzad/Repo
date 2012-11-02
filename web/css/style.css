@@ -123,8 +123,8 @@ body {
 ul#nav {
     float: right;
     position: relative;
-    top: 15px;
-    padding-right: 250px;
+
+    /* padding-right: 250px;*/
 }
 
 ul#nav li {
@@ -367,5 +367,35 @@ ul#project_menu li a{
     background-color: #F0F1F4;
     border-color: #F0F1F4;
     border-radius: 25px;
+
+}
+
+
+.addTask{
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-left: 40%;
+}
+
+.addTask a{
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.addTask a:hover{
+    background-color: gray;
+    text-decoration: none !important; 
+}
+
+.loginLabel{
+    overflow:visible;
+    margin-bottom:20px;
+    color:#6A747E;
+    *position:relative;
+    *z-index:2;
+    float: left;
+    width: 160px;
+    padding-top: 5px;
+    text-align: right;
 
 }

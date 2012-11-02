@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.sendMail;
 
 /**
  *
@@ -80,16 +81,21 @@ public class ServletAddUser extends HttpServlet {
             throws ServletException, IOException {
         DatabaseManager obj = new DatabaseManager();
         Usermaster user = new Usermaster();
-        user.setUsername(request.getParameter("txtName"));
+
+        String email = request.getParameter("txtName");
+        user.setUsername(email);
         user.setPassword(request.getParameter("txtPass"));
-        user.setAlternateEmail(request.getParameter("txtAltEmail"));
+        user.setNick(request.getParameter("txtNick"));
+        //     user.setAlternateEmail(request.getParameter("txtAltEmail"));
         user.setJDate(new Date());
+        request.setAttribute("email", email);
         if (obj.insertUser(user)) {
             request.setAttribute("response", "Success");
+
         } else {
             request.setAttribute("response", "Fail");
         }
-        RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("UserVerification.jsp");
         rd.forward(request, response);
     }
 

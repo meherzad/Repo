@@ -5,22 +5,20 @@
 package Repo.controller;
 
 import Repo.model.DatabaseManager;
-import Repo.model.Usermaster;
+import Repo.model.Projecttaskdetail;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
  *
  * @author meherzad
  */
-public class ServletGetUser extends HttpServlet {
+public class ServletSubTask extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -40,10 +38,10 @@ public class ServletGetUser extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ServletGetUser</title>");
+            out.println("<title>Servlet ServletSubTask</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ServletGetUser at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ServletSubTask at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -79,43 +77,25 @@ public class ServletGetUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int projId = 1;//Integer.parseInt(request.getParameter("projId"));
-        int type = Integer.parseInt(request.getParameter("type"));
-        
-
+        int uId = Integer.parseInt(request.getParameter("uId"));
+        String cType = request.getParameter("cType");
         PrintWriter out = response.getWriter();
+        Projecttaskdetail subTask = new Projecttaskdetail();
+        subTask.setStatus(cType);
+        subTask.setUId(uId);
+        String status;
         DatabaseManager obj = new DatabaseManager();
-        ArrayList<Usermaster> members = null;
-        JSONArray jArray = new JSONArray();
         JSONObject json = new JSONObject();
-        JSONObject user = null;
-        try {
-            if (type == 1) {
-                members = obj.getProjectMembers(projId);
-            } else {
-                int taskId = Integer.parseInt(request.getParameter("taskId"));
-                members = obj.getUserByTask(taskId);
-            }
-            json.put("status", "Success");
-
-        } catch (Exception e) {
-            System.out.println("servletgetuser");
-            e.printStackTrace();
-            json.put("status", "Fail");
+        if (obj.updateStatusSubTask(subTask)) {
+            status = "Success";
+        } else {
+            status = "Fail";
         }
-
-        for (Usermaster us : members) {
-            user = new JSONObject();
-            user.put("userId", us.getUserId());
-            user.put("nick", us.getNick());
-            jArray.add(user);
-        }
-        json.put("members", jArray);
-        System.out.println("ServletGetUser------>" + json);
+        json.put("status", status);
+        System.out.println("ServletSubTask------>" + json);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         out.println(json);
-
     }
 
     /**
