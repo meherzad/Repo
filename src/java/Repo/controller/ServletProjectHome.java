@@ -5,26 +5,21 @@
 package Repo.controller;
 
 import Repo.model.DatabaseManager;
-import Repo.model.Hashing;
-import Repo.model.Usermaster;
+import Repo.model.Projectmaster;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.json.simple.JSONObject;
 
 /**
  *
- * @author XANDER
+ * @author meherzad
  */
-public class ServletLoginVerification extends HttpServlet {
+public class ServletProjectHome extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -44,10 +39,10 @@ public class ServletLoginVerification extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginVerification</title>");
+            out.println("<title>Servlet ServletProjectHome</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginVerification at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ServletProjectHome at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -68,7 +63,26 @@ public class ServletLoginVerification extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession(true);
+        int projId = Integer.parseInt(request.getParameter("projId"));
+        Boolean userCheck;
+        int userId = Integer.parseInt(session.getAttribute("userId").toString());
+        session.setAttribute("projId", projId);
+        DatabaseManager obj = new DatabaseManager();
+        Projectmaster project = obj.getProject(projId);
+        String status;
+        if (project == null) {
+            status = "fail";
+        } else {
+            status = "success";
+            userCheck = obj.checkUserInProject(projId, userId);
+            //session.setAttribute("", status);
+            request.setAttribute("userCheck", userCheck);
+        }
+        request.setAttribute("status", status);
+        request.setAttribute("project", project);
+        RequestDispatcher rd = request.getRequestDispatcher("ProjectHome.jsp");
+        rd.forward(request, response);
     }
 
     /**
@@ -83,41 +97,7 @@ public class ServletLoginVerification extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Usermaster user = new Usermaster();
-        user.setUsername(request.getParameter("username"));
-        String pd = null;
-        HttpSession session = request.getSession(true);
-        String result, status;
-        try {
-            pd = Hashing.getHashValue(request.getParameter("password"));
-        } catch (NoSuchAlgorithmException ex) {
-            //Logger.getLogger(LoginVerification.class.getName()).log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
-        }
-        user.setPassword(pd);
-        DatabaseManager dm = new DatabaseManager();
-        Usermaster verifUser = null;
-        PrintWriter out = response.getWriter();
-        try {
-            verifUser = dm.LoginVerify(user);
-            status = "success";
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            status = "fail";
-        }
-        if (verifUser != null) {
-            result = "Valid User";
-            session.setAttribute("userId", verifUser.getUserId());
-        } else {
-            result = "Invalid User";
-        }
-        JSONObject json = new JSONObject();
-        json.put("result", result);
-        json.put("status", status);
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        out.print(json);
-
+        processRequest(request, response);
     }
 
     /**

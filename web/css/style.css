@@ -44,7 +44,7 @@
     padding-top: 13px;
     padding-bottom: 2px;
     position: relative;
-    width: 66%;
+    width: 60%;
     max-width: 645px;
     min-width: 230px;
     min-height: 150px;
@@ -167,7 +167,7 @@ a#help,a#gethelp,a#improve,a#whatsnew,a#register,a#signin {
     float: left;
     font: 18px 'Segoe UI', Tahoma, Arial, Helvetica, sans-serif;
     font-weight: lighter;
-    width: 28%;
+    width: 25%;
     height: 25%;
     margin: 0px 12px 0px 0;
     padding: 15px 0 0 20px;
@@ -200,6 +200,7 @@ a#register {
     color: #6A747E;
     left: 0;
     margin: 0 auto;
+
     position: relative;
     width: 985px;
 }
@@ -241,12 +242,13 @@ a#register {
 
 #NewReleasesContainer {
     position: relative;
+    
 }
 
 #searchSite {
     float: right;
     position: relative;
-}
+    }
 
 .label_heading {
     color: #253340;
@@ -316,7 +318,7 @@ ul#project_menu li{
     margin-bottom: 10px;
     white-space: nowrap;
     display: inline-block;
-    margin-right: 10px;
+    /*margin-right: 10px;  for max size of nav  */
 }
 
 ul#project_menu li a{
@@ -336,6 +338,9 @@ ul#project_menu li a{
     text-decoration: none;
 }
 
+ul#project_menu li a:hover{
+    border-bottom: 3px #7B4F9D solid;
+}
 
 .project_management_base{
     background-color: white ;
@@ -398,4 +403,61 @@ ul#project_menu li a{
     padding-top: 5px;
     text-align: right;
 
+}
+
+.row .float_right a{
+    background-color: #F0F1F4;
+    color: #253340;
+    display: block;
+    float: left;
+    font: 18px 'Segoe UI',Tahoma,Arial,Helvetica,sans-serif;
+    font-weight: lighter;
+    height: 35px;
+    text-align: center;
+    margin: 0 0 10px 10px;
+    padding: 5px 0 0 0;
+    position: relative;
+    /*  border-bottom: 3px #5EA8DE solid; remove on main download button */
+    width: 140px;
+}
+
+.row .float_right a:visited{
+    text-decoration: none;
+}
+
+h2#welcome_msg {
+    margin-top: 5px;
+    color: #6A747E;
+    float: left;
+    font: 28px'Segoe UI Light',Segoe UI,Tahoma Light,Arial Light,Helvetica Light,sans-serif;
+    font-weight: lighter;
+    padding-bottom: 20px;
+    position: relative;
+    top: 0;
+    width: 250px;
+}
+
+.row .float_right a:hover {
+    text-decoration: none;
+    border-bottom: 3px #7B4F9D solid;
+}
+
+a#download_button {
+    color: white;
+    text-align: center;
+    font: 2.308em/1.7em 'Segoe UI Light',Tahoma Light,Arial Light,Helvetica Light,sans-serif;
+    font-weight: lighter;
+    background-color: #7B4F9D;
+    display: block;
+    height: 100%;
+    top: 0px;
+    position: relative;
+    padding-top: 5px;
+    margin-top: 35px;   
+    padding-bottom: 5px;
+    width: 300px;
+}
+
+.footer_link{
+    margin-left: 20%;
 }

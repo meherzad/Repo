@@ -34,6 +34,14 @@ public class Projectfollower {
         this.projectId = projectId;
     }
 
+    public void setjDate(Date jDate) {
+        this.jDate = jDate;
+    }
+
+    public Date getjDate() {
+        return jDate;
+    }
+
     public int getUserId() {
         return userId;
     }

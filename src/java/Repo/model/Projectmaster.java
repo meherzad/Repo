@@ -19,7 +19,16 @@ public class Projectmaster {
     private Integer downloads;
     private Integer likes;
     private String projType;
+    private String iUrl;
     private ArrayList<Usermaster> members;
+
+    public String getiUrl() {
+        return iUrl;
+    }
+
+    public void setiUrl(String iUrl) {
+        this.iUrl = iUrl;
+    }
     
     public void addMember(Usermaster user) {
         members.add(user);

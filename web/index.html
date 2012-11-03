@@ -75,7 +75,7 @@
             </div>
         </header>
         <div class="container conatiner_support">
-            <div class="row" style="position: relative;">
+            <div class="row" style="position: relative;margin-right: 5%;">
                 <div id="intro_container">
                     <h2 id="intro">Code talks</h2>
                     <br>
@@ -141,7 +141,7 @@
                             </div>
 
                             <div id="topFollowed" class="site_categories_right">
-                                <h2>Most followed Project</h2>
+                                <h2>Most followed</h2>
                                 <div class="pager_container_content">
                                     <script id="templateMostLike" type="text/x-handlebars-template">
                                         {{#each this}}
@@ -161,7 +161,7 @@
                     <div id="footer">
                         <div class="row">
                             <hr style="color:">
-                            <ul class="ul_list">
+                            <ul class="ul_list footer_link">
                                 <li class="list"></li>
                                 <li class="list"><a href="#">Get Help</a></li>
                                 <li class="list"><a href="#">Privacy Statement</a></li>
@@ -198,11 +198,18 @@
                                     data:'json',
                                     success:function(dt){
                                         console.log(dt);
-                                        //window.location.replace("UserHomePage.jsp");
-                                        $("#loginStatus").html(dt.result);
+                                        if (dt.status=='success'){
+                                            if (dt.result=='Valid User')
+                                                window.location.replace("ServletUserDashBoard");
+                                            else
+                                                $("#loginStatus").html(dt.result);
+                                        }
+                                        else{
+                                            $("#loginStatus").html("Server Error");
+                                        }
                                     },
                                     error:function(){
-                        
+                                        $("#loginStatus").html("Server Error");
                                     }
                                 });
                             });

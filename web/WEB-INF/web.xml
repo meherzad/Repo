@@ -48,6 +48,18 @@
         <servlet-name>ServletLoginVerification</servlet-name>
         <servlet-class>Repo.controller.ServletLoginVerification</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletShowAllProj</servlet-name>
+        <servlet-class>Repo.controller.ServletShowAllProj</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletUserDashBoard</servlet-name>
+        <servlet-class>Repo.controller.ServletUserDashBoard</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletProjectHome</servlet-name>
+        <servlet-class>Repo.controller.ServletProjectHome</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServleTCheckUserName</servlet-name>
         <url-pattern>/ServleTCheckUserName</url-pattern>
@@ -87,6 +99,18 @@
     <servlet-mapping>
         <servlet-name>ServletLoginVerification</servlet-name>
         <url-pattern>/ServletLoginVerification</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletShowAllProj</servlet-name>
+        <url-pattern>/ServletShowAllProj</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletUserDashBoard</servlet-name>
+        <url-pattern>/ServletUserDashBoard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletProjectHome</servlet-name>
+        <url-pattern>/ServletProjectHome</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
