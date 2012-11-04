@@ -1,0 +1,122 @@
+#wrap {
+margin: 0 auto;
+width: 985px;
+height: 100%;
+}
+
+fieldset.top_border, .ViewThread, #left_column_downloads, div.top_border {
+border-top: 1px #CCC solid;
+margin-top: 10px;
+}
+
+.ProjectMembersLeft, .ProjectMembersRight {
+width: 315px;
+float: left;
+margin-top: 20px;
+margin-right: 50px;
+}
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, caption {
+margin: 0;
+padding: 0;
+border: 0;
+outline: 0;
+font-size: 100%;
+vertical-align: baseline;
+background: transparent;
+}
+
+#ProjectMembers .ProjectMembersLeft h2,#ProjectMembers h2, #user_right_sidebar_noborder h2, .ProjectMembersRight h2, #ManageTeamContainer > h2, #ManageNewContributorsContainer > h2 {
+background-color: #F0F1F4;
+color: #253340;
+font: 1.308em/1.923em 'Segoe UI Semibold','Segoe-Semibold',Tahoma,Arial,Helvetica,sans-serif;
+font-variant: small-caps;
+letter-spacing: 1px;
+padding-top: 1px;
+padding-bottom: 3px;
+padding-left: 14px;
+width: 286px;
+height: 100%;
+font-size:100%;
+margin-bottom: 10px;
+display: block;
+}
+
+.UserDetails{
+color: #253340;
+font-variant: small-caps;
+margin-bottom: 1px;
+line-height:1;
+letter-spacing: 1px;
+width: 286px;
+height: 100%;
+font-size:100%;
+
+}
+
+#user_left_column {
+float: left;
+width: 340px;
+margin-top: 15px;
+}
+
+#user_right_column {
+float: left;
+width: 340px;
+margin-top: 15px;
+}
+
+#user_left_column img {
+margin-bottom: 20px;
+text-align: center;
+padding-top: 30px;
+clear: left;
+width: 150px;
+}
+
+#user_column {
+float: left;
+margin-left: 30px;
+margin-top: 15px;
+width: 690px;
+}
+
+
+input.ok {
+font: 13px 'Segoe UI Semibold','Segoe-Semibold','Segoe UI',Tahoma,Arial,Helvetica,sans-serif;
+font-weight: 600;
+text-transform: uppercase;
+color: #fff;
+display: block;
+min-width: 135px;
+background-color: #7B4F9D;
+float: none	;
+text-align: center;
+padding: 5px 10px 5px 10px;
+position: relative;
+border: none;
+cursor: pointer;
+margin-top: 0;
+}
+
+p {
+color: #253340;
+font: 1em/1.462em 'Segoe UI',Tahoma,Arial,Helvetica,sans-serif;
+}
+
+fieldset.narrow.row {
+float: none;
+width: 650px;
+}
+
+#user_right_column .file_input {
+float: left;
+width: 425px;
+}
+
+fieldset div.file_input input[type="button"] {
+float: left;
+z-index: 1;
+min-width: 100px;
+height: 28px;
+}

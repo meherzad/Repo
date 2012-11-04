@@ -60,6 +60,39 @@
         <servlet-name>ServletProjectHome</servlet-name>
         <servlet-class>Repo.controller.ServletProjectHome</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletGetDownloadData</servlet-name>
+        <servlet-class>Repo.controller.ServletGetDownloadData</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletGetLicense</servlet-name>
+        <servlet-class>Repo.controller.ServletGetLicense</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletViewDocumentation</servlet-name>
+        <servlet-class>Repo.controller.ServletViewDocumentation</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletPeople</servlet-name>
+        <servlet-class>Repo.controller.ServletPeople</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletUserProfile</servlet-name>
+        <servlet-class>Repo.controller.ServletUserProfile</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletUploadImage</servlet-name>
+        <servlet-class>Repo.controller.ServletUploadImage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletEditProfile</servlet-name>
+        <servlet-class>Repo.controller.ServletEditProfile</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletEditDocument</servlet-name>
+        <servlet-class>Repo.controller.ServletEditDocument</servlet-class>
+    </servlet>
+    
     <servlet-mapping>
         <servlet-name>ServleTCheckUserName</servlet-name>
         <url-pattern>/ServleTCheckUserName</url-pattern>
@@ -112,6 +145,39 @@
         <servlet-name>ServletProjectHome</servlet-name>
         <url-pattern>/ServletProjectHome</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletGetDownloadData</servlet-name>
+        <url-pattern>/ServletGetDownloadData</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletGetLicense</servlet-name>
+        <url-pattern>/ServletGetLicense</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletViewDocumentation</servlet-name>
+        <url-pattern>/ServletViewDocumentation</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletPeople</servlet-name>
+        <url-pattern>/ServletPeople</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletUserProfile</servlet-name>
+        <url-pattern>/ServletUserProfile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletUploadImage</servlet-name>
+        <url-pattern>/ServletUploadImage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletEditProfile</servlet-name>
+        <url-pattern>/ServletEditProfile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletEditDocument</servlet-name>
+        <url-pattern>/ServletEditDocument</url-pattern>
+    </servlet-mapping>
+    
     <session-config>
         <session-timeout>
             30

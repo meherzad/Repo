@@ -105,14 +105,14 @@ public class ServletFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession(true);
-        String userId = null;
+        Integer userId = null;
         if (debug) {
             log("ServletFilter:doFilter()");
         }
         doBeforeProcessing(request, response);
         Throwable problem = null;
         try {
-            userId = (String) session.getAttribute("userId");
+            userId = (Integer) session.getAttribute("userId");
             if (userId == null) {
                 RequestDispatcher rd = req.getRequestDispatcher("index.html");
                 rd.forward(req, res);

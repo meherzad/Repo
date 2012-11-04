@@ -7,9 +7,11 @@
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
         <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/paging.css">
         <script src="js/jquery-1.7.2.min.js" ></script>
         <script type="text/javascript" src="http://cloud.github.com/downloads/wycats/handlebars.js/handlebars-1.0.0.beta.6.js"></script>
         <script src="js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="js/quickpager.jquery.js" type="text/javascript"></script>
     </head>
     <body>
         <header class="navbar">
@@ -96,14 +98,14 @@
                         </li>
                         <c:if test="${requestScope.userCheck eq true }" >
                             <li>
-                                <a href="" >Project Management</a>
+                                <a href="frmProjectDashboard.html?projId=${requestScope.project.projId}" >Project Management</a>
                             </li>
                         </c:if>
                         <li>
-                            <a href="" >Downloads</a>
+                            <a href="projectDownload.html?projId=${requestScope.project.projId}" >Downloads</a>
                         </li>
                         <li>
-                            <a href="" >Documentation</a>
+                            <a href="ServletViewDocumentation?projId=${requestScope.project.projId}" >Documentation</a>
                         </li>
                         <li>
                             <a href="" >Bug Tracking</a>
@@ -112,10 +114,10 @@
                             <a href="" >Discussion</a>
                         </li>
                         <li>
-                            <a href="" >People</a>
+                            <a href="ProjectPeople.jsp?projId=${requestScope.project.projId}" >People</a>
                         </li>
                         <li>
-                            <a href="" >License</a>
+                            <a href="ProjectLicense.html?projId=${requestScope.project.projId}" >License</a>
                         </li>
                     </ul>
                 </div>
@@ -124,7 +126,7 @@
             <div class="container conatiner_support">
                 <div class="row">
                     <div class="float_left">
-                        ${requestScope.projdesc}
+                        ${requestScope.project.projDesc}
                     </div>
                     <div class="float_right">
                         <a id="download_button">Download</a>

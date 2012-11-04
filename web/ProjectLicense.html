@@ -1,0 +1,116 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="js/jquery-1.7.2.min.js" ></script>
+        <script type="text/javascript" src="http://cloud.github.com/downloads/wycats/handlebars.js/handlebars-1.0.0.beta.6.js"></script>
+        <script src="js/bootstrap.min.js" type="text/javascript"></script>
+    </head>
+    <body>
+        Select license:
+        <select id="selectLicense" >
+            <option> </option>
+            <option value="1">Apache License 2.0 (Apache)</option>
+            <option value="3" >New BSD License (BSD)</option>
+            <option value="4" >Eclipse Public License (EPL)</option>
+            <option value="5" >Common Development and Distribution License (CDDL)</option>              
+            <option value="6" >GNU General Public License version 2 (GPLv2)</option>
+            <option value="7" >GNU Lesser General Public License (LGPL)</option>
+            <option value="9" >The MIT License (MIT)</option>
+        </select><br>
+        <input type="button" value="Save" name="btnlicSave" id="contentbtnsave" /><br>
+        <label style="color:red" id="labelcheck"></label><br>
+        <h1 id="contentHeader"></h1>
+        <div id="content">
+
+        </div>
+
+
+        <script type="text/javascript">
+            (function(){
+                function getParameterByName(name) {
+                    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+                    var regexS = "[\\?&]" + name + "=([^&#]*)";
+                    var regex = new RegExp(regexS);
+                    var results = regex.exec(window.location.search);
+                    if (results == null)
+                        return "";
+                    else
+                        return decodeURIComponent(results[1].replace(/\+/g, " "));
+                }
+                var projId=getParameterByName("projId");
+                $.ajax({
+                    url:'ServletGetLicense',
+                    type:'post',
+                    data:{
+                        'type':3,
+                        'projId':projId
+                    },
+                    success:function(data){
+                        $("#content").html(data.licenseDesc)  ;
+                        $("#contentHeader").html(data.licenseName);
+                    },
+                    error:function(){
+                        alert('error');
+                    }
+                });
+                $("#selectLicense").change(function(){
+                    var selId=$(this).find("option:selected").attr('value');
+                    console.log(selId);
+                    $.ajax({
+                        url:'ServletGetLicense',
+                        type : 'POST',
+                        data :{
+                            'type':1,
+                            'licenseId' : selId
+                        },
+                        success: function(data){
+                            $("#content").html(data.desc)  ;
+                            $("#contentHeader").html(data.licName);
+                        },
+                        error: function(){
+                            alert('error');
+                        }
+                    });
+                });
+                
+                $("#contentbtnsave").click(function(){
+                    var selId=$("#selectLicense").attr('value');
+                    console.log("here" + selId);
+                    $.ajax({
+                        url:'ServletGetLicense',
+                        type : 'POST',
+                        data :{
+                            'type':2,
+                            'licenseId' : selId,
+                            'projId':projId
+                        },
+                        success: function(data){
+                            if(data.status=='successfull saved')
+                            {
+                                $("#labelcheck").html("successfull");
+                            }
+                            else
+                            {
+                                $("#labelcheck").html('unsucessfull');
+                            }
+                                
+                        },
+                        error: function(){
+                            alert('error');
+                        }
+                    });
+                });
+
+            })();
+        </script>
+    </body>
+</html>

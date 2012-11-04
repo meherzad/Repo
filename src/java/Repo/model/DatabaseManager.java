@@ -1,11 +1,15 @@
 package Repo.model;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import model.sendMail;
@@ -15,11 +19,11 @@ import model.sendMail;
  * @author meherzad
  */
 public class DatabaseManager {
-    
+
     private String DATABASEDRIVER;// = "com.mysql.jdbc.Driver";
     private String DATABASEURL;// = "jdbc:mysql://localhost:3306/repo?user=root&password=12345";
     private Connection con;
-    
+
     public DatabaseManager() {
         ResourceBundle rb = ResourceBundle.getBundle("Repo.Config");
         DATABASEDRIVER = rb.getString("DatabaseVendorDriver");
@@ -45,7 +49,7 @@ public class DatabaseManager {
     public void disConnect() throws SQLException {
         con.close();
     }
-    
+
     public boolean putData(String query) {
         try {
             PreparedStatement pst = con.prepareStatement(query);
@@ -56,11 +60,11 @@ public class DatabaseManager {
         }
         return true;
     }
-    
+
     public Statement getStatement() throws SQLException {
         return con.createStatement();
     }
-    
+
     public ResultSet getData(Statement st, String query) throws SQLException {
         //Statement st = con.createStatement();
         ResultSet rs = st.executeQuery(query);
@@ -84,7 +88,7 @@ public class DatabaseManager {
             PreparedStatement pst = con.prepareStatement("insert into usermaster (username, password, "
                     + "jDate, verified, verificationId, nick )values(?, ?, ?, ?, ?, ?);");
             pst.setString(1, user.getUsername());
-            
+
             pst.setString(2, Hashing.getHashValue(user.getPassword()));
             //pst.setString(3, user.getAlternateEmail());
             pst.setDate(3, new java.sql.Date(user.getJDate().getTime()));
@@ -118,7 +122,7 @@ public class DatabaseManager {
             }
         }
         return result;
-        
+
     }
 
     /**
@@ -130,7 +134,7 @@ public class DatabaseManager {
     public boolean userVerification(String verfID) {
         boolean result;
         ResultSet rs = null;
-        
+
         try {
             connect();
             PreparedStatement ps = con.prepareStatement("Select * from usermaster where "
@@ -199,6 +203,7 @@ public class DatabaseManager {
         } finally {
             try {
                 disConnect();
+//                licId
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -232,7 +237,7 @@ public class DatabaseManager {
         }
         return result;
     }
-    
+
     public int addTask(Projecttask task) {
         int taskId;
         PreparedStatement pst;
@@ -284,7 +289,7 @@ public class DatabaseManager {
         }
         return taskId;
     }
-    
+
     public ArrayList<Projecttask> getTask(int projId, int phasId) {
         ArrayList<Projecttask> taskList = new ArrayList<Projecttask>();
         Projecttask task;
@@ -304,7 +309,7 @@ public class DatabaseManager {
                 task.setPhaseId(rs.getInt("phaseId"));
                 taskList.add(task);
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -316,7 +321,7 @@ public class DatabaseManager {
         }
         return taskList;
     }
-    
+
     public ArrayList<Usermaster> getProjectMembers(int projId) {
         ArrayList<Usermaster> members = new ArrayList<Usermaster>();
         Usermaster user = null;
@@ -343,7 +348,7 @@ public class DatabaseManager {
         }
         return members;
     }
-    
+
     public ArrayList<Projecttaskdetail> getSubTask(int taskId) {
         ArrayList<Projecttaskdetail> subTask = new ArrayList<Projecttaskdetail>();
         Projecttaskdetail st = null;
@@ -371,9 +376,9 @@ public class DatabaseManager {
         }
         return subTask;
     }
-    
+
     public ArrayList<Usermaster> getUserByTask(int taskId) {
-        
+
         ArrayList<Usermaster> members = new ArrayList<Usermaster>();
         Usermaster user = null;
         try {
@@ -400,7 +405,7 @@ public class DatabaseManager {
         }
         return members;
     }
-    
+
     public boolean updateStatusSubTask(Projecttaskdetail subTask) {
         boolean result;
         int uId = subTask.getUId();
@@ -432,7 +437,7 @@ public class DatabaseManager {
         }
         return result;
     }
-    
+
     public boolean deleteTask(Projecttask task) {
         boolean result;
         PreparedStatement pst = null;
@@ -460,7 +465,7 @@ public class DatabaseManager {
         }
         return result;
     }
-    
+
     public Usermaster LoginVerify(Usermaster user) throws SQLException {
         boolean result = false;
         Usermaster verifiedUser = null;
@@ -484,12 +489,12 @@ public class DatabaseManager {
             verifiedUser.setjDate(rs.getDate("jDate"));
             //verifiedUser.setAlternateEmail(rs.getString("alternateEmail"));
 
-            
+
         }
         System.out.println(verifiedUser);
         return verifiedUser;
     }
-    
+
     public ArrayList<Projectmaster> select_all_proj() throws SQLException {
         Projectmaster objproj = null;
         ArrayList<Projectmaster> allprojlist = new ArrayList();
@@ -519,10 +524,10 @@ public class DatabaseManager {
         }
         return allprojlist;
     }
-    
+
     public boolean joinproj(Projectfollower obj) {
-        
-        
+
+
         boolean result;
         try {
             connect();
@@ -531,9 +536,9 @@ public class DatabaseManager {
             pst.setInt(1, obj.getProjectId());
             pst.setInt(2, obj.getUserId());
             pst.setDate(3, new java.sql.Date(obj.getjDate().getTime()));
-            
+
             pst.executeUpdate();
-            
+
             Statement st = con.createStatement();
             rs = st.executeQuery("Select userId from  projectfollower where projected = "
                     + obj.getProjectId());
@@ -545,11 +550,11 @@ public class DatabaseManager {
                 pst.setDate(3, new java.sql.Date(obj.getjDate().getTime()));
                 pst.setString(4, "New User");
                 pst.setInt(5, obj.getProjectId());
-                
+
                 pst.executeUpdate();
             }
             result = true;
-            
+
         } catch (Exception e) {
             result = false;
             e.printStackTrace();
@@ -562,10 +567,10 @@ public class DatabaseManager {
         }
         return result;
     }
-    
+
     public Usermaster getUser(int uId) {
         Usermaster user = new Usermaster();
-        
+
         try {
             connect();
             PreparedStatement pst = con.prepareStatement("select * from usermaster where userId=?;");
@@ -584,7 +589,7 @@ public class DatabaseManager {
                 user = null;
             }
         } catch (Exception e) {
-            
+
             e.printStackTrace();
         } finally {
             try {
@@ -595,7 +600,7 @@ public class DatabaseManager {
         }
         return user;
     }
-    
+
     public ArrayList<Notification> select_notifications(int uid) throws SQLException {
         ArrayList<Notification> not_list = new ArrayList();
         // notifications objnot = null;
@@ -604,7 +609,7 @@ public class DatabaseManager {
             Statement st = con.createStatement();
             ResultSet rs;
             rs = st.executeQuery("Select * from usernotification where userId=" + uid + ";");
-            
+
             while (rs.next()) {
                 Notification objnot = new Notification();
                 objnot.setNotId(rs.getInt("notId"));
@@ -613,7 +618,7 @@ public class DatabaseManager {
                 objnot.setTimeStamp(rs.getDate("timeStamp"));
                 objnot.setNotType(rs.getString("notType"));
                 objnot.setrID(rs.getInt("rID"));
-                
+
                 not_list.add(objnot);
             }
         } catch (Exception e) {
@@ -626,9 +631,9 @@ public class DatabaseManager {
             }
         }
         return not_list;
-        
+
     }
-    
+
     public ArrayList<Projectmaster> select_proj(int uid) throws SQLException {
         ArrayList<Projectmaster> projlist = new ArrayList();
         ResultSet rs = null;
@@ -659,10 +664,10 @@ public class DatabaseManager {
                 e.printStackTrace();
             }
         }
-        
+
         return projlist;
     }
-    
+
     public Projectmaster getProject(int projId) {
         Projectmaster objproj = new Projectmaster();
         try {
@@ -693,7 +698,7 @@ public class DatabaseManager {
                 e.printStackTrace();
             }
         }
-        
+
         return objproj;
     }
 
@@ -722,6 +727,423 @@ public class DatabaseManager {
         } catch (Exception e) {
             result = false;
             e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    /**
+     * return No of Downloads for Particular Project(Parameter Project ID)
+     *
+     * @param projectId
+     * @return object of projectmaster class
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
+    public Projectmaster getdownload(int projectId) throws ClassNotFoundException, SQLException {
+        Projectmaster project = new Projectmaster();
+        try {
+            connect();
+            PreparedStatement pst = con.prepareStatement("select * from projectmaster where projId=?;");
+            pst.setInt(1, projectId);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                project.setDownloads(Integer.parseInt(rs.getString("downloads")));
+                project.setLikes(Integer.parseInt(rs.getString("likes")));
+                project.setProjDesc(rs.getString("projDesc"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return project;
+    }
+
+    public ProjectLicense getLicense(int licenseId) {
+        ProjectLicense obj = new ProjectLicense();
+        try {
+            connect();
+            PreparedStatement stmt = con.prepareStatement("select * from licensemaster "
+                    + "where licenseId = ?");
+            stmt.setInt(1, licenseId);
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                InputStream is = rs.getBinaryStream("licenseDesc");
+                java.io.BufferedReader in = new BufferedReader(new java.io.InputStreamReader(is));
+                String total = "";
+                String str1;
+                while ((str1 = in.readLine()) != null) {
+                    total += str1;
+                }
+                obj.setLicenseId(licenseId);
+                obj.setLicenseName(rs.getString("licenseName"));
+                obj.setLicenseDesc(total);
+            } else {
+                obj = null;
+            }
+        } catch (Exception e) {
+            obj = null;
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return obj;
+    }
+
+    public boolean setLicense(Projectmaster project) {
+        boolean result;
+        try {
+            connect();
+            PreparedStatement pst = con.prepareStatement("Update projectmaster set licenseId=? "
+                    + "where projId=?;");
+            pst.setInt(1, project.getLicenseId());
+            pst.setInt(2, project.getProjId());
+            pst.executeUpdate();
+            result = true;
+        } catch (Exception e) {
+            result = false;
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public ProjectLicense getProjectLicense(int projId) {
+        ProjectLicense proj = new ProjectLicense();
+        try {
+            connect();
+            PreparedStatement pst = con.prepareStatement("select * from licensemaster where "
+                    + "licenseId = (select licenseId from projectmaster where projId=?);");
+            pst.setInt(1, projId);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                InputStream is = rs.getBinaryStream("licenseDesc");
+                java.io.BufferedReader in = new BufferedReader(new java.io.InputStreamReader(is));
+                String total = "";
+                String str1;
+                while ((str1 = in.readLine()) != null) {
+                    total += str1;
+                }
+                proj.setLicenseDesc(total);
+                proj.setLicenseId(rs.getInt("licenseId"));
+                proj.setLicenseName(rs.getString("licenseName"));
+            } else {
+                proj = null;
+            }
+
+        } catch (Exception e) {
+            //result = false;
+            proj = null;
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return proj;
+    }
+
+    public Projectmaster viewDocument(int projId) {
+        boolean result;
+        Projectmaster doc = new Projectmaster();
+        try {
+            connect();
+
+            PreparedStatement pst = con.prepareStatement("select * from projectmaster where "
+                    + "projId=?;");
+            pst.setInt(1, projId);
+
+            ResultSet rs = pst.executeQuery();
+            rs.next();
+            InputStream is = rs.getBinaryStream("projDoc");
+            System.out.println(is);
+            java.io.BufferedReader in = new BufferedReader(new java.io.InputStreamReader(is));
+            String total = "";
+            String str1;
+            while ((str1 = in.readLine()) != null) {
+                total += str1;
+            }
+            // doc.setData(total);
+            doc.setProjId(projId);
+            doc.setProjectDoc(total);
+            doc.setProjOwner(rs.getInt("projOwner"));
+            //doc.setDateCreate(rs.getDate("dateOfCreation"));
+            //doc.setDateModify(rs.getDate("dateOfModification"));
+
+            //   System.out.println("000000000000000----- > " + total);
+            is.close();
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = false;
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        System.out.println(doc);
+
+        return doc;
+    }
+
+    //get user detail for particular user
+    public Usermaster getuser(int userId) throws ClassNotFoundException, SQLException, ParseException {
+        //Usermaster> detail = new ArrayList<Usermaster>();
+        Usermaster user = null;
+        try {
+            connect();
+            PreparedStatement st = con.prepareStatement("select * from usermaster where userId =?");
+            st.setInt(1, userId);
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            user = new Usermaster();
+            user.setIurl(rs.getString("iUrl"));
+            user.setUsername(rs.getString("username"));
+            user.setjDate(rs.getDate("jDate"));
+            user.setUserId(rs.getInt("userId"));
+            user.setAboutUser(rs.getString("aboutuser"));
+            user.setNick(rs.getString("nick"));
+            rs.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return user;
+    }
+
+    //get list of project inwhich particular user is owner
+    public ArrayList<Projectmaster> getprojectList(int userId) throws ClassNotFoundException, SQLException {
+        ArrayList<Projectmaster> detail = new ArrayList<Projectmaster>();
+        Projectmaster project = null;
+        try {
+            connect();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("select * from projectmaster where projOwner =" + userId);
+            while (rs.next()) {
+                project = new Projectmaster();
+                project.setProjName(rs.getString("projName"));
+                project.setProjId(rs.getInt("projId"));
+                detail.add(project);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return detail;
+    }
+    //get list of project inwhich Particular user is devloper
+
+    public ArrayList<Projectmaster> getdevloperprojectList(int userId) throws ClassNotFoundException, SQLException {
+        ArrayList<Projectmaster> detail = new ArrayList<Projectmaster>();
+        Projectmaster project = null;
+        try {
+            connect();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("select * from projectmaster where projId in(select projectId from projectdetail where userId =" + userId + ")");
+            while (rs.next()) {
+                project = new Projectmaster();
+                project.setProjName(rs.getString("projName"));
+                project.setProjId(rs.getInt("projId"));
+                detail.add(project);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return detail;
+    }
+
+    //get list of project inwhich Particular user is following
+    public ArrayList<Projectmaster> getfollowerprojectList(int userId) throws ClassNotFoundException, SQLException {
+        ArrayList<Projectmaster> detail = new ArrayList<Projectmaster>();
+        Projectmaster project = null;
+        try {
+            connect();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("select * from projectmaster where projId in(select projectId from projectfollower where userId=" + userId + ")");
+            while (rs.next()) {
+                project = new Projectmaster();
+                project.setProjName(rs.getString("projName"));
+                project.setProjId(rs.getInt("projId"));
+
+                detail.add(project);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return detail;
+    }
+    // To get devloper's detail for particular project
+
+    public ArrayList<Usermaster> getdevloper(int id) throws ClassNotFoundException, SQLException, ParseException {
+        ArrayList<Usermaster> members = new ArrayList<Usermaster>();
+        Usermaster user = null;
+        try {
+            connect();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT nick AS username,u.userId as userId,p.jDate AS jDate,u.iUrl AS image FROM usermaster u "
+                    + " join projectdetail p on u.userId=p.userId WHERE p.projectId=" + id + "");
+            while (rs.next()) {
+                user = new Usermaster();
+                user.setUserId(rs.getInt("userId"));
+                user.setIurl(rs.getString("image"));
+                user.setUsername(rs.getString("username"));
+                user.setjDate(rs.getDate("jDate"));
+                members.add(user);
+            }
+
+            rs.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return members;
+    }
+
+    // To get follower's detail for particular project
+    public ArrayList<Usermaster> getallfollower(int id) throws ClassNotFoundException, SQLException, ParseException {
+        ArrayList<Usermaster> members = new ArrayList<Usermaster>();
+        Usermaster user = null;
+        try {
+            connect();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT nick AS username,u.userId as userId,f.jDate AS jDate,u.iUrl AS image FROM usermaster u "
+                    + " join projectfollower f on u.userId=f.userId WHERE f.projectId=" + id + " ORDER BY jDate DESC");
+            while (rs.next()) {
+                user = new Usermaster();
+
+                user.setIurl(rs.getString("image"));
+                user.setUserId(rs.getInt("userId"));
+                user.setUsername(rs.getString("username"));
+                user.setjDate(rs.getDate("jDate"));
+                members.add(user);
+            }
+
+            rs.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return members;
+    }
+
+    public ArrayList<Usermaster> getowner(int id) throws ClassNotFoundException, SQLException, ParseException {
+        ArrayList<Usermaster> members = new ArrayList<Usermaster>();
+        Usermaster user = null;
+        try {
+            connect();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("select * from usermaster where userId in(select projOwner "
+                    + "from projectmaster where projId=" + id + ");");
+            while (rs.next()) {
+                user = new Usermaster();
+                user.setUserId(rs.getInt("userId"));
+                user.setIurl(rs.getString("iurl"));
+                user.setUsername(rs.getString("nick"));
+                user.setjDate(rs.getDate("jDate"));
+                members.add(user);
+            }
+
+            rs.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return members;
+    }
+
+    public void updateimage(int userId, String name) {
+        try {
+            connect();
+            Statement st = con.createStatement();
+            name = "/images/user/" + name;
+            st.executeUpdate("Update usermaster set image='" + name + "'where userId='" + userId + "'");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean addDocumentation(Projectmaster doc) {
+        boolean result;
+        try {
+            connect();
+            byte[] data = doc.getProjectDoc().getBytes();
+            java.io.InputStream is = new ByteArrayInputStream(data);
+            PreparedStatement pst = con.prepareStatement("update projectmaster set projDoc=?"
+                    + " where projId=?;");
+            pst.setInt(2, doc.getProjId());
+            pst.setBinaryStream(1, is);
+            pst.executeUpdate();
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = false;
         } finally {
             try {
                 disConnect();
