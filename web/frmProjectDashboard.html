@@ -182,7 +182,7 @@ and open the template in the editor.
                     <div class="accordion-inner">
                         <div class="row">
                             <div class="progress active">
-                                <div class="bar" style="width: 70%;"></div>
+                                <div class="bar" id="progBar{{taskId}}"></div>
                             </div>
                         </div>
                         <div class="row">
@@ -209,7 +209,7 @@ and open the template in the editor.
                     <div class="accordion-inner">
                         <div class="row">
                             <div class="progress active">
-                                <div class="bar" ></div>
+                                <div class="bar" id="progBar{{taskId}}"></div>
                             </div>
                         </div>
                         <div class="row">
@@ -236,7 +236,7 @@ and open the template in the editor.
                     <div class="accordion-inner">
                         <div class="row">
                             <div class="progress active">
-                                <div class="bar" ></div>
+                                <div id="progBar{{taskId}}" class="bar" ></div>
                             </div>
                         </div>
                         <div class="row">
@@ -258,7 +258,8 @@ and open the template in the editor.
                 var subtaskAdd=$("#subtaskAdd");
                 var members;
                 var memberList=$("#txtMember");
-                var selectedMember;          
+                var selectedMember;       
+                var task;
                 function getParameterByName(name) {
                     name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
                     var regexS = "[\\?&]" + name + "=([^&#]*)";
@@ -274,7 +275,7 @@ and open the template in the editor.
                 function fillTask(){
                     $.ajax({
                         url:"ServletShowTask",
-                        data: {"projId":$("#hiddenProjId").attr('value'),
+                        data: {"projId":projId,
                             "phaseId":1
                         },
                         type: "POST",
@@ -319,12 +320,34 @@ and open the template in the editor.
                     });
                 };
                 fillTask();
-                
-                $('.accordion-heading').live('click',function(){
-                    var taskId=$(this).attr('data-taskid');
+                function setProgress(taskId){
+                    $.ajax({
+                        url:'ServletGetTaskProgress',
+                        data:{
+                            'taskId':taskId
+                        },
+                        type: "POST",
+                        dataType: 'json',
+                        success:function(dt){
+                            console.log(dt);
+                            var t='#progBar'+taskId;
+                            if (dt.status=='success'){
+                                $(t).css('width',dt.prog+'%');
+                            }
+                        },
+                        error:function(){
+                            alert('error');
+                        }                        
+                    });
+                }
+                $('.accordion-heading a').live('click',function(){
+                    var taskId=$(this).attr('data-taskId');
+                    task=taskId;
                     var leftTask = '#left' + taskId;
                     var rightTask= '#right' + taskId;
-                    var checked;
+                    var checked
+                    //alert(taskId);
+                    setProgress(taskId);
                     $.ajax({
                         url:"ServletAddSubtask",
                         data: {
@@ -401,6 +424,7 @@ and open the template in the editor.
                                     $(selectCheckbox).attr('checked',true);
                                 }
                             }
+                            setProgress(task);
                         },
                         error:function(e){
                             console.log(e)

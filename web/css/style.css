@@ -242,13 +242,13 @@ a#register {
 
 #NewReleasesContainer {
     position: relative;
-    
+
 }
 
 #searchSite {
     float: right;
     position: relative;
-    }
+}
 
 .label_heading {
     color: #253340;
@@ -461,3 +461,42 @@ a#download_button {
 .footer_link{
     margin-left: 20%;
 }
+
+.accordion-heading a:hover{
+    text-decoration: none !important;
+}
+
+.addTask a{
+    color:#6A747E;
+}
+
+.addTask a:hover{
+    background-color: #F0F1F4;
+}
+
+.anim_h2 {
+    margin-top: 40px;
+    color: white;
+    font: 24px 'Segoe UI Light',Tahoma Light,Arial Light,Helvetica,sans-serif;
+    font-weight: lighter;
+    text-align: center;
+    position: relative;
+    top: 35px;
+}
+
+anim_h2 {
+    margin-top: 40px;
+    color: white;
+    font: 24px 'Segoe UI Light',Tahoma Light,Arial Light,Helvetica,sans-serif;
+    font-weight: lighter;
+    text-align: center;
+    position: relative;
+    top: 35px;
+}
+
+.loading_animation {
+    width: 550px;
+    height: 100px;
+    background-color: #8EBD40;
+}
+

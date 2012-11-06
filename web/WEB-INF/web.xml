@@ -4,6 +4,14 @@
         <filter-name>ServletFilter</filter-name>
         <filter-class>Repo.controller.ServletFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>ServletMenuFilter</filter-name>
+        <filter-class>Repo.controller.ServletMenuFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ServletMenuFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>ServletFilter</filter-name>
         <url-pattern>/frmProjectDashboard.html</url-pattern>
@@ -92,7 +100,58 @@
         <servlet-name>ServletEditDocument</servlet-name>
         <servlet-class>Repo.controller.ServletEditDocument</servlet-class>
     </servlet>
-    
+    <servlet>
+        <servlet-name>ServletSearch</servlet-name>
+        <servlet-class>Repo.controller.ServletSearch</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletCheckUser</servlet-name>
+        <servlet-class>Repo.controller.ServletCheckUser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletSendMail</servlet-name>
+        <servlet-class>Repo.controller.ServletSendMail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletVerifyRand</servlet-name>
+        <servlet-class>Repo.controller.ServletVerifyRand</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletSubmitPass</servlet-name>
+        <servlet-class>Repo.controller.ServletSubmitPass</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletEditProject</servlet-name>
+        <servlet-class>Repo.controller.ServletEditProject</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletProjectImage</servlet-name>
+        <servlet-class>Repo.controller.ServletProjectImage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Servletreview</servlet-name>
+        <servlet-class>Repo.controller.Servletreview</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletSearchUser</servlet-name>
+        <servlet-class>Repo.controller.ServletSearchUser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletRequestUser</servlet-name>
+        <servlet-class>Repo.controller.ServletRequestUser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletDisplayRequest</servlet-name>
+        <servlet-class>Repo.controller.ServletDisplayRequest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletAcceptInvitation</servlet-name>
+        <servlet-class>Repo.controller.ServletAcceptInvitation</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletGetTaskProgress</servlet-name>
+        <servlet-class>Repo.controller.ServletGetTaskProgress</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServleTCheckUserName</servlet-name>
         <url-pattern>/ServleTCheckUserName</url-pattern>
@@ -177,7 +236,58 @@
         <servlet-name>ServletEditDocument</servlet-name>
         <url-pattern>/ServletEditDocument</url-pattern>
     </servlet-mapping>
-    
+    <servlet-mapping>
+        <servlet-name>ServletSearch</servlet-name>
+        <url-pattern>/ServletSearch</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletCheckUser</servlet-name>
+        <url-pattern>/ServletCheckUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletSendMail</servlet-name>
+        <url-pattern>/ServletSendMail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletVerifyRand</servlet-name>
+        <url-pattern>/ServletVerifyRand</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletSubmitPass</servlet-name>
+        <url-pattern>/ServletSubmitPass</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletEditProject</servlet-name>
+        <url-pattern>/ServletEditProject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletProjectImage</servlet-name>
+        <url-pattern>/ServletProjectImage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Servletreview</servlet-name>
+        <url-pattern>/Servletreview</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletSearchUser</servlet-name>
+        <url-pattern>/ServletSearchUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletRequestUser</servlet-name>
+        <url-pattern>/ServletRequestUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletDisplayRequest</servlet-name>
+        <url-pattern>/ServletDisplayRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAcceptInvitation</servlet-name>
+        <url-pattern>/ServletAcceptInvitation</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletGetTaskProgress</servlet-name>
+        <url-pattern>/ServletGetTaskProgress</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

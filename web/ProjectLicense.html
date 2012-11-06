@@ -32,7 +32,17 @@ and open the template in the editor.
         <div id="content">
 
         </div>
+        <div id="UpdateProgressPanel" class="loading_animation ui-dialog-content ui-widget-content" 
+             style="display:none ;width: auto; min-height: 10px; height: auto; ">
+            <div class="row">
+                <h2 class="anim_h2">
+                    <span id="UpdateProgressText">Working...</span>
+                    <span id="animatedLoadingIconContainer">
 
+                        <img id="animatedLoadingIcon" src="images/loading_animation.gif" class="anim_img"></span>
+                </h2>
+            </div>x 
+        </div>
 
         <script type="text/javascript">
             (function(){
@@ -65,6 +75,7 @@ and open the template in the editor.
                 $("#selectLicense").change(function(){
                     var selId=$(this).find("option:selected").attr('value');
                     console.log(selId);
+                   // $("#UpdateProgressPanel").css('display','inline');
                     $.ajax({
                         url:'ServletGetLicense',
                         type : 'POST',
@@ -75,6 +86,8 @@ and open the template in the editor.
                         success: function(data){
                             $("#content").html(data.desc)  ;
                             $("#contentHeader").html(data.licName);
+                            //$("#UpdateProgressPanel").css('display','none');
+
                         },
                         error: function(){
                             alert('error');

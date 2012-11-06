@@ -29,12 +29,14 @@
                                 <ul class="ul_list" id="nav">
                                     <li><a id="lnkSignUp" href="frmRegistration.html"> Sign Up</a></li>
                                     <li><a id="lnkSignIn" href="#myModal" data-toggle="modal">Sign In</a></li>
-
-                                    <li><input id="searchSite" name="searchSite" maxlength="500"
-                                               type="text" value="" autocomplete="off"
-                                               title="Search all projects"
-                                               style="color: rgb(170, 170, 170); font-style: italic;">
-                                    </li>
+                                    <form action="ServletSearch" method="post">
+                                        <li><input id="searchSite" name="searchSite" maxlength="500"
+                                                   type="text" value="" autocomplete="off"
+                                                   title="Search all projects"
+                                                   style="color: rgb(170, 170, 170); font-style: italic;">
+                                            <input type="submit" value="Search">
+                                        </li>
+                                    </form>
                                 </ul>
                             </li>
 
@@ -65,6 +67,7 @@
                                                 <label class="loginLabel" style="text-align: left !important;padding-top: 0px !important; ">Remember me</label>
                                             </label><br>
                                             <div style="color: red;" id="loginStatus"></div>
+                                            
                                             <button type="button" class="btn" id="btnLogIn">Sign in</button>
                                         </div>
                                     </div>
@@ -130,6 +133,13 @@
                     </div>
                     <div class="float_right">
                         <a id="download_button">Download</a>
+                    </div>
+                    <div>
+                        <form action="ServletSearchUser" method="post">
+                            <input type="text" name="txtSearch">
+                            <input type="submit" value="Search">
+                        </form>
+                        <a href="ServletDisplayRequest">View Request</a>
                     </div>
                 </div>
             </div>

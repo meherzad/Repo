@@ -10,7 +10,7 @@ import java.util.Date;
  *
  * @author Meherzad
  */
-public class Porjectbugtrack {
+public class Projectbugtrack {
 
     private Integer bugId;
     private Integer projectId;
@@ -21,10 +21,10 @@ public class Porjectbugtrack {
     private String solution;
     private String fileUrl;
 
-    public Porjectbugtrack() {
+    public Projectbugtrack() {
     }
 
-    public Porjectbugtrack(Integer bugId) {
+    public Projectbugtrack(Integer bugId) {
         this.bugId = bugId;
     }
 
@@ -102,10 +102,10 @@ public class Porjectbugtrack {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Porjectbugtrack)) {
+        if (!(object instanceof Projectbugtrack)) {
             return false;
         }
-        Porjectbugtrack other = (Porjectbugtrack) object;
+        Projectbugtrack other = (Projectbugtrack) object;
         if ((this.bugId == null && other.bugId != null) || (this.bugId != null && !this.bugId.equals(other.bugId))) {
             return false;
         }

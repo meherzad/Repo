@@ -14,7 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.apache.tomcat.util.http.fileupload.FileItem;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
@@ -23,11 +22,11 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
  *
  * @author meherzad
  */
-public class ServletUploadImage extends HttpServlet {
+public class ServletProjectImage extends HttpServlet {
 
     private File tmpDir;
     private File destinationDir;
-    String name;
+    String name, pic;
 
     /**
      * Processes requests for both HTTP
@@ -47,10 +46,10 @@ public class ServletUploadImage extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ServletUploadImage</title>");
+            out.println("<title>Servlet ServletProjectImage</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ServletUploadImage at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ServletProjectImage at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -87,19 +86,15 @@ public class ServletUploadImage extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DatabaseManager db = new DatabaseManager();
-        HttpSession session = request.getSession(true);
-        Object obj = session.getAttribute("userId");
-        int userId = (Integer) obj;
-        String pic;
         try {
-            //String username = "amit";//Username_userid from session.........
-
+            String username;//Username_userid from session.........
+            Integer userId = null;
             String TMP_DIR_PATH = getServletContext().getRealPath("/") + "Temp";
             tmpDir = new File(TMP_DIR_PATH);
             if (!tmpDir.isDirectory()) {
                 throw new ServletException(TMP_DIR_PATH + " is not a directory");
             }
-            String DESTINATION_DIR_PATH = getServletContext().getRealPath("/") + "images/userPic/";
+            String DESTINATION_DIR_PATH = getServletContext().getRealPath("/") + "images/projPic";
             String realPath = DESTINATION_DIR_PATH;
             destinationDir = new File(realPath);
             if (!destinationDir.isDirectory()) {
@@ -110,21 +105,37 @@ public class ServletUploadImage extends HttpServlet {
             fileItemFactory.setRepository(tmpDir);
             ServletFileUpload uploadHandler = new ServletFileUpload(fileItemFactory);
             List items = uploadHandler.parseRequest(request);
-            Iterator itr = items.iterator();
+            Iterator itr;
+            itr = items.iterator();
             while (itr.hasNext()) {
                 FileItem item = (FileItem) itr.next();
-                pic = name = item.getName();
-                int ind = pic.indexOf('.');
-                String ext = pic.substring(ind);
-                File file = new File(destinationDir, userId + ext);
-                item.write(file);
-                db.updateimage(userId, userId + ext);
-                response.sendRedirect("UserEditProfile.jsp");
+                if (item.isFormField()) {
+                    String name = item.getFieldName();
+                    String value = item.getString();
+                    if (name.equals("hiddenProjId")) {
+                        userId = Integer.parseInt(value);
+                    }
+                }
             }
+            Iterator itr1 = items.iterator();
+            while (itr1.hasNext()) {
+                FileItem item = (FileItem) itr1.next();
+                pic = name = item.getName();
+                System.out.print("######" + pic);
+                if (!item.isFormField()) {
+                    int ind = pic.indexOf('.');
+                    String ext = pic.substring(ind);
+                    File file = new File(destinationDir, userId.toString() + ext);
+                    item.write(file);
+                    db.updateprojectimage(userId, userId.toString() + ext);
+                    response.sendRedirect("projectEditDetail.html?projId=" + userId);
+                }
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }
 
     /**

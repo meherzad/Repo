@@ -5,22 +5,22 @@
 package Repo.controller;
 
 import Repo.model.DatabaseManager;
-import Repo.model.Projecttask;
+import Repo.model.Usermaster;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
 import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 /**
  *
  * @author meherzad
  */
-public class ServletShowTask extends HttpServlet {
+public class ServletSearchUser extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -40,10 +40,10 @@ public class ServletShowTask extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ServletShowTask</title>");
+            out.println("<title>Servlet ServletSearchUser</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ServletShowTask at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ServletSearchUser at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -79,42 +79,25 @@ public class ServletShowTask extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("---------------@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-        DatabaseManager obj = new DatabaseManager();
-        PrintWriter out = response.getWriter();
-        String stat;
-        int projId = Integer.parseInt(request.getParameter("projId"));
-        int phaseId = Integer.parseInt(request.getParameter("phaseId"));
-        ArrayList<Projecttask> taskList = null;
+        DatabaseManager dbm1 = new DatabaseManager();
+        ResultSet rs = null;
+        ArrayList<Usermaster> nameList = new ArrayList();
+        Usermaster umc = new Usermaster();
+        String name = request.getParameter("txtSearch");
+        String status = "";
         try {
-            taskList = obj.getTask(projId, phaseId);
+            nameList = dbm1.search(umc, name);
+            status = "sucess";
         } catch (Exception e) {
-            stat = "Fail";
+            e.printStackTrace();
+            System.out.println("SearchUser.java fail");
+            status = "fail";
         }
-        JSONArray jArray = new JSONArray();
-        JSONObject json = new JSONObject();
-        JSONObject task = null;
-        if (taskList.isEmpty()) {
-            stat = "empty";
-        }
-        for (Projecttask t : taskList) {
-            task = new JSONObject();
-            task.put("deadLine", t.getDeadLine().toString());
-            task.put("phaseId", t.getPhaseId());
-            task.put("projId", t.getProjectId());
-            task.put("taskDescription", t.getTaskDescription());
-            task.put("taskId", t.getTaskId());
-            jArray.add(task);
-        }
-        stat = "Success";
-        json.put("status", stat);
-        json.put("task", jArray);
-        System.out.print("servletShowtask--->"+json);
-
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        out.print(json);
-
+        request.setAttribute("status", status);
+        request.setAttribute("nameList", nameList);
+        System.out.println(status);
+        RequestDispatcher rd = request.getRequestDispatcher("searchInvitation.jsp");
+        rd.forward(request, response);
     }
 
     /**

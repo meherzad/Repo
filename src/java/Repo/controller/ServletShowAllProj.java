@@ -9,7 +9,6 @@ import Repo.model.Projectmaster;
 import Repo.model.Usermaster;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -71,12 +70,12 @@ public class ServletShowAllProj extends HttpServlet {
         Usermaster user = new Usermaster();
         String status = "";
         System.out.println("servlet created .....");
-        HttpSession session = request.getSession(true);
-        int uId = Integer.parseInt(session.getAttribute("uId").toString());
+       // HttpSession session = request.getSession(true);
+        //int uId = Integer.parseInt(session.getAttribute("uId").toString());
         try {
             allprojlist = dbCon.select_all_proj();
-            user = dbCon.getUser(uId);
-            System.out.println("hello");
+        //    user = dbCon.getUser(uId);
+            System.out.println(allprojlist);
             status = "success";
         } catch (Exception e) {
             e.printStackTrace();
@@ -85,7 +84,7 @@ public class ServletShowAllProj extends HttpServlet {
         request.setAttribute("user", user);
         request.setAttribute("status", status);
         request.setAttribute("allprojlist", allprojlist);
-        RequestDispatcher rd = request.getRequestDispatcher("userDashBoard.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("ShowAllProj.jsp");
 
         rd.forward(request, response);
 

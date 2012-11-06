@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-     <head>
+    <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
@@ -28,10 +28,10 @@
                     <h2 class="heading" style="width:700px">User Picture</h2>
                     <p>Choose a picture to display in your profile...</p><br>
 
-                    <form id="Avtarimage" name="Avtarimage" onsubmit="return uploadimage();" action="ServletuploadImage" method="post" enctype="multipart/form-data">
+                    <form id="Avtarimage" name="Avtarimage" onsubmit="return uploadimage();" action="ServletUploadImage" method="post" enctype="multipart/form-data">
                         <input type="file" name="avatar" id="avatar"/>
                         <input type="submit" id="uoloadAvatar" class="ok" style="display:inline" value="upload" onclick="uploadimage();"/>                 
-<br> <br> 
+                        <br> <br> 
                         <div id="loderdiv"><image src="images/loading.gif" style="widht:200px;height:20px">
                         </div>
                         <p>GIF,JPEG,JPG,BMP and PNG files are supported.</p><br>                     
@@ -47,6 +47,7 @@
                     <lable>Current Password</lable>&nbsp;&nbsp;&nbsp;<input type="Password" name="CurrentPassword" id="CurrentPassword"/><br>
                     <lable>New Password&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</lable><input type="Password" name="NewPassword" id="NewPassword"/><br>
                     <lable>Confirm Password</lable>&nbsp;&nbsp;<input type="Password" name="ConfirmPassword" id="ConfirmPassword"/><br><br>
+                    <span id="lblResult"></span>
                     <input type="button" class="ok" value="Update" name="Update" onclick="changepass();"/>
                 </div>
             </div>
@@ -62,7 +63,7 @@
             (function(){
                 $("#loderdiv").hide();
                 $.ajax({
-                    url:"EditProfile",
+                    url:"ServletEditProfile",
                     type:"POST",
                     data:{type:'userdetail'},       
                     success:function(dt){
@@ -101,17 +102,17 @@
                 if(about!="")
                 {
                     $.ajax({
-                        url:"EditProfile",
+                        url:"ServletEditProfile",
                         type:"POST",
                         data:{type:'updateabout',val:about},    
                         success:function(dt){
                             $("#about").val("");
-                            alert('Update successfully!!');
+                            $("#lblResult").html('Update successfully!!');
                         }});
                 }
                 else
                 {
-                    alert('Personal Statement is Empty!!');
+                    $("#lblResult").html('Personal Statement is Empty!!');
                 }
                     
             }
@@ -125,11 +126,18 @@
                     if(New==Confirm)
                     {
                         $.ajax({
-                            url:"EditProfile",
+                            url:"ServletEditProfile",
                             type:"POST",
-                            data:{type:'changepass',Current:Current,New:New,Confirm:Confirm},    
+                            data:{
+                                type:'changepass',
+                                Current:Current,
+                                New:New,
+                                Confirm:Confirm
+                            },    
                             success:function(dt){
-                                alert(dt);
+                                console.log(dt);
+                                console.log(dt.result);
+                                $("#lblResult").html(dt.result);
                                 $("#CurrentPassword").val("");
                                 $("#NewPassword").val("");
                                 $("#ConfirmPassword").val("");
@@ -137,13 +145,13 @@
                     }
                     else
                     {
-                        alert("Confirm Password doesn't Match!!");
+                        $("#lblResult").html("Confirm Password doesn't Match!!");
                         $("#ConfirmPassword").val("");
                     }
                 }
                 else
                 {
-                    alert('Please Fill all the detail!!');
+                    $("#lblResult").html('Please Fill all the detail!!');
                 }
                     
             }

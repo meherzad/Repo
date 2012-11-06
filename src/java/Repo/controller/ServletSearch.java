@@ -5,22 +5,22 @@
 package Repo.controller;
 
 import Repo.model.DatabaseManager;
-import Repo.model.Projecttask;
+import Repo.model.Projectmaster;
+import Repo.model.Usermaster;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 /**
  *
  * @author meherzad
  */
-public class ServletShowTask extends HttpServlet {
+public class ServletSearch extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -40,10 +40,10 @@ public class ServletShowTask extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ServletShowTask</title>");
+            out.println("<title>Servlet ServletSearch</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ServletShowTask at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ServletSearch at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -79,41 +79,37 @@ public class ServletShowTask extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("---------------@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-        DatabaseManager obj = new DatabaseManager();
         PrintWriter out = response.getWriter();
-        String stat;
-        int projId = Integer.parseInt(request.getParameter("projId"));
-        int phaseId = Integer.parseInt(request.getParameter("phaseId"));
-        ArrayList<Projecttask> taskList = null;
-        try {
-            taskList = obj.getTask(projId, phaseId);
-        } catch (Exception e) {
-            stat = "Fail";
-        }
-        JSONArray jArray = new JSONArray();
-        JSONObject json = new JSONObject();
-        JSONObject task = null;
-        if (taskList.isEmpty()) {
-            stat = "empty";
-        }
-        for (Projecttask t : taskList) {
-            task = new JSONObject();
-            task.put("deadLine", t.getDeadLine().toString());
-            task.put("phaseId", t.getPhaseId());
-            task.put("projId", t.getProjectId());
-            task.put("taskDescription", t.getTaskDescription());
-            task.put("taskId", t.getTaskId());
-            jArray.add(task);
-        }
-        stat = "Success";
-        json.put("status", stat);
-        json.put("task", jArray);
-        System.out.print("servletShowtask--->"+json);
+        System.out.println("req received");
+        String projstatus, unamestatus;
 
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        out.print(json);
+        try {
+
+            String projectname = request.getParameter("searchSite");//text entered in the textbox
+            ArrayList<Projectmaster> project = new ArrayList();//arraylist for storing the objects of ProjectMaster class
+            ArrayList<Usermaster> username = new ArrayList();//Arratlist for storing the objects of UserMaster class
+
+            DatabaseManager dm = new DatabaseManager();
+
+            project = dm.getProject(projectname);
+            projstatus = "true";
+            username = dm.getUsername(projectname);
+            unamestatus = "true";
+            System.out.println(project);
+            //setting attributes and sending them to the searchresult page for displaying.
+            request.setAttribute("project", project);
+            request.setAttribute("projstatus", projstatus);
+            request.setAttribute("username", username);
+            request.setAttribute("unamestatus", unamestatus);
+
+            RequestDispatcher rd = request.getRequestDispatcher("SearchResult.jsp");
+            rd.forward(request, response);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            projstatus = "false";
+            unamestatus = "false";
+        }
 
     }
 

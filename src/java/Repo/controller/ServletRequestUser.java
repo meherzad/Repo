@@ -5,22 +5,21 @@
 package Repo.controller;
 
 import Repo.model.DatabaseManager;
-import Repo.model.Projecttask;
+import Repo.model.Projectinvitation;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.simple.JSONArray;
+import javax.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
 
 /**
  *
  * @author meherzad
  */
-public class ServletShowTask extends HttpServlet {
+public class ServletRequestUser extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -40,10 +39,10 @@ public class ServletShowTask extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ServletShowTask</title>");
+            out.println("<title>Servlet ServletRequestUser</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ServletShowTask at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ServletRequestUser at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -64,7 +63,44 @@ public class ServletShowTask extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        PrintWriter out = response.getWriter();
+        Projectinvitation pi = new Projectinvitation();
+        DatabaseManager dbm3 = new DatabaseManager();
+        java.util.Date timestamp = new java.util.Date();
+        java.sql.Date creationDate = new java.sql.Date(timestamp.getTime());
+        System.out.println(creationDate);
+        int UserId = Integer.parseInt(request.getParameter("userId"));
+        int fromUser ;//1;//to be feched from session
+        HttpSession session=request.getSession(true);
+        fromUser=Integer.parseInt(session.getAttribute("userId").toString());
+        int projId = Integer.parseInt(request.getParameter("projId"));
+        String Flag = "No";
+        String Status = "Pending";
+        pi.setFromUser(fromUser);
+        pi.setToUser(UserId);
+        pi.setProjId(projId);
+        pi.setTimeStamp(creationDate);
+        pi.setFlag(Flag);
+        pi.setStatus(Status);
+//        dbm3.requestinvi(pi);
+        JSONObject obj = new JSONObject();
+        String status1 = "";
+        try {
+            if (dbm3.requestinvi(pi)) {
+                System.out.println("Inserted successfuly");
+                status1 = "successfull saved";
+
+            } else {
+                System.out.println("Not Inserted successfuly");
+                status1 = "unsucessfull saved";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Not Inserted successfuly");
+            status1 = "unsucessfull saved";
+        }
+        obj.put("savestatus", status1);
+        out.println(obj);
     }
 
     /**
@@ -79,42 +115,6 @@ public class ServletShowTask extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("---------------@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-        DatabaseManager obj = new DatabaseManager();
-        PrintWriter out = response.getWriter();
-        String stat;
-        int projId = Integer.parseInt(request.getParameter("projId"));
-        int phaseId = Integer.parseInt(request.getParameter("phaseId"));
-        ArrayList<Projecttask> taskList = null;
-        try {
-            taskList = obj.getTask(projId, phaseId);
-        } catch (Exception e) {
-            stat = "Fail";
-        }
-        JSONArray jArray = new JSONArray();
-        JSONObject json = new JSONObject();
-        JSONObject task = null;
-        if (taskList.isEmpty()) {
-            stat = "empty";
-        }
-        for (Projecttask t : taskList) {
-            task = new JSONObject();
-            task.put("deadLine", t.getDeadLine().toString());
-            task.put("phaseId", t.getPhaseId());
-            task.put("projId", t.getProjectId());
-            task.put("taskDescription", t.getTaskDescription());
-            task.put("taskId", t.getTaskId());
-            jArray.add(task);
-        }
-        stat = "Success";
-        json.put("status", stat);
-        json.put("task", jArray);
-        System.out.print("servletShowtask--->"+json);
-
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        out.print(json);
-
     }
 
     /**

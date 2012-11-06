@@ -5,22 +5,22 @@
 package Repo.controller;
 
 import Repo.model.DatabaseManager;
-import Repo.model.Projecttask;
+import Repo.model.Projectmaster;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author meherzad
  */
-public class ServletShowTask extends HttpServlet {
+public class ServletDisplayRequest extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -40,10 +40,10 @@ public class ServletShowTask extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ServletShowTask</title>");
+            out.println("<title>Servlet ServletDisplayRequest</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ServletShowTask at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ServletDisplayRequest at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -64,7 +64,31 @@ public class ServletShowTask extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        PrintWriter out = response.getWriter();
+        DatabaseManager dbm3 = new DatabaseManager();
+        ArrayList<Projectmaster> nameList = new ArrayList<Projectmaster>();
+        //int projId=Integer.parseInt(request.getParameter("ProjectId"));
+        HttpSession session=request.getSession(true);
+        
+        int UserId = Integer.parseInt(session.getAttribute("userId").toString());//get from session
+        String status1 = "";
+        try {
+            nameList = dbm3.displayinvi(UserId);
+            //umc.getName();
+            System.out.println("Display Invitation sucess");
+            status1 = "sucess";
+            request.setAttribute("status", status1);
+            request.setAttribute("nameList", nameList);
+            System.out.println(nameList);
+            System.out.println(status1);
+            RequestDispatcher rd = request.getRequestDispatcher("AcceptInvitation.jsp");
+            rd.forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Not Inserted successfuly");
+            status1 = "unsucessfull saved";
+        }
+        out.close();
     }
 
     /**
@@ -79,42 +103,31 @@ public class ServletShowTask extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("---------------@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-        DatabaseManager obj = new DatabaseManager();
         PrintWriter out = response.getWriter();
-        String stat;
-        int projId = Integer.parseInt(request.getParameter("projId"));
-        int phaseId = Integer.parseInt(request.getParameter("phaseId"));
-        ArrayList<Projecttask> taskList = null;
+        DatabaseManager dbm3 = new DatabaseManager();
+        ArrayList<Projectmaster> nameList = new ArrayList<Projectmaster>();
+        //int projId=Integer.parseInt(request.getParameter("ProjectId"));
+        int UserId = 3;//get from session
+        //dbm3.displayinvi(UserId);
+        //JSONObject obj = new JSONObject();
+        String status1 = "";
         try {
-            taskList = obj.getTask(projId, phaseId);
+            nameList = dbm3.displayinvi(UserId);
+            //umc.getName();
+            System.out.println("Display Invitation sucess");
+            status1 = "sucess";
+            request.setAttribute("status", status1);
+            request.setAttribute("nameList", nameList);
+            System.out.println(nameList);
+            System.out.println(status1);
+            RequestDispatcher rd = request.getRequestDispatcher("AcceptInvi.jsp");
+            rd.forward(request, response);
         } catch (Exception e) {
-            stat = "Fail";
+            e.printStackTrace();
+            System.out.println("Not Inserted successfuly");
+            status1 = "unsucessfull saved";
         }
-        JSONArray jArray = new JSONArray();
-        JSONObject json = new JSONObject();
-        JSONObject task = null;
-        if (taskList.isEmpty()) {
-            stat = "empty";
-        }
-        for (Projecttask t : taskList) {
-            task = new JSONObject();
-            task.put("deadLine", t.getDeadLine().toString());
-            task.put("phaseId", t.getPhaseId());
-            task.put("projId", t.getProjectId());
-            task.put("taskDescription", t.getTaskDescription());
-            task.put("taskId", t.getTaskId());
-            jArray.add(task);
-        }
-        stat = "Success";
-        json.put("status", stat);
-        json.put("task", jArray);
-        System.out.print("servletShowtask--->"+json);
-
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        out.print(json);
-
+        out.close();
     }
 
     /**

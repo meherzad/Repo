@@ -1,0 +1,187 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/style 2.css">
+        <script src="js/jquery-1.7.2.min.js" ></script>
+        <script type="text/javascript" src="http://cloud.github.com/downloads/wycats/handlebars.js/handlebars-1.0.0.beta.6.js"></script>
+        <script src="js/bootstrap.min.js" type="text/javascript"></script>
+    </head>
+    <body>
+
+        <div id="wrap">
+            <br><br><br><br><br><br>
+            <div id="projname"></div>
+
+            <div id="ProjectMembers" class="top_border">
+                <div class="user_column"><br>
+                    <h2 class="heading" style="width:700px">User Picture</h2>
+                    <p>Choose a picture to display in your profile...</p><br>
+
+                    <form id="Avtarimage" name="Avtarimage" onsubmit="return uploadimage();" action="ServletProjectImage" method="post" enctype="multipart/form-data">
+                        <input type="file" name="avatar" id="avatar"/>
+                        <input type="hidden" id="hiddenProjId" name="hiddenProjId">
+                        <input type="submit" id="uoloadAvatar" class="ok" style="display:inline" value="upload" onclick="uploadimage();"/>           
+                        <br> <br> 
+                        <div id="loderdiv"><image src="images/loading.gif" style="widht:200px;height:20px">
+                        </div>
+                        <p>GIF,JPEG,JPG,BMP and PNG files are supported.</p><br>        
+                        <div id="imgValid"></div>
+                    </form>   
+                    ServletEditProject
+
+                    <h2 class="heading" style="width:700px">Project Description</h2>
+                    <p>A few words about Project Description</p><br>
+                    <input type="text" name="about" id="about"/><br>
+                    <div id="abtResult"></div>
+                    <input type="button" class="ok" value="Update" name="updateabout" 
+                           id="btnUpdateAbout"/><br>
+
+                    <h2 class="heading" style="width:700px">Project Type</h2>
+                    <div id="projtype"></div>
+
+                    <div id="resultType"></div>
+                    <input type="button" class="ok" value="Update" name="updatetype" 
+                           id="btnUpdateType"/><br>
+
+                </div>
+            </div>
+        </div>
+        <script id="filluser" type="text/x-handlebars-template">
+            {{#each this}}
+
+            {{projName}}
+            {{/each}}
+
+        </script>
+        <script id="fillradio" type="text/x-handlebars-template">
+            {{#each this}}
+            {{#if public}}
+            <input type="radio" name="type" id="public" value="public" checked />Public &nbsp;&nbsp;<input type="radio" name="type" value="private" id="private"/>Private<br><br>
+            {{/if}}
+            {{#if private}}
+            <input type="radio" name="type" id="public" value="public"/>Public &nbsp;&nbsp;<input type="radio" name="type" id="private" checked value="private"/>Private<br><br>
+            {{/if}}
+            {{/each}}
+
+        </script>
+        <script type="text/javascript">
+            (function(){
+                var projId=getParameterByName("projId");
+                $("#hiddenProjId").attr('value',projId);
+                $("#loderdiv").hide();
+                $.ajax({
+                    url:"ServletEditProject",
+                    type:"POST",
+                    data:{
+                        type:'projectdetail',
+                        'projId':projId
+                    },       
+                    success:function(dt){
+                        var temp=Handlebars.compile($("#filluser").html());
+                        $("#projname").append(temp(dt.projectdetail)); 
+                        var temp1=Handlebars.compile($("#fillradio").html());
+                        $("#projtype").append(temp1(dt.projectdetail)); 
+                        
+                    }
+                });
+                $("#btnUpdateAbout").click(function(){
+                    var about=$("#about").val();
+                    console.log(about);
+                    if(about!="")
+                    {
+                        $.ajax({
+                            url:"ServletEditProject",
+                            type:"POST",
+                            data:{
+                                type:'updateabout',
+                                val:about,
+                                projId:projId
+                            },    
+                            success:function(dt){
+                                console.log(dt);
+                                $("#about").val("");
+                                if (dt.status=='success')
+                                    $("#abtResult").html('Success');
+                                else
+                                    $("#abtResult").html('Fail');
+
+                            }
+                        });
+                    }
+                    else
+                    {
+                        alert('Project Description is Empty!!');
+                    }
+                });
+                $("#btnUpdateType").click(function(){
+                    var projtype=$("input[name='type']:checked").val();               
+                    $.ajax({
+                        url:"ServletEditProject",
+                        type:"POST",
+                        data:{
+                            type:'uptype',
+                            projtype:projtype,
+                            'projId':projId
+                        },       
+                        success:function(dt){
+                            if (dt.status=='success'){
+                                $("#resultType").html("Successfully updated");
+                            }
+                            else{
+                                $("#resultType").html("Error");
+                            }
+                        }
+                    
+                    });
+                });
+                function getParameterByName(name) {
+                    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+                    var regexS = "[\\?&]" + name + "=([^&#]*)";
+                    var regex = new RegExp(regexS);
+                    var results = regex.exec(window.location.search);
+                    if (results == null)
+                        return "";
+                    else
+                        return decodeURIComponent(results[1].replace(/\+/g, " "));
+                }
+                
+                function uploadimage()
+                {   
+                    $("#loderdiv").show();
+                    var about=$("#avatar").val();
+                    var parts = about.split('.');
+                    ext=parts[parts.length - 1];
+                    switch (ext.toLowerCase()) 
+                    {
+            
+                        case 'jpg':
+                        case 'jpeg':
+                        case 'gif':
+                        case 'bmp':
+                        case 'png':
+                            $('#loderdiv').delay(4000).fadeOut();
+                            return true;
+                    }
+                    $("#loderdiv").hide();
+                    $("#imgValid").html("File Extension is not Support!!");
+                    $("#avatar").val("");
+                    return false;
+
+                }
+               
+            })();
+           
+        </script>
+
+
+    </body>
+</html>

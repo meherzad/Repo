@@ -79,9 +79,8 @@ public class ServletGetUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int projId = 1;//Integer.parseInt(request.getParameter("projId"));
         int type = Integer.parseInt(request.getParameter("type"));
-        
+
 
         PrintWriter out = response.getWriter();
         DatabaseManager obj = new DatabaseManager();
@@ -91,6 +90,8 @@ public class ServletGetUser extends HttpServlet {
         JSONObject user = null;
         try {
             if (type == 1) {
+                int projId = Integer.parseInt(request.getParameter("projId"));
+
                 members = obj.getProjectMembers(projId);
             } else {
                 int taskId = Integer.parseInt(request.getParameter("taskId"));

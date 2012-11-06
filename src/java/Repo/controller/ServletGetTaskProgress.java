@@ -5,7 +5,7 @@
 package Repo.controller;
 
 import Repo.model.DatabaseManager;
-import Repo.model.Projecttask;
+import Repo.model.Projecttaskdetail;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -13,14 +13,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
  *
  * @author meherzad
  */
-public class ServletShowTask extends HttpServlet {
+public class ServletGetTaskProgress extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -40,10 +39,10 @@ public class ServletShowTask extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ServletShowTask</title>");
+            out.println("<title>Servlet ServletGetTaskProgress</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ServletShowTask at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ServletGetTaskProgress at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -79,42 +78,33 @@ public class ServletShowTask extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("---------------@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        int progress, t, f, taskId;
+        String status;
+        taskId = Integer.parseInt(request.getParameter("taskId"));
+        JSONObject json = new JSONObject();
         DatabaseManager obj = new DatabaseManager();
         PrintWriter out = response.getWriter();
-        String stat;
-        int projId = Integer.parseInt(request.getParameter("projId"));
-        int phaseId = Integer.parseInt(request.getParameter("phaseId"));
-        ArrayList<Projecttask> taskList = null;
         try {
-            taskList = obj.getTask(projId, phaseId);
+            ArrayList<Projecttaskdetail> subTaskList = obj.getSubTask(taskId);
+            t = f = 0;
+            for (Projecttaskdetail pj : subTaskList) {
+                t++;
+                if (pj.getStatus().equalsIgnoreCase("complete")) {
+                    f++;
+                }
+            }
+            status = "success";
+            progress = 100 * f / t;
         } catch (Exception e) {
-            stat = "Fail";
+            status = "fail";
+            progress = 0;
+            e.printStackTrace();
         }
-        JSONArray jArray = new JSONArray();
-        JSONObject json = new JSONObject();
-        JSONObject task = null;
-        if (taskList.isEmpty()) {
-            stat = "empty";
-        }
-        for (Projecttask t : taskList) {
-            task = new JSONObject();
-            task.put("deadLine", t.getDeadLine().toString());
-            task.put("phaseId", t.getPhaseId());
-            task.put("projId", t.getProjectId());
-            task.put("taskDescription", t.getTaskDescription());
-            task.put("taskId", t.getTaskId());
-            jArray.add(task);
-        }
-        stat = "Success";
-        json.put("status", stat);
-        json.put("task", jArray);
-        System.out.print("servletShowtask--->"+json);
-
+        json.put("status", status);
+        json.put("prog", progress);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        out.print(json);
-
+        out.println(json);
     }
 
     /**

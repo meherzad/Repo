@@ -5,22 +5,21 @@
 package Repo.controller;
 
 import Repo.model.DatabaseManager;
-import Repo.model.Projecttask;
+import Repo.model.Projectdetail;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author meherzad
  */
-public class ServletShowTask extends HttpServlet {
+public class ServletAcceptInvitation extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -40,10 +39,10 @@ public class ServletShowTask extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ServletShowTask</title>");
+            out.println("<title>Servlet ServletAcceptInvitation</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ServletShowTask at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ServletAcceptInvitation at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -79,42 +78,35 @@ public class ServletShowTask extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("---------------@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-        DatabaseManager obj = new DatabaseManager();
-        PrintWriter out = response.getWriter();
-        String stat;
-        int projId = Integer.parseInt(request.getParameter("projId"));
-        int phaseId = Integer.parseInt(request.getParameter("phaseId"));
-        ArrayList<Projecttask> taskList = null;
-        try {
-            taskList = obj.getTask(projId, phaseId);
-        } catch (Exception e) {
-            stat = "Fail";
-        }
-        JSONArray jArray = new JSONArray();
-        JSONObject json = new JSONObject();
-        JSONObject task = null;
-        if (taskList.isEmpty()) {
-            stat = "empty";
-        }
-        for (Projecttask t : taskList) {
-            task = new JSONObject();
-            task.put("deadLine", t.getDeadLine().toString());
-            task.put("phaseId", t.getPhaseId());
-            task.put("projId", t.getProjectId());
-            task.put("taskDescription", t.getTaskDescription());
-            task.put("taskId", t.getTaskId());
-            jArray.add(task);
-        }
-        stat = "Success";
-        json.put("status", stat);
-        json.put("task", jArray);
-        System.out.print("servletShowtask--->"+json);
+        String type = request.getParameter("type");
+        HttpSession session = request.getSession(true);
+        int ProjectId = Integer.parseInt(request.getParameter("ProjectId"));
+        int UserId = Integer.parseInt(session.getAttribute("userId").toString());//retrive from session
+        String result;
+        //  int ProjId=Integer.parseInt(request.getParameter("ProjectId"));
+        System.out.println(type);
+        Projectdetail pd = new Projectdetail();
+        DatabaseManager dm1 = new DatabaseManager();
+        java.util.Date timestamp = new java.util.Date();
+        java.sql.Date creationDate = new java.sql.Date(timestamp.getTime());
 
+        pd.setUserId(UserId);
+        pd.setProjectId(ProjectId);
+        pd.setjDate(creationDate);
+        if (dm1.update(pd, type, ProjectId, UserId)) {
+            result = "success";
+        } else {
+            result = "fail";
+
+        }
+        System.out.println("----->" + result);
+        RequestDispatcher rd = request.getRequestDispatcher("AcceptInvitation.jsp");
+        //response.sendRedirect("resp.jsp");
+        rd.forward(request, response);
+        System.out.println(pd);
+        PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        out.print(json);
-
     }
 
     /**

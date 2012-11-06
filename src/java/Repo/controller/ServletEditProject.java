@@ -5,14 +5,13 @@
 package Repo.controller;
 
 import Repo.model.DatabaseManager;
-import Repo.model.Usermaster;
+import Repo.model.Projectmaster;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -20,7 +19,7 @@ import org.json.simple.JSONObject;
  *
  * @author meherzad
  */
-public class ServletEditProfile extends HttpServlet {
+public class ServletEditProject extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -40,10 +39,10 @@ public class ServletEditProfile extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ServletEditProfile</title>");
+            out.println("<title>Servlet ServletEditProject</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ServletEditProfile at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ServletEditProject at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -79,51 +78,68 @@ public class ServletEditProfile extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        DatabaseManager db = new DatabaseManager();
+
+        JSONObject result = new JSONObject();
         PrintWriter out = response.getWriter();
+
         try {
-            DatabaseManager db = new DatabaseManager();
-            JSONObject result = new JSONObject();
-            int userId;//from session
-            HttpSession session = request.getSession(true);
-            userId = (Integer) session.getAttribute("userId");
+            db.connect();
+            int projectId = Integer.parseInt(request.getParameter("projId"));//= 1;//from session
             String type = request.getParameter("type");
+            System.out.println(type);
             if (type.equals("updateabout")) {
-                db.personalstatement(userId, request.getParameter("val"));
-            } else if (type.equals("changepass")) {
-                String Current = request.getParameter("Current");
-                String Newpass = request.getParameter("New");
                 JSONObject json = new JSONObject();
-                if (db.changepassword(Newpass, Current, userId)) {
-                    json.put("result", "Success");
+                if (db.updatedesc(projectId, request.getParameter("val"))) {
+                    json.put("status", "success");
                 } else {
-                    json.put("result", "Fail");
+                    json.put("status", "fail");
                 }
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
-                out.println(json);
-            } else if (type.equals("userdetail")) {
-                Usermaster user = db.getuser(userId);
+                out.print(json);
+            } else if (type.equals("projectdetail")) {
+                Projectmaster project = db.getprojectdetail(projectId);
                 JSONArray jArray = new JSONArray();
                 JSONObject task = null;
+                int pub = 0, pre = 0;
                 task = new JSONObject();
-                task.put("image", user.getIurl());
-                task.put("jDate", user.getJDate().toString());
-                task.put("userName", user.getUsername());
-                task.put("userId", user.getUserId());
+                task.put("projId", project.getProjId());
+                task.put("projName", project.getProjName());
+                task.put("projDesc", project.getProjDesc());
+                task.put("projOwner", project.getProjOwner());
+                task.put("downloads", project.getDownloads());
+                task.put("likes", project.getLikes());
+                task.put("projType", project.getProjType());
+                if (project.getProjType().toLowerCase().equals("public")) {
+                    pub = 1;
+                } else {
+                    pre = 1;
+                }
+                task.put("public", pub);
+                task.put("private", pre);
                 jArray.add(task);
-                result.put("userdetail", jArray);
+                result.put("projectdetail", jArray);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 out.print(result);
 
+            } else if (type.equals("uptype")) {
+
+                JSONObject json = new JSONObject();
+                if (db.updateprojtype(projectId, request.getParameter("projtype"))) {
+                    json.put("status", "success");
+                } else {
+                    json.put("status", "fail");
+                }
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out.print(json);
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            out.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-
     }
 
     /**

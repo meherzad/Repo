@@ -1,6 +1,5 @@
-package model;
+package Repo.model;
 
-import java.io.PrintWriter;
 import org.apache.commons.mail.SimpleEmail;
 
 /**
