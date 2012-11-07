@@ -103,7 +103,7 @@ public class ServletMenuFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-        HttpServletRequest req = (HttpServletRequest) request;
+        /*HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession(true);
         String projIdObj = request.getParameter("projId");
@@ -124,7 +124,7 @@ public class ServletMenuFilter implements Filter {
             userCheck = dbObj.checkUserInProject(projId, userId);
         }
         request.setAttribute("userCheck", userCheck);
-
+        */
         if (debug) {
             log("ServletMenuFilter:doFilter()");
         }

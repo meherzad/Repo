@@ -152,6 +152,34 @@
         <servlet-name>ServletGetTaskProgress</servlet-name>
         <servlet-class>Repo.controller.ServletGetTaskProgress</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletDiscussionHead</servlet-name>
+        <servlet-class>Repo.controller.ServletDiscussionHead</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletNewDiscussion</servlet-name>
+        <servlet-class>Repo.controller.ServletNewDiscussion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletGetBugs</servlet-name>
+        <servlet-class>Repo.controller.ServletGetBugs</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletShowBugDetail</servlet-name>
+        <servlet-class>Repo.controller.ServletShowBugDetail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletCheckUserType</servlet-name>
+        <servlet-class>Repo.controller.ServletCheckUserType</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletAddBug</servlet-name>
+        <servlet-class>Repo.controller.ServletAddBug</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletAddProject</servlet-name>
+        <servlet-class>Repo.controller.ServletAddProject</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServleTCheckUserName</servlet-name>
         <url-pattern>/ServleTCheckUserName</url-pattern>
@@ -287,6 +315,34 @@
     <servlet-mapping>
         <servlet-name>ServletGetTaskProgress</servlet-name>
         <url-pattern>/ServletGetTaskProgress</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletDiscussionHead</servlet-name>
+        <url-pattern>/ServletDiscussionHead</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletNewDiscussion</servlet-name>
+        <url-pattern>/ServletNewDiscussion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletGetBugs</servlet-name>
+        <url-pattern>/ServletGetBugs</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletShowBugDetail</servlet-name>
+        <url-pattern>/ServletShowBugDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletCheckUserType</servlet-name>
+        <url-pattern>/ServletCheckUserType</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAddBug</servlet-name>
+        <url-pattern>/ServletAddBug</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAddProject</servlet-name>
+        <url-pattern>/ServletAddProject</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

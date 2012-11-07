@@ -74,6 +74,7 @@ public class ServletUserDashBoard extends HttpServlet {
         System.out.println("servlet created .....");
         HttpSession session = request.getSession(true);
         int uId = Integer.parseInt(session.getAttribute("userId").toString());
+        ArrayList<Projectmaster> projectList = dbCon.projectSuggestion(uId);
         try {
             allprojlist = dbCon.select_proj(uId);
             user = dbCon.getUser(uId);
@@ -84,6 +85,7 @@ public class ServletUserDashBoard extends HttpServlet {
             e.printStackTrace();
             status = "fail";
         }
+        request.setAttribute("projectList", projectList);
         request.setAttribute("user", user);
         request.setAttribute("status", status);
         request.setAttribute("notifications", notList);

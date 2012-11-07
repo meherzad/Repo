@@ -5,14 +5,10 @@
 package Repo.controller;
 
 import Repo.model.DatabaseManager;
-import Repo.model.Hashing;
-import Repo.model.Usermaster;
+import Repo.model.Projectmaster;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,9 +18,9 @@ import org.json.simple.JSONObject;
 
 /**
  *
- * @author XANDER
+ * @author meherzad
  */
-public class ServletLoginVerification extends HttpServlet {
+public class ServletAddProject extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -44,10 +40,10 @@ public class ServletLoginVerification extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginVerification</title>");
+            out.println("<title>Servlet ServletAddProject</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginVerification at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ServletAddProject at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -83,51 +79,47 @@ public class ServletLoginVerification extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Usermaster user = new Usermaster();
-        user.setUsername(request.getParameter("user"));
-        String pd = null;
-        System.out.println(request.getParameter("user"));
+        String status, p1 = request.getParameter("txtprojname");
+        String p2 = request.getParameter("txtprojdescrip");
         HttpSession session = request.getSession(true);
-        String result, status;
-        try {
-            pd = request.getParameter("pass");
-            System.out.println(pd+" -----***");
-            if (pd != null) {
-                System.out.println("========" + pd);
-                pd = Hashing.getHashValue(pd);
-            }
-        } catch (NoSuchAlgorithmException ex) {
-            //Logger.getLogger(LoginVerification.class.getName()).log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
+        String tempp3 = "8";//session.getAttribute("userId").toString();
+        int p3 = Integer.parseInt(tempp3);
+        String p4 = request.getParameter("visibility");
+        ArrayList<Integer> tagids = new ArrayList<Integer>();
+        String[] tagstring = new String[4];
+        String tags = request.getParameter("hdnVal");
+        JSONObject json = new JSONObject();
+        for (int j = 0; j < tags.length(); j++) {
+            tagstring = tags.split(",");
         }
-        user.setPassword(pd);
-        DatabaseManager dm = new DatabaseManager();
-        Usermaster verifUser = null;
-        PrintWriter out = response.getWriter();
+        for (int j = 0; j < tagstring.length; j++) {
+            tagids.add(Integer.parseInt(tagstring[j]));
+        }
+        DatabaseManager dbcon = new DatabaseManager();
+        Projectmaster oaddproj = new Projectmaster();
+        oaddproj.setProjName(p1);
+        oaddproj.setProjDesc(p2);
+        oaddproj.setProjOwner(p3);
+        oaddproj.setProjType(p4);
+
+        System.out.println("servlet created");
         try {
-            if (pd != null || pd != "") {
-                verifUser = dm.LoginVerify(user);
+            if (dbcon.addProject(oaddproj, tagids)) {
+                System.out.println("Done");
                 status = "success";
             } else {
+                System.out.println("Notdone");
                 status = "fail";
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
             status = "fail";
+            System.out.println(e);
         }
-        if (verifUser != null) {
-            result = "Valid User";
-            session.setAttribute("userId", verifUser.getUserId());
-        } else {
-            result = "Invalid User";
-        }
-        JSONObject json = new JSONObject();
-        json.put("result", result);
-        json.put("status", status);
+        PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        json.put("status", status);
         out.print(json);
-
     }
 
     /**

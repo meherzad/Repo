@@ -11,7 +11,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 /**
  *
@@ -684,6 +687,7 @@ public class DatabaseManager {
                 objproj.setDownloads(rs.getInt("downloads"));
                 objproj.setiUrl(rs.getString("iUrl"));
                 objproj.setLikes(rs.getInt("likes"));
+                objproj.setCodeUrl(rs.getString("codeUrl"));
                 objproj.setProjType(rs.getString("projType"));
             } else {
                 objproj = null;
@@ -1654,11 +1658,13 @@ public class DatabaseManager {
         return nameList;
     }
 
-    public boolean update(Projectdetail obj, String type, int projId, int UserId) {
+    public boolean update(Projectdetail obj, String type, int projId, int UserId, Notification ntobj) {
         boolean value;
+        ResultSet rs, rs1;
         try {
             connect();
             Statement st = con.createStatement();
+            Statement st1 = con.createStatement();
             if (type.equals("accept")) {
                 PreparedStatement pstobj = con.prepareStatement("Insert into projectdetail("
                         + "projectId,userId,jDate) values (?,?,?);");
@@ -1666,6 +1672,24 @@ public class DatabaseManager {
                 pstobj.setInt(2, obj.getUserId());
                 pstobj.setDate(3, new java.sql.Date(obj.getjDate().getTime()));
                 pstobj.executeUpdate();
+                String username = "";
+                rs = st.executeQuery("Select userName from usermaster where userId=" + UserId);
+                while (rs.next()) {
+                    username = rs.getString("userName");
+                }
+                String notify = ntobj.getNotification() + " " + username;
+
+                rs1 = st1.executeQuery("select userId from projectdetail where projectId=" + projId);
+                while (rs1.next()) {
+                    PreparedStatement pst = con.prepareStatement("Insert into usernotification "
+                            + "(userId,notification,timeStamp,notType,rID) values(?,?,?,?,?);");
+                    pst.setInt(1, rs1.getInt("UserId"));
+                    pst.setString(2, notify);
+                    pst.setDate(3, new java.sql.Date(ntobj.getTimeStamp().getTime()));
+                    pst.setString(4, ntobj.getNotType());
+                    pst.setInt(5, projId);
+                    pst.executeUpdate();
+                }
             }
             PreparedStatement pstmtobj = con.prepareStatement("Update projectinvitation set "
                     + "status=? where projId=? and toUser=?;");
@@ -1686,6 +1710,359 @@ public class DatabaseManager {
         }
         return value;
     }
-    
-    
+
+    public ArrayList<Projectmaster> projectSuggestion(int userid) {
+        ArrayList<Projectmaster> projectlist = new ArrayList<Projectmaster>();
+        ArrayList<Integer> userprojectids = new ArrayList<Integer>();//projectids of the projects downloaded by the user.
+        ArrayList<Integer> projecttags = new ArrayList<Integer>();//all the tagids of the projects downloaded by the user.
+        ArrayList<Integer> uniquetagids = new ArrayList<Integer>();//array of all the unique tagids.
+        String query1 = "", query2 = "", query3 = "", query4 = "";
+        ResultSet rs1 = null;
+        ResultSet rs2, rs3, rs4;
+        ArrayList<Integer> matchingprojectid = new ArrayList<Integer>();//list of project ids having the tagids same as that of the douwloaded projects by the user minus downloaded projectids
+
+
+        try {//try start
+
+            //----------------getting the projectids of the downloaded projects by the user-------------------------------------         
+            query1 = "select projectId from userlog where userId=" + userid;//gets the projectids of the projects downoaded by the user. 
+            connect();//opening database connection 
+            Statement st = con.createStatement();
+            rs1 = st.executeQuery(query1);//downloaded projectids
+
+            if (rs1.next()) {//rs1 if start
+                while (rs1.next()) {//while1 start
+                    userprojectids.add((int) rs1.getInt("projectId"));//copying the projectids form resultset to an array.
+                }//end while1
+                //----------------getting the tagids of each of the downloaded projects------------------     
+                for (int j = 0; j < userprojectids.size(); j++) {//for1 
+                    query2 = "select tagId from projecttags where projectId=" + userprojectids.get(j);//get the tagids of individual projects.
+                    Statement st1 = con.createStatement();
+                    rs2 = st1.executeQuery(query2);
+
+                    while (rs2.next()) {//while2 start
+                        projecttags.add(rs2.getInt("tagId"));//putting the rs values in the 2D array. ptojectid->tagids
+
+                    }//while2 end
+
+                }//end for1
+
+                uniquetagids = removeRedundantValues(projecttags);//list of unique tagids.
+
+                //--------------finding the projectids having any/more tags matching with the list of tags(if downloaded projects).      
+                query3 = "select distinct projectId from projecttags where tagId in(";//query string start
+
+                for (int n = 0; n < uniquetagids.size(); n++) {//for2 start
+                    if (n == uniquetagids.size() - 1) {
+                        query3 += uniquetagids.get(n);
+                    } else {
+                        query3 += uniquetagids.get(n) + ",";
+                    }
+
+                }//for2 end
+
+                query3 += ")";//query string end
+                Statement st3 = con.createStatement();
+                rs3 = st3.executeQuery(query3);
+
+                ArrayList<Integer> temp = new ArrayList<Integer>();
+
+
+                while (rs3.next()) {
+                    temp.add(rs3.getInt("projectId"));
+
+                }
+
+                matchingprojectid = removeRedundantValues(temp);
+
+                //---------getting the project details from the databse to display it to the user.
+
+                for (int m = 0; m < matchingprojectid.size(); m++) {//for3 start
+                    query4 = "select * from projectmaster where projId=" + matchingprojectid.get(m) + " and projType='public'";
+                    Statement st4 = con.createStatement();
+                    rs4 = st4.executeQuery(query4);
+
+                    Projectmaster pm = new Projectmaster();
+
+                    while (rs4.next()) {
+                        pm.setProjId(rs4.getInt("projId"));
+                        pm.setProjName(rs4.getString("projName"));
+                        pm.setProjDesc(rs4.getString("projDesc"));
+                        pm.setProjOwner(rs4.getInt("projOwner"));
+                        pm.setDownloads(rs4.getInt("downloads"));
+                        pm.setLikes(rs4.getInt("likes"));
+                        pm.setProjType(rs4.getString("projType"));
+                    }
+
+                    projectlist.add(pm);
+                }//for3 end
+            }//end main if
+            else {//main else start
+
+                projectlist = getMostDownload(1);
+
+            }//main else end
+
+        }//end try
+        catch (Exception exp) {
+            System.out.println(exp.toString());
+        }
+
+        return projectlist;
+    }
+
+    ArrayList<Integer> removeRedundantValues(ArrayList<Integer> array) {
+
+        Set<Integer> values = new HashSet<Integer>();
+        for (int i = 0; i < array.size(); i++) {
+            values.add(array.get(i));
+        }
+
+        Iterator itr = values.iterator();
+        ArrayList<Integer> uniquevalues = new ArrayList<Integer>();
+        while (itr.hasNext()) {
+            uniquevalues.add((Integer) itr.next());
+        }
+        return uniquevalues;
+    }
+
+    public ArrayList<Projectdiscussion> viewDiscussion(int projId) throws SQLException, ClassNotFoundException {
+        connect();
+        ArrayList<Projectdiscussion> DiscussionList = new ArrayList();
+        Statement stmt = con.createStatement();
+
+        ResultSet rs = stmt.executeQuery("select discussionId, projId, discussionHead, timeStamp,"
+                + "p.userId, username from projectdiscussion p,usermaster u "
+                + "where p.userId=u.userId and  projId =" + projId);
+        Projectdiscussion dmobj = null;
+
+
+        while (rs.next()) {
+            dmobj = new Projectdiscussion();
+            dmobj.setDiscussionId(rs.getInt("discussionId"));
+            dmobj.setProjId(rs.getInt("projId"));
+            dmobj.setDiscussionHead(rs.getString("discussionHead"));
+            dmobj.setTimeStamp(rs.getDate("timeStamp"));
+            dmobj.setUserId(rs.getInt("userId"));
+            dmobj.setUsrName(rs.getString("username"));
+            System.out.println(dmobj);
+            DiscussionList.add(dmobj);
+        }
+
+        disConnect();
+        return DiscussionList;
+    }
+
+    public boolean addComment(Projectdiscussioncomment obj) {
+        boolean value;
+        try {
+            connect();
+            PreparedStatement pst = con.prepareCall("insert into projectdiscussioncomment("
+                    + "discussionId, userId, timeSatmp, comment) values(?,?,?,?)");
+            pst.setInt(1, obj.getDiscussionId());
+            pst.setInt(2, obj.getUserId());
+            pst.setDate(3, new java.sql.Date(obj.getTimeSatmp().getTime()));
+            pst.setString(4, obj.getComment());
+            // pst.setInt(5, obj.getLikes());
+            pst.executeUpdate();
+            value = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            value = false;
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return value;
+    }
+
+    public boolean addDiscussion(Projectdiscussion obj) {
+        boolean value;
+        try {
+            connect();
+            PreparedStatement pst = con.prepareCall("insert into projectdiscussion(projId,"
+                    + " discussionHead, timeStamp, userId) values(?,?,?,?)");
+            pst.setInt(1, obj.getProjId());
+            pst.setString(2, obj.getDiscussionHead());
+            pst.setDate(3, new java.sql.Date(obj.getTimeStamp().getTime()));
+            pst.setInt(4, obj.getUserId());
+            pst.executeUpdate();
+            value = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            value = false;
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return value;
+    }
+
+    public boolean updateTaskPhase(int taskId, int phaseId) {
+        boolean result;
+        try {
+            connect();
+            PreparedStatement pst = con.prepareStatement("update projecttask set "
+                    + "phaseId=? where taskId=?;");
+            pst.setInt(1, phaseId);
+            pst.setInt(2, taskId);
+            pst.executeUpdate();
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = false;
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<Projectbugtrack> selectbugs(int projId) throws SQLException {
+        ArrayList<Projectbugtrack> buglist = new ArrayList();
+        try {
+            connect();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("select * from projectbugtrack "
+                    + "where projectId=" + projId + ";");
+            System.out.println("Now I am here .....");
+            Projectbugtrack obj = null;
+            while (rs.next()) {
+                obj = new Projectbugtrack();
+                System.out.println("hello World");
+                obj.setProjectId(rs.getInt("projectId"));
+                obj.setIssue(rs.getString("issue"));
+                obj.setTimeStamp(rs.getDate("timeStamp"));
+                obj.setUserId(rs.getInt("userId"));
+                obj.setBugId(rs.getInt("bugId"));
+                obj.setFileUrl(rs.getString("fileUrl"));
+
+                buglist.add(obj);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return buglist;
+
+    }
+
+    public ArrayList<Projectbugtrackcomment> selectbug_detail(int bug_id) throws SQLException {
+        ArrayList<Projectbugtrackcomment> bug_comm_list = new ArrayList();
+        try {
+            connect();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("Select * from projectbugtrackcomment "
+                    + "where bugId = " + bug_id + ";");
+            Projectbugtrackcomment oaddbug_comm = null;
+
+            while (rs.next()) {
+                oaddbug_comm = new Projectbugtrackcomment();
+                oaddbug_comm.setUId(rs.getInt("uId"));
+                oaddbug_comm.setComment(rs.getString("comment"));
+                oaddbug_comm.setTimeSatmp(rs.getDate("timeStamp"));
+
+                bug_comm_list.add(oaddbug_comm);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println(bug_comm_list);
+        return bug_comm_list;
+
+    }
+
+    public int addBug(Projectbugtrack bug) throws SQLException {
+        boolean result;
+        PreparedStatement pst = null;
+        int temp;
+        ResultSet rs = null;
+        try {
+            connect();
+            pst = con.prepareStatement("Insert into projectbugtrack(projectId,issue,"
+                    + "timeStamp,userId) values(?,?,?,?);");
+            pst.setInt(1, bug.getProjectId());
+            pst.setString(2, bug.getIssue());
+            pst.setDate(3, new java.sql.Date(bug.getTimeStamp().getTime()));
+            pst.setInt(4, bug.getUserId());
+            //pst.setString(5, bug.getFileUrl());
+            pst.executeUpdate();
+            Statement st = con.createStatement();
+
+            rs = st.executeQuery("select LAST_INSERT_ID();");
+            rs.next();
+            temp = rs.getInt(1);
+            //  System.out.println("temp Value : " + temp);
+            rs = st.executeQuery("Select userId from projectmember where "
+                    + "projId =" + bug.getProjectId() + ";");
+
+            while (rs.next()) {
+                pst = con.prepareCall("insert into tblnotification(userId,notification"
+                        + ",timeStamp,notType,rID) values (?,?,?,?,?);");
+                pst.setInt(1, rs.getInt("userId"));
+                pst.setString(2, bug.getIssue());
+                pst.setDate(3, new java.sql.Date(bug.getTimeStamp().getTime()));
+                pst.setString(4, "Bug");
+                pst.setInt(5, temp);
+
+                pst.executeUpdate();
+            }
+            return temp;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+
+    }
+
+    public boolean addProject(Projectmaster pm, ArrayList<Integer> tagids) {
+        boolean result;
+        try {
+            connect();
+            PreparedStatement pst = con.prepareCall("Insert into projectmaster("
+                    + "projName,projdesc,projOwner,projType)" + "values(?,?,?,?)");
+            pst.setString(1, pm.getProjName());
+            pst.setString(2, pm.getProjDesc());
+            pst.setInt(3, pm.getProjOwner());
+            pst.setString(4, pm.getProjType());
+            pst.executeUpdate();
+            for (int i = 0; i < tagids.size(); i++) {
+                String query1 = "insert into projecttags (projectId,tagId) values"
+                        + " (LAST_INSERT_ID()," + tagids.get(i) + ")";
+                putData(query1);
+            }
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = false;
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        return result;
+    }
 }

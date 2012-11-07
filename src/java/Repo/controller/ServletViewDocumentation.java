@@ -91,7 +91,7 @@ public class ServletViewDocumentation extends HttpServlet {
         request.setAttribute("status", status);
         request.setAttribute("doc", doc);
 
-        RequestDispatcher rd = request.getRequestDispatcher("ProjectviewDocument.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("ProjectviewDocument.jsp?projId"+projId);
 
         rd.forward(request, response);
     }

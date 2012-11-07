@@ -18,6 +18,16 @@ public class Projectdiscussion {
     private Date timeStamp;
     private Integer userId;
 
+    public void setUsrName(String usrName) {
+        this.usrName = usrName;
+    }
+
+    public String getUsrName() {
+        return usrName;
+    }
+    private String usrName;
+
+
     public Projectdiscussion() {
     }
 

@@ -69,19 +69,30 @@ and open the template in the editor.
         <div class="container conatiner_support">
             <div class="row">
                 <ul id="project_menu">
-                    <li>
-                        <a href="" >Home</a>
+                  <li>
+                        <a class="menuLink" href="ServletProjectHome?projId=" >Home</a>
+                    </li>
+                    <li id="projDash">
+                        <a class="menuLink" href="frmProjectDashboard.html?projId=" >Project Management</a>
                     </li>
                     <li>
-                        <a href="" >Documentation</a>
+                        <a class="menuLink" href="projectDownload.html?projId=" >Downloads</a>
                     </li>
                     <li>
-                        <a href="" >Bug Tracking</a>
+                        <a class="menuLink" href="ServletViewDocumentation?projId=" >Documentation</a>
                     </li>
                     <li>
-                        <a href="" >Discussion</a>
+                        <a class="menuLink" href="ServletGetBugs?projId=" >Bug Tracking</a>
                     </li>
-
+                    <li>
+                        <a class="menuLink" href="ServletDiscussionHead?projId=" >Discussion</a>
+                    </li>
+                    <li>
+                        <a class="menuLink" href="ProjectPeople.jsp?projId=" >People</a>
+                    </li>
+                    <li>
+                        <a class="menuLink" href="ProjectLicense.html?projId=" >License</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -271,6 +282,26 @@ and open the template in the editor.
                         return decodeURIComponent(results[1].replace(/\+/g, " "));
                 }
                 var projId=getParameterByName("projId");
+                $.each($('a.menuLink'), function(key,val){
+                    var link=$(val).attr('href');
+                    link=link+projId;
+                    $(val).attr('href',link);
+                });
+                $.ajax({
+                    url:'ServletCheckUserType',
+                    data:{
+                        projId:projId
+                    },
+                    type:'post',
+                    success:function(dt){
+                        if (dt.status!='true'){
+                            $("#projDash").css('display','none');
+                        }
+                    },
+                    error:function(){
+                        console.log('error');
+                    }
+                });
                 $('#hiddenProjId').attr('value',projId);
                 function fillTask(){
                     $.ajax({

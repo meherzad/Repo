@@ -120,6 +120,16 @@
                     </div>
                 </div>
             </div>
+            <div class="container conatiner_support">
+                <c:forEach items="${requestScope.projectList}" var="proj">
+                    <div class="row">
+                        <div class="float_left">
+                            <a href="?projId=${proj.projId}">
+                                ${proj.projName}
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
         </c:if>
         <div id="footer">
             <div class="row">

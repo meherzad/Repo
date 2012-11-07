@@ -169,7 +169,7 @@ a#help,a#gethelp,a#improve,a#whatsnew,a#register,a#signin {
     font-weight: lighter;
     width: 25%;
     height: 25%;
-    margin: 0px 12px 0px 0;
+    margin: 0px 0px 0px 12px;
     padding: 15px 0 0 20px;
     position: relative;
     top: 20px;
@@ -425,6 +425,12 @@ ul#project_menu li a:hover{
     text-decoration: none;
 }
 
+.row .float_right a:hover{
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
 h2#welcome_msg {
     margin-top: 5px;
     color: #6A747E;
@@ -439,7 +445,8 @@ h2#welcome_msg {
 
 .row .float_right a:hover {
     text-decoration: none;
-    border-bottom: 3px #7B4F9D solid;
+    cursor: alias;
+    /*border-bottom: 3px #7B4F9D solid;*/
 }
 
 a#download_button {
@@ -458,12 +465,17 @@ a#download_button {
     width: 300px;
 }
 
+a#download_button:hover{
+    text-decoration: none;
+    cursor: pointer;
+}
 .footer_link{
     margin-left: 20%;
 }
 
 .accordion-heading a:hover{
     text-decoration: none !important;
+    cursor: hand;
 }
 
 .addTask a{
@@ -500,3 +512,17 @@ anim_h2 {
     background-color: #8EBD40;
 }
 
+#docdisplay{
+    background-color: #F0F1F4;
+    color: #253340;
+    display: block;
+    float: left;
+    font: 18px 'Segoe UI',Tahoma,Arial,Helvetica,sans-serif;
+    font-weight: lighter;
+    height: 35px;
+    text-align: center;
+    margin: 0 0 10px 10px;
+    padding: 5px 0 0 0;
+    position: relative;
+    width: 140px;
+}

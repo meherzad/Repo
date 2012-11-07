@@ -78,7 +78,7 @@ public class ServletGetTaskProgress extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int progress, t, f, taskId;
+        int progress, t, f, taskId, phase;
         String status;
         taskId = Integer.parseInt(request.getParameter("taskId"));
         JSONObject json = new JSONObject();
@@ -95,6 +95,14 @@ public class ServletGetTaskProgress extends HttpServlet {
             }
             status = "success";
             progress = 100 * f / t;
+            if (progress == 0) {
+                phase = 1;
+            } else if (progress == 100) {
+                phase = 3;
+            } else {
+                phase = 2;
+            }
+            obj.updateTaskPhase(taskId, phase);
         } catch (Exception e) {
             status = "fail";
             progress = 0;

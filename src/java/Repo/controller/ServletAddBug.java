@@ -5,26 +5,22 @@
 package Repo.controller;
 
 import Repo.model.DatabaseManager;
-import Repo.model.Hashing;
-import Repo.model.Usermaster;
+import Repo.model.Projectbugtrack;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Date;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.json.simple.JSONObject;
 
 /**
  *
- * @author XANDER
+ * @author meherzad
  */
-public class ServletLoginVerification extends HttpServlet {
+public class ServletAddBug extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -44,10 +40,10 @@ public class ServletLoginVerification extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginVerification</title>");
+            out.println("<title>Servlet ServletAddBug</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginVerification at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ServletAddBug at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -68,7 +64,7 @@ public class ServletLoginVerification extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+       
     }
 
     /**
@@ -83,51 +79,36 @@ public class ServletLoginVerification extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Usermaster user = new Usermaster();
-        user.setUsername(request.getParameter("user"));
-        String pd = null;
-        System.out.println(request.getParameter("user"));
+         int temp = 0;
+        String tempp1 = request.getParameter("hdnProj");
+        System.out.println(tempp1);
+        int p1 = Integer.parseInt(tempp1);
+        String tempp2 = request.getParameter("txtissue");
         HttpSession session = request.getSession(true);
-        String result, status;
-        try {
-            pd = request.getParameter("pass");
-            System.out.println(pd+" -----***");
-            if (pd != null) {
-                System.out.println("========" + pd);
-                pd = Hashing.getHashValue(pd);
-            }
-        } catch (NoSuchAlgorithmException ex) {
-            //Logger.getLogger(LoginVerification.class.getName()).log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
-        }
-        user.setPassword(pd);
-        DatabaseManager dm = new DatabaseManager();
-        Usermaster verifUser = null;
-        PrintWriter out = response.getWriter();
-        try {
-            if (pd != null || pd != "") {
-                verifUser = dm.LoginVerify(user);
-                status = "success";
-            } else {
-                status = "fail";
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            status = "fail";
-        }
-        if (verifUser != null) {
-            result = "Valid User";
-            session.setAttribute("userId", verifUser.getUserId());
-        } else {
-            result = "Invalid User";
-        }
-        JSONObject json = new JSONObject();
-        json.put("result", result);
-        json.put("status", status);
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        out.print(json);
+        String tempp3 = session.getAttribute("userId").toString();
+        int p3 = Integer.parseInt(tempp3);
+        Date p4 = new java.util.Date();
+        //String p5 = request.getParameter("txtbugfile");
+        DatabaseManager dbcon = new DatabaseManager();
+        Projectbugtrack obj = new Projectbugtrack();
+        obj.setProjectId(p1);
+        obj.setIssue(tempp2);
+        obj.setUserId(p3);
+        //obj.setFileUrl(p5);
 
+
+        obj.setTimeStamp(p4);
+        System.out.println("servlet created");
+        try {
+
+            temp = dbcon.addBug(obj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(temp);
+        request.setAttribute("temp", temp);
+        RequestDispatcher rd = request.getRequestDispatcher("addbugfile.jsp");
+        rd.forward(request, response);
     }
 
     /**

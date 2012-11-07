@@ -15,6 +15,37 @@ and open the template in the editor.
         <script src="js/bootstrap.min.js" type="text/javascript"></script>
     </head>
     <body>
+        <div class="container conatiner_support">
+            <div class="row">
+                <ul id="project_menu">
+                    <li>
+                        <a class="menuLink" href="ProjectHome?projId=" >Home</a>
+                    </li>
+                    <li id="projDash">
+                        <a class="menuLink" href="frmProjectDashboard.html?projId=" >Project Management</a>
+                    </li>
+                    <li>
+                        <a class="menuLink" href="projectDownload.html?projId=" >Downloads</a>
+                    </li>
+                    <li>
+                        <a class="menuLink" href="ServletViewDocumentation?projId=" >Documentation</a>
+                    </li>
+                    <li>
+                        <a class="menuLink" href="ServletGetBugs?projId=" >Bug Tracking</a>
+                    </li>
+                    <li>
+                        <a class="menuLink" href="ServletDiscussionHead?projId=" >Discussion</a>
+                    </li>
+                    <li>
+                        <a class="menuLink" href="ProjectPeople.jsp?projId=" >People</a>
+                    </li>
+                    <li>
+                        <a class="menuLink" href="ProjectLicense.html?projId=" >License</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
         Select license:
         <select id="selectLicense" >
             <option> </option>
@@ -57,6 +88,27 @@ and open the template in the editor.
                         return decodeURIComponent(results[1].replace(/\+/g, " "));
                 }
                 var projId=getParameterByName("projId");
+
+                $.each($('a.menuLink'), function(key,val){
+                    var link=$(val).attr('href');
+                    link=link+projId;
+                    $(val).attr('href',link);
+                });
+                $.ajax({
+                    url:'ServletCheckUserType',
+                    data:{
+                        projId:projId
+                    },
+                    type:'post',
+                    success:function(dt){
+                        if (dt.status!='true'){
+                            $("#projDash").css('display','none');
+                        }
+                    },
+                    error:function(){
+                        console.log('error');
+                    }
+                });
                 $.ajax({
                     url:'ServletGetLicense',
                     type:'post',
@@ -75,7 +127,7 @@ and open the template in the editor.
                 $("#selectLicense").change(function(){
                     var selId=$(this).find("option:selected").attr('value');
                     console.log(selId);
-                   // $("#UpdateProgressPanel").css('display','inline');
+                    // $("#UpdateProgressPanel").css('display','inline');
                     $.ajax({
                         url:'ServletGetLicense',
                         type : 'POST',

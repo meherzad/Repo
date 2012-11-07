@@ -5,6 +5,7 @@
 package Repo.controller;
 
 import Repo.model.DatabaseManager;
+import Repo.model.Notification;
 import Repo.model.Projectdetail;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -93,11 +94,21 @@ public class ServletAcceptInvitation extends HttpServlet {
         pd.setUserId(UserId);
         pd.setProjectId(ProjectId);
         pd.setjDate(creationDate);
-        if (dm1.update(pd, type, ProjectId, UserId)) {
+
+        Notification nt = new Notification();
+
+        String notify = "New Member Added";
+        String notType = "New User";
+        //setting value for Notification.  
+        nt.setUserId(UserId);
+        nt.setNotType(notType);
+        nt.setNotification(notify);
+        nt.setTimeStamp(creationDate);
+
+        if (dm1.update(pd, type, ProjectId, UserId, nt)) {
             result = "success";
         } else {
             result = "fail";
-
         }
         System.out.println("----->" + result);
         RequestDispatcher rd = request.getRequestDispatcher("AcceptInvitation.jsp");

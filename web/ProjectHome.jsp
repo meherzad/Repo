@@ -67,7 +67,7 @@
                                                 <label class="loginLabel" style="text-align: left !important;padding-top: 0px !important; ">Remember me</label>
                                             </label><br>
                                             <div style="color: red;" id="loginStatus"></div>
-                                            
+
                                             <button type="button" class="btn" id="btnLogIn">Sign in</button>
                                         </div>
                                     </div>
@@ -80,70 +80,67 @@
                 </div>
             </div>
         </header>
-        <c:if test="${requestScope.status eq 'success'}" >
-            <div class="container conatiner_support">
-                <div class="row">
-                    <div class="float_left">
-                        <img id="imgUser" style="float: left;margin-right: 10px;" 
-                             src="${requestScope.project.iUrl}" width="50" height="50"  />
-                        <h2 id="welcome_msg">${requestScope.project.projName}</h3>
 
-                    </div>
+        <div class="container conatiner_support">
+            <div class="row">
+                <div class="float_left">
+                    <img id="imgUser" style="float: left;margin-right: 10px;" 
+                         src="${requestScope.project.iUrl}" width="50" height="50"  />
+                    <h2 id="welcome_msg">${requestScope.project.projName}</h3>
 
                 </div>
-            </div>
 
-            <div class="container conatiner_support">
-                <div class="row">
-                    <ul id="project_menu">
-                        <li>
-                            <a href="" >Home</a>
-                        </li>
-                        <c:if test="${requestScope.userCheck eq true }" >
-                            <li>
-                                <a href="frmProjectDashboard.html?projId=${requestScope.project.projId}" >Project Management</a>
-                            </li>
-                        </c:if>
-                        <li>
-                            <a href="projectDownload.html?projId=${requestScope.project.projId}" >Downloads</a>
-                        </li>
-                        <li>
-                            <a href="ServletViewDocumentation?projId=${requestScope.project.projId}" >Documentation</a>
-                        </li>
-                        <li>
-                            <a href="" >Bug Tracking</a>
-                        </li>
-                        <li>
-                            <a href="" >Discussion</a>
-                        </li>
-                        <li>
-                            <a href="ProjectPeople.jsp?projId=${requestScope.project.projId}" >People</a>
-                        </li>
-                        <li>
-                            <a href="ProjectLicense.html?projId=${requestScope.project.projId}" >License</a>
-                        </li>
-                    </ul>
+            </div>
+        </div>
+
+        <div class="container conatiner_support">
+            <div class="row">
+                <ul id="project_menu">
+                    <li>
+                        <a class="menuLink" href="ServletProjectHome?projId=" >Home</a>
+                    </li>
+                    <li id="projDash">
+                        <a class="menuLink" href="frmProjectDashboard.html?projId=" >Project Management</a>
+                    </li>
+                    <li>
+                        <a class="menuLink" href="projectDownload.html?projId=" >Downloads</a>
+                    </li>
+                    <li>
+                        <a class="menuLink" href="ServletViewDocumentation?projId=" >Documentation</a>
+                    </li>
+                    <li>
+                        <a class="menuLink" href="ServletGetBugs?projId=" >Bug Tracking</a>
+                    </li>
+                    <li>
+                        <a class="menuLink" href="ServletDiscussionHead?projId=" >Discussion</a>
+                    </li>
+                    <li>
+                        <a class="menuLink" href="ProjectPeople.jsp?projId=" >People</a>
+                    </li>
+                    <li>
+                        <a class="menuLink" href="ProjectLicense.html?projId=" >License</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="container conatiner_support">
+            <div class="row">
+                <div class="float_left">
+                    ${requestScope.project.projDesc}
+                </div>
+                <div class="float_right">
+                    <a id="download_button" href="${requestScope.project.codeUrl}">Download</a>
+                </div>
+                <div>
+                    <form action="ServletSearchUser" method="post">
+                        <input type="text" name="txtSearch">
+                        <input type="submit" value="Search">
+                    </form>
+                    <a href="ServletDisplayRequest">View Request</a>
                 </div>
             </div>
-
-            <div class="container conatiner_support">
-                <div class="row">
-                    <div class="float_left">
-                        ${requestScope.project.projDesc}
-                    </div>
-                    <div class="float_right">
-                        <a id="download_button">Download</a>
-                    </div>
-                    <div>
-                        <form action="ServletSearchUser" method="post">
-                            <input type="text" name="txtSearch">
-                            <input type="submit" value="Search">
-                        </form>
-                        <a href="ServletDisplayRequest">View Request</a>
-                    </div>
-                </div>
-            </div>
-        </c:if>
+        </div>
         <div id="footer">
             <div class="row">
                 <hr style="color:">
@@ -161,7 +158,37 @@
 
         <script>
             (function(){
-                
+                function getParameterByName(name) {
+                    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+                    var regexS = "[\\?&]" + name + "=([^&#]*)";
+                    var regex = new RegExp(regexS);
+                    var results = regex.exec(window.location.search);
+                    if (results == null)
+                        return "";
+                    else
+                        return decodeURIComponent(results[1].replace(/\+/g, " "));
+                }
+                var projId=getParameterByName("projId");
+                $.each($('a.menuLink'), function(key,val){
+                    var link=$(val).attr('href');
+                    link=link+projId;
+                    $(val).attr('href',link);
+                });
+                $.ajax({
+                    url:'ServletCheckUserType',
+                    data:{
+                        projId:projId
+                    },
+                    type:'post',
+                    success:function(dt){
+                        if (dt.status!='true'){
+                            $("#projDash").css('display','none');
+                        }
+                    },
+                    error:function(){
+                        console.log('error');
+                    }
+                });
             })();
         </script>
     </body>

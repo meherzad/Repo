@@ -23,6 +23,15 @@ public class Projectmaster {
     private ArrayList<Usermaster> members;
     private Integer licenseId;
     private String projectDoc;
+    private String codeUrl;
+
+    public void setCodeUrl(String codeUrl) {
+        this.codeUrl = codeUrl;
+    }
+
+    public String getCodeUrl() {
+        return codeUrl;
+    }
 
     public void setProjectDoc(String projectDesc) {
         this.projectDoc = projectDesc;

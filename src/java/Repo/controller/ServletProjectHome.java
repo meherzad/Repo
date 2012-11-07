@@ -8,6 +8,7 @@ import Repo.model.DatabaseManager;
 import Repo.model.Projectmaster;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -66,17 +67,20 @@ public class ServletProjectHome extends HttpServlet {
         HttpSession session = request.getSession(true);
         int projId = Integer.parseInt(request.getParameter("projId"));
         Boolean userCheck;
-        int userId = Integer.parseInt(session.getAttribute("userId").toString());
-        session.setAttribute("projId", projId);
+        Object objUserId = session.getAttribute("userId");
+        Integer userId=null;
+        if (objUserId != null) {
+            userId = Integer.parseInt(objUserId.toString());
+        }
+        //session.setAttribute("projId", projId);
         DatabaseManager obj = new DatabaseManager();
         Projectmaster project = obj.getProject(projId);
         String status;
-        if (project == null) {
+        if (project == null || objUserId == null) {
             status = "fail";
         } else {
             status = "success";
             userCheck = obj.checkUserInProject(projId, userId);
-            //session.setAttribute("", status);
             request.setAttribute("userCheck", userCheck);
         }
         request.setAttribute("status", status);

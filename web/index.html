@@ -42,7 +42,7 @@
                                 <h3 id="myModalLabel" style="color: #6A747E;"><center>Sign In</center></h3>
                             </div>
                             <div class="modal-body">
-                                <form class="form-horizontal" method="post" action="">
+                                <form class="form-horizontal" method="post" id="modalForm" action="">
                                     <div class="control-group">
                                         <label class="loginLabel" for="inputEmail">Email</label>
                                         <div class="controls">
@@ -52,7 +52,7 @@
                                     <div class="control-group">
                                         <label class="loginLabel" for="inputPassword">Password</label>
                                         <div class="controls">
-                                            <input type="password" id="password" name="password" placeholder="Password">
+                                            <input type="password" id="Userpass" name="password" placeholder="Password">
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -89,13 +89,15 @@
                 </a>
             </div>
 
-            <div class="row">
+            <div class="row" >
                 <div id="welcome_entry">
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
                         suscipit pretium odio, a feugiat ante lobortis ut. Sed nunc nisl,
                         ultrices adipiscing viverra sit amet, venenatis non lorem. Fusce
-                        dictum.</p>
+                        dictum.
+                    </p>
                 </div>
+                
                 <div id="tile_links" class="row">
 
                     <a id="help" href="#">Join a project<br> <span
@@ -189,14 +191,15 @@
                                 $("#topFollowed div").append(temp(dt.content));
                             });
                             $("#btnLogIn").click(function(){
+                                console.log($('#password').val());
                                 $.ajax({
                                     url:'ServletLoginVerification',
                                     data: {
-                                        'username' : $('#username').attr('value'),
-                                        'password': $('#password').attr('value')
+                                        pass:$('#Userpass').val(),
+                                        user:$('#username').val()
                                     },
                                     type:'post',
-                                    data:'json',
+                                    //data:'json',
                                     success:function(dt){
                                         console.log(dt);
                                         if (dt.status=='success'){

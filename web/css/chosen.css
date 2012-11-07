@@ -67,9 +67,9 @@
   right: 26px;
   top: 6px;
   width: 12px;
-  height: 13px;
+  height: 11px;
   font-size: 1px;
-  background: url('chosen-sprite.png') right top no-repeat;
+  background: url('../images/chosen-sprite.png') right top no-repeat;
 }
 .chzn-container-single .chzn-single abbr:hover {
   background-position: right -11px;
