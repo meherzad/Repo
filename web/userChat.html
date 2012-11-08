@@ -1,0 +1,145 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/style 2.css">
+        <link rel="stylesheet" href="css/paging.css">
+        <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+        <script type="text/javascript" src="js/quickpager.jquery.js"></script>
+        <script type="text/javascript" src="http://cloud.github.com/downloads/wycats/handlebars.js/handlebars-1.0.0.beta.6.js"></script>
+    </head>
+    <body>
+        <header class="navbar">
+            <div class="navbar-inner">
+                <div class="container conatiner_support">
+                    <div class="float_left">
+                        <p id="logo">
+                            <a href="http://localhost:8080/FinalDesign/index.html">Site
+                                Logo</a> <span class="tagline">Free project hosting</span>
+                        </p>
+                    </div>
+                    <div class="float_right">
+                        <ul>
+                            <li>
+                                <ul class="ul_list" id="nav">
+                                    <li><a id="lnkSignUp"> Sign Up</a></li>
+                                    <li><a id="lnkSignIn">Sign In</a></li>
+                                </ul>
+                            </li>
+                            <li><input id="searchSite" name="searchSite" maxlength="500"
+                                       type="text" value="" autocomplete="off"
+                                       title="Search all projects"
+                                       style="color: rgb(170, 170, 170); font-style: italic;">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="container conatiner_support">
+            <div class="row" style="position: relative;">
+                <div class="project_head">
+                    <div class="project_head_image">
+                        <a href="#" >
+                            <img src="images/p1.jpg" />
+                        </a>
+                    </div>
+                    <h1 class="project_title">
+                        <div>
+                            <a href="#">
+                                Sample project 
+                            </a>
+                        </div>
+                    </h1>
+                </div>
+            </div>
+        </div>
+        <div class ="conatiner_support container">
+            <div class="row" >
+                <div id="chat_log" style="overflow-y: scroll;
+                     overflow-x:hidden;max-height: 250px;border-left:10px;">
+
+                </div>
+            </div>
+            <div class="row" >
+                <input type="text" id="chat_text" name="chat_text"/>
+            </div>
+        </div>
+        <script id="chatscript" type="text/x-handlebars-template">
+            {{#each this}}
+            {{username}}:&nbsp;{{chat}}<br>
+            {{/each}}
+        </script>
+        <script type="text/javascript">
+            (function(){
+                var user,usr1;
+                function  getChat(){
+                    $.ajax({
+                        url:'ServletChat',
+                        data:{
+                            'type':'chatonload',
+                            'projId':projId
+                        },
+                        type:'post',
+                        success:function(dt){
+                            //console.log(dt.chat_log);
+                            var temp=Handlebars.compile($("#chatscript").html());
+                            $("#chat_log").html(temp(dt.chat_log));
+                            usr1=dt.user;
+                        },
+                        error:function(){
+                            console.log('error');
+                        }
+                    });
+                }
+                user=usr1;
+                function getParameterByName(name) {
+                    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+                    var regexS = "[\\?&]" + name + "=([^&#]*)";
+                    var regex = new RegExp(regexS);
+                    var results = regex.exec(window.location.search);
+                    if (results == null)
+                        return "";
+                    else
+                        return decodeURIComponent(results[1].replace(/\+/g, " "));
+                }
+                var projId=getParameterByName("projId");
+                getChat();
+                window.setInterval(function(){
+                    getChat();
+                },5000);
+                $("#chat_text").bind("keypress", function(e){
+                    var code=(e.keyCode?e.keyCode:e.which);
+                    if(code==13)
+                    {
+                        $("#chat_log").append(user+ ": "+$("#chat_text").val());
+                        //add 
+                        $.ajax({
+                            url:'ServletChat',
+                            data:{
+                                'type':'insertchat',
+                                'chat':$("#chat_text").val(),
+                                'projId':projId
+                            },
+                            type:'post',
+                            success:function(dt){
+                                $("#chat_text").val("");
+                            },
+                            error:function(){
+                                console.log('error');
+                            }
+                        });
+                    }
+                });
+            })();
+        </script>
+    </body>
+</html>
+

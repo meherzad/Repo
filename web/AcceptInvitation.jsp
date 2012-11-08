@@ -17,58 +17,62 @@
         <form name="acceptInvitation" method="POST">
 
             <c:if test="${requestScope.status eq 'sucess'}">
-               <table>
-                <c:forEach items="${requestScope.nameList}" var="nam">
+                <table>
+                    <c:forEach items="${requestScope.nameList}" var="nam">
                         <tr>
                             <td>Send Invitation to ${nam.projName} ?</td>
-                        <td>
-                            <input type="button" data-type="accept" class="btnInvitation" value="Accept" name="acceptinvite"
-                                   id="contentbtnacpt" data-projId="${nam.projId}"></td>
-                        <td>
-                            <input type="button" data-type="decline" class="btnInvitation" value="Decline" name="declineinvite"
-                                   id="contentbtndec" data-projId="${nam.projId}"></td>
+                            <td>
+                                <input type="button" data-type="accept" class="btnInvitation" value="Accept" name="acceptinvite"
+                                       id="contentbtnacpt" data-projId="${nam.projId}"></td>
+                            <td>
+                                <input type="button" data-type="decline" class="btnInvitation" value="Decline" name="declineinvite"
+                                       id="contentbtndec" data-projId="${nam.projId}"></td>
 
                         </tr>
                     </c:forEach>
                 </table>
             </c:if>
-            
-                        
-       
-<script type="text/javascript">
-  (function(){
-        $(".btnInvitation").live('click',function(){
-            var selId=$(this).attr('data-projId');
-            var type=$(this).attr('data-type');
-            alert(selId);
-            alert(type);
-            //console.log("here" + selName);
-           $.ajax({
-                url:'ServletAcceptInvitation',
-                type : 'POST',
-                data :{
-                    'type':type,
-                    'ProjectId':selId
-                                 },
-                success: function(data){
-                    if(data.status1='successfull saved')
-                    {$("#labelcheck").html("Invitation successfully sent");}
-                    else if(data.status1='Unsuccessfull saved')
-                    {$("#labelcheck").html('Invitation was unsucessfull');}
+
+
+
+            <script type="text/javascript">
+                (function(){
+                    $(".btnInvitation").live('click',function(){
+                        var selId=$(this).attr('data-projId');
+                        var type=$(this).attr('data-type');
+                        alert(selId);
+                        alert(type);
+                        //console.log("here" + selName);
+                        $.ajax({
+                            url:'ServletAcceptInvitation',
+                            type : 'POST',
+                            data :{
+                                'type':type,
+                                'ProjectId':selId
+                            },
+                            success: function(data){
+                                if(data.result='success')
+                                {
+                                    $("#labelcheck").html("Invitation successfully sent");
+                                }
+                                else if(data.result='fail')
+                                {
+                                    $("#labelcheck").html('Fail');
+                                }
                                 
-                },
-                error: function(){
-                    alert('error');
-                }
-            });
-            /*var datastring="userId="+selId;
-            $.getJSON("request",datastring,function(data){
-                alert(data.status1);
-            });*/
-        });
-    })();
+                            },
+                            error: function(){
+                                alert('error');
+                            }
+                        });
+                        /*var datastring="userId="+selId;
+                        $.getJSON("request",datastring,function(data){
+                            alert(data.status1);
+                        });*/
+                    });
+                })();
      
-</script>
-    </form>
+            </script>
+        </form>
     </body>
 </html>

@@ -2,6 +2,7 @@
 To change this template, choose Tools | Templates
 and open the template in the editor.
 -->
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -10,11 +11,98 @@ and open the template in the editor.
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
         <link rel="stylesheet" href="css/style.css">
-        <script src="js/jquery-1.7.2.min.js" ></script>
         <script type="text/javascript" src="http://cloud.github.com/downloads/wycats/handlebars.js/handlebars-1.0.0.beta.6.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
+        <style>
+            #SelectLicense{
+                border-bottom: 3px #5EA8DE solid;
+                background-color: #F0F1F4;
+                color: #253340;
+                display: block;
+                float:inside;
+                font: 18px 'Segoe UI', Tahoma, Arial, Helvetica, sans-serif;
+                font-weight: lighter;
+                margin: 0px 0px 0px 12px;
+                padding: 30px;
+                position: relative;
+                top: 20px;
+            }
+
+
+        </style>
     </head>
     <body>
+        <header class="navbar">
+            <div class="navbar-inner">
+                <div class="container conatiner_support">
+                    <div class="float_left">
+                        <p id="logo">
+                            <a href="index.html">Site
+                                Logo</a> <span class="tagline">Free project hosting</span>
+                        </p>
+                    </div>
+
+                    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                            <h3 id="myModalLabel" style="color: #6A747E;"><center>Sign In</center></h3>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal" method="post" action="">
+                                <div class="control-group">
+                                    <label class="loginLabel" for="inputEmail">Email</label>
+                                    <div class="controls">
+                                        <input type="text" id="username" name="username" placeholder="Email">
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="loginLabel" for="inputPassword">Password</label>
+                                    <div class="controls">
+                                        <input type="password" id="password" name="password" placeholder="Password">
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <label class="checkbox">
+                                            <input type="checkbox"> 
+                                            <label class="loginLabel" style="text-align: left !important;padding-top: 0px !important; ">Remember me</label>
+                                        </label><br>
+                                        <div style="color: red;" id="loginStatus"></div>
+
+                                        <button type="button" class="btn" id="btnLogIn">Sign in</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </header>
+
+        <div class="container conatiner_support">
+            <div class="row">
+
+                <div class="project_head">
+                    <div class="project_head_image">
+                        <a href="#" >
+                            <img src="images/p1.jpg" />
+                        </a>
+                    </div>
+                    <h1 class="project_title">
+                        <div>
+                            <a href="#">
+                                Sample project 
+                            </a>
+                        </div>
+                    </h1>
+                </div>
+            </div>
+        </div>
+
         <div class="container conatiner_support">
             <div class="row">
                 <ul id="project_menu">
@@ -45,34 +133,35 @@ and open the template in the editor.
                 </ul>
             </div>
         </div>
-
-        Select license:
-        <select id="selectLicense" >
-            <option> </option>
-            <option value="1">Apache License 2.0 (Apache)</option>
-            <option value="3" >New BSD License (BSD)</option>
-            <option value="4" >Eclipse Public License (EPL)</option>
-            <option value="5" >Common Development and Distribution License (CDDL)</option>              
-            <option value="6" >GNU General Public License version 2 (GPLv2)</option>
-            <option value="7" >GNU Lesser General Public License (LGPL)</option>
-            <option value="9" >The MIT License (MIT)</option>
-        </select><br>
-        <input type="button" value="Save" name="btnlicSave" id="contentbtnsave" /><br>
-        <label style="color:red" id="labelcheck"></label><br>
-        <h1 id="contentHeader"></h1>
-        <div id="content">
-
-        </div>
-        <div id="UpdateProgressPanel" class="loading_animation ui-dialog-content ui-widget-content" 
-             style="display:none ;width: auto; min-height: 10px; height: auto; ">
+        <div class="container conatiner_support">
             <div class="row">
-                <h2 class="anim_h2">
-                    <span id="UpdateProgressText">Working...</span>
-                    <span id="animatedLoadingIconContainer">
 
-                        <img id="animatedLoadingIcon" src="images/loading_animation.gif" class="anim_img"></span>
-                </h2>
-            </div>x 
+                <form name="selectLicense" action="" method="POST">
+                    <center>
+                        <div id="SelectLicense"><br> Select license: 
+                            <select id="selectLicense" >
+                                <option value="0">Select license </option>
+                                <option value="1">Apache License 2.0 (Apache)</option>
+                                <option value="3" >New BSD License (BSD)</option>
+                                <option value="4" >Eclipse Public License (EPL)</option>
+                                <option value="5" >Common Development and Distribution License (CDDL)</option>              
+                                <option value="6" >GNU General Public License version 2 (GPLv2)</option>
+                                <option value="7" >GNU Lesser General Public License (LGPL)</option>
+                                <option value="9" >The MIT License (MIT)</option>
+                            </select><br>
+                            <input type="button" value="Save" name="btnlicSave" id="contentbtnsave" />
+                        </div>>
+                        <label style="color:red" id="labelcheck"></label>
+                        <h1 id="contentHeader"></h1> 
+                    </center>
+
+
+                    <div id="content">
+
+                    </div> 
+
+                </form>
+            </div>
         </div>
 
         <script type="text/javascript">
@@ -126,7 +215,7 @@ and open the template in the editor.
                 });
                 $("#selectLicense").change(function(){
                     var selId=$(this).find("option:selected").attr('value');
-                    console.log(selId);
+                    console.log(selId);0
                     // $("#UpdateProgressPanel").css('display','inline');
                     $.ajax({
                         url:'ServletGetLicense',
@@ -149,6 +238,10 @@ and open the template in the editor.
                 
                 $("#contentbtnsave").click(function(){
                     var selId=$("#selectLicense").attr('value');
+                    if (selId==0){
+                        $("#labelcheck").html('Select one license');
+                        return ;
+                    }
                     console.log("here" + selId);
                     $.ajax({
                         url:'ServletGetLicense',
@@ -159,7 +252,7 @@ and open the template in the editor.
                             'projId':projId
                         },
                         success: function(data){
-                            if(data.status=='successfull saved')
+                            if(data.status=='success')
                             {
                                 $("#labelcheck").html("successfull");
                             }

@@ -2,15 +2,14 @@
     Document   : userResetPassword
     Created on : 5 Nov, 2012, 5:05:46 PM
     Author     : meherzad
---%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+--%><%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script type="text/javascript" src="js/validations.js"></script>
-        <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
         <title>JSP Page</title>
     </head>
     <body>
@@ -33,19 +32,18 @@
                 </tr>
                 <tr>
                     <td>New Password</td>
-                    <td><input type="password" name="newpass" id="newpass" onblur="verifyPasswordFormat(this.id)"/></td>
+                    <td><input type="password" name="newpass" id="newpass" onblur="verifyPasswordFormat(this.id); checkBlank('newpass','cnfrmpass');"/></td>
                 </tr>
                 <tr>
                     <td>Confirm Password</td>
                     <td><input type="password" name="cnfrmpass" id="cnfrmpass" onblur="passwordmatch('newpass','cnfrmpass')"/></td>
                 </tr>
                 <tr>
-                    <td><input type="button" name="submit" value="Submit"
-                               onclick="return passwordValidation()" id="btnsubmit" /></td>
+                    <td><input type="button" name="submit" value="Submit" onclick="return passwordValidation()" id="btnsubmit" /></td>
                 </tr>
-
+               
             </table>
-            <div id="userResult"></div>
+                               <div id="userResult"></div>
         </form>
         <script>
             (function(){
@@ -53,9 +51,9 @@
                     var hiddenuserid=$('#hiddenuserid').attr('value');
                     var hiddenVerfId=$('#hiddenVerfId').attr('value');
                     var newpass=$('#newpass').attr('value');
-                    //alert('sdf');
+                   // alert('sdf');
                     $.ajax({
-                        url : 'ServletSubmitPass',
+                        url : 'submitPassServlet',
                         data : {
                             'hiddenuserid' : hiddenuserid,
                             'hiddenVerfId' : hiddenVerfId,
@@ -69,7 +67,7 @@
                             
                         },
                         error:function(){
-                            alert('error');
+                            alert('kj');
                         }
                     });
                 });              
@@ -77,4 +75,4 @@
         </script>
 
     </body>
-</html>
+</html> 

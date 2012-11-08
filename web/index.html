@@ -14,7 +14,7 @@
         <header class="navbar">
             <div class="navbar-inner">
                 <div class="container conatiner_support">
-                    <div class="float_left">
+                    <div class="float_left" style="margin-left:-45px;">
                         <p id="logo">
                             <a href="index.html">Site
                                 Logo</a> <span class="tagline">Free project hosting</span>
@@ -24,13 +24,20 @@
                         <ul class="ul_list">
                             <li>
                                 <ul class="ul_list" id="nav">
-                                    <li><a id="lnkSignUp" href="frmRegistration.html"> Sign Up</a></li>
-                                    <li><a id="lnkSignIn" href="#myModal" data-toggle="modal">Sign In</a></li>
+                                    <li class="liSin" style="display: none;"><a id="lnkSignUp" href="frmRegistration.html"> Sign Up</a></li>
+                                    <li class="liSin" style="display: none;"><a id="lnkSignIn" href="#myModal" data-toggle="modal">Sign In</a></li>
 
-                                    <li><input id="searchSite" name="searchSite" maxlength="500"
+                                    <li class="liSout" style="display: none;">
+                                        <a href="userProfile.jsp?userId=" id="userName"></a>
+                                    </li>
+                                    <li class="liSout" style="display: none;"><a id="lnkSignOut" >SignOut</a></li>
+                                    <li>
+                                        <input id="searchSite" name="searchSite" maxlength="500"
                                                type="text" value="" autocomplete="off"
                                                title="Search all projects"
-                                               style="color: rgb(170, 170, 170); font-style: italic;">
+                                               style="color: rgb(170, 170, 170);
+                                               font-style: italic;margin-top: -5px;"
+                                               placeholder="Search">
                                     </li>
                                 </ul>
                             </li>
@@ -97,7 +104,7 @@
                         dictum.
                     </p>
                 </div>
-                
+
                 <div id="tile_links" class="row">
 
                     <a id="help" href="#">Join a project<br> <span
@@ -217,6 +224,46 @@
                                     }
                                 });
                             });
+                           
+                            $('#searchSite').bind('keypress', function(e){
+                                var code = (e.keyCode ? e.keyCode : e.which);
+                                if(code == 13) { 
+                                    
+                                } 
+                            });
+                            $.ajax({
+                                url:'ServletCheckUserSession',
+                                type:'post',
+                                success:function(dt){
+                                    console.log(dt);
+                                    if (dt.status=='fail'){
+                                        $("ul.ul_list li.liSin").css('display','inline');
+                                        $("ul.ul_list li.liSout").css('display','none');
+                                    }else{
+                                        $("ul.ul_list li.liSin").css('display','none');
+                                        $("ul.ul_list li.liSout").css('display','inline');
+
+                                    }
+                                }
+                            });
+                            $("#lnkSignOut").live('click',function(){
+                                $.ajax({
+                                    url:'ServletSignOut',
+                                    type:'post',
+                                    success:function(dt){
+                                        console.log(dt);
+                                        if (dt.status=='success'){
+                                            $("ul.ul_list li.liSin").css('display','inline');
+                                            $("ul.ul_list li.liSout").css('display','none');
+                                        }else{
+                                            $("ul.ul_list li.liSin").css('display','none');
+                                            $("ul.ul_list li.liSout").css('display','inline');
+
+                                        }
+                                    }
+                                });
+                            });
+                            
                         })();
             
                     </script>

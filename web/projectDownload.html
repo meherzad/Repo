@@ -19,7 +19,56 @@
     </head>
     <body>
         <!--Add Header Here------------------->
+        <header class="navbar">
+            <div class="navbar-inner">
+                <div class="container conatiner_support">
+                    <div class="float_left" style="margin-left:-45px;">
+                        <p id="logo">
+                            <a href="http://localhost:8080/FinalDesign/index.html">Site
+                                Logo</a> <span class="tagline">Free project hosting</span>
+                        </p>
+                    </div>
+                    <div class="float_right" style="margin-top: 10px;">
+                        <ul class="ul_list">
+                            <li>
+                                <ul class="ul_list" id="nav">
+                                    <li class="liSout" style="display: none;">
+                                        <a id="lnkSignOut" >SignOut</a>
+                                    </li>
+                                    <li>
+                                        <input id="searchSite" name="searchSite" maxlength="500"
+                                               type="text" value="" autocomplete="off"
+                                               title="Search all projects"
+                                               style="color: rgb(170, 170, 170);
+                                               font-style: italic;margin-top: -5px;"
+                                               placeholder="Search">
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
 
+        <div class="container conatiner_support" style="margin-bottom: 10px;">
+            <div class="row" style="position: relative;">
+                <div class="project_head">
+                    <div class="project_head_image">
+                        <a href="#" >
+                            <img src="images/p1.jpg" />
+                        </a>
+                    </div>
+                    <h1 class="project_title">
+                        <div>
+                            <a href="#">
+                                Sample project 
+                            </a>
+                        </div>
+                    </h1>
+                </div>
+            </div>
+        </div>
         <div class="container conatiner_support">
             <div class="row">
                 <ul id="project_menu">
@@ -51,9 +100,11 @@
             </div>
         </div>
 
-        <div id="wrap">
-            <br><br><br><br><br><br>
-            Download Analysis
+        <div class="container conatiner_support" style="min-height: 400px;
+             margin-top: 20px;padding-bottom: 30px;">
+
+
+            <h2>Download Analysis</h2>
 
             <div id="ProjectMembers" class="top_border">
                 <div style="float: left" style="width: 300px; height: 300px; margin: 0 auto">
@@ -112,263 +163,279 @@
 
                 </ul>
             </div>
-            <script id="reviewscript" type="text/x-handlebars-template">
-                {{#each this}}
-                <li>  </li>
-                <div class="ReviewListItem">
-                    Rated:<b>{{rate}}</b>/5<br>
-                    {{review}}<br>
-                    by <a href="profile.jsp?userId={{userId}}" class="bold">{{username}}</a>&nbsp;On {{time}}<br>
+        </div>
+        <div id="footer">
+            <div class="row">
+                <hr style="color:">
+                <ul class="ul_list footer_link">
+                    <li class="list"></li>
+                    <li class="list"><a href="#">Get Help</a></li>
+                    <li class="list"><a href="#">Privacy Statement</a></li>
+                    <li class="list"><a href="#">Terms of Use</a></li>
+                    <li class="list"><a href="#">Code of Conduct</a></li>
+                    <li class="list"><a href="#">Advertise With Us</a></li>
 
-                </div>
+                </ul>
+            </div>
+        </div>
 
-                {{/each}}
-            </script>
-            <script id="projectde" type="text/x-handlebars-template">
-                {{#each this}}
-                <h1 class="page_tilte">{{projName}}</h1><br>
-                <table id="release" cellspacing="10" cellpadding="10" border="0" style="border :1px solid #c0c0c0; margin-top: 10px;">
-                    <tr><div class="metadataRow"><td valign="top" style="border-right: 1px solid #c0c0c0;"> <span class="metadataItemHeader">Rated:</span>&nbsp;&nbsp;{{Rating}}&nbsp;/5</td></div></tr>
-                    <tr><div class="metadataRow"><td valign="top" style="border-right: 1px solid #c0c0c0;"> <span class="metadataItemHeader">Downloads:</span>&nbsp;&nbsp;{{downloads}}</td></div></tr>
-                    <tr><div class="metadataRow"><td valign="top" style="border-right: 1px solid #c0c0c0;"> <span class="metadataItemHeader"> Reviewed:</span>&nbsp;&nbsp;{{Reviewed}}&nbsp;reviews</td></div></tr>
-                </table>
+        <script id="reviewscript" type="text/x-handlebars-template">
+            {{#each this}}
+        <li>  </li>
+        <div class="ReviewListItem">
+            Rated:<b>{{rate}}</b>/5<br>
+            {{review}}<br>
+            by <a href="profile.jsp?userId={{userId}}" class="bold">{{username}}</a>&nbsp;On {{time}}<br>
+
+        </div>
+
+        {{/each}}
+    </script>
+    <script id="projectde" type="text/x-handlebars-template">
+        {{#each this}}
+        <h1 class="page_tilte">{{projName}}</h1><br>
+        <table id="release" cellspacing="10" cellpadding="10" border="0" style="border :1px solid #c0c0c0; margin-top: 10px;">
+            <tr><div class="metadataRow"><td valign="top" style="border-right: 1px solid #c0c0c0;"> <span class="metadataItemHeader">Rated:</span>&nbsp;&nbsp;{{Rating}}&nbsp;/5</td></div></tr>
+        <tr><div class="metadataRow"><td valign="top" style="border-right: 1px solid #c0c0c0;"> <span class="metadataItemHeader">Downloads:</span>&nbsp;&nbsp;{{downloads}}</td></div></tr>
+    <tr><div class="metadataRow"><td valign="top" style="border-right: 1px solid #c0c0c0;"> <span class="metadataItemHeader"> Reviewed:</span>&nbsp;&nbsp;{{Reviewed}}&nbsp;reviews</td></div></tr>
+</table>
 
 
-                {{/each}}
-            </script>
-            <script type="text/javascript">
+{{/each}}
+</script>
+<script type="text/javascript">
                 
                 
-                $(function(){
-                    function getParameterByName(name) {
-                        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-                        var regexS = "[\\?&]" + name + "=([^&#]*)";
-                        var regex = new RegExp(regexS);
-                        var results = regex.exec(window.location.search);
-                        if (results == null)
-                            return "";
-                        else
-                            return decodeURIComponent(results[1].replace(/\+/g, " "));
-                    }
-                    var projId=getParameterByName("projId");
-                    $.each($('a.menuLink'), function(key,val){
-                        var link=$(val).attr('href');
-                        link=link+projId;
-                        $(val).attr('href',link);
-                    });
-                    $.ajax({
-                        url:'ServletCheckUserType',
-                        data:{
-                            projId:projId
-                        },
-                        type:'post',
-                        success:function(dt){
-                            if (dt.status!='true'){
-                                $("#projDash").css('display','none');
-                            }
-                        },
-                        error:function(){
-                            console.log('error');
-                        }
-                    });
-                    function requestData() {
-                        $.ajax({
-                            url:'ServletGetDownloadData',
-                            data:{
-                                'projId':projId
-                            },
-                            type:'post',
-                            success:function(dt){
-                                console.log(dt.value);
-                                //                        chart.series[0].data=dt.value;
-                                chart.series[0].addPoint(dt.value, true, 0);
-                                console.log("hello");
-                                console.log(chart.series[0].d);
-                                chart.redraw();
-                            },
-                            error:function(){
+    $(function(){
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+            var regexS = "[\\?&]" + name + "=([^&#]*)";
+            var regex = new RegExp(regexS);
+            var results = regex.exec(window.location.search);
+            if (results == null)
+                return "";
+            else
+                return decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+        var projId=getParameterByName("projId");
+        $.each($('a.menuLink'), function(key,val){
+            var link=$(val).attr('href');
+            link=link+projId;
+            $(val).attr('href',link);
+        });
+        $.ajax({
+            url:'ServletCheckUserType',
+            data:{
+                projId:projId
+            },
+            type:'post',
+            success:function(dt){
+                if (dt.status!='true'){
+                    $("#projDash").css('display','none');
+                }
+            },
+            error:function(){
+                console.log('error');
+            }
+        });
+        function requestData() {
+            $.ajax({
+                url:'ServletGetDownloadData',
+                data:{
+                    'projId':projId
+                },
+                type:'post',
+                success:function(dt){
+                    console.log(dt.value);
+                    //                        chart.series[0].data=dt.value;
+                    chart.series[0].addPoint(dt.value, true, 0);
+                    console.log("hello");
+                    console.log(chart.series[0].d);
+                    chart.redraw();
+                },
+                error:function(){
                             
+                }
+            });
+        }
+        $.ajax({
+            url:"Servletreview",
+            type:"POST",
+            data:{
+                type:"loadreview",
+                projId:projId
+            },       
+            success:function(dt){
+                console.log("-------");
+                console.log(dt);
+                var temp=Handlebars.compile($("#reviewscript").html());
+                $("#ReviewList").html(temp(dt.reviews));
+                var temp1=Handlebars.compile($("#projectde").html());
+                $("#project_detail").html(temp1(dt.project));
+                $("ul.paging").quickPager({
+                    pageSize:"9", 
+                    currentPage:"1", 
+                    pagerLocation:"before"
+                });
+                if(dt.checkUser!="login"){
+                    $("#reviewdiv").html('<a id="lnkSignIn" href="index.jsp" >Review</a>');
+
+                }
+                            
+                else{
+
+                    $("#reviewdiv").html('<a id="lnkSignIn" href="#myModal" data-toggle="modal">Review</a>');
+                }
+            },
+            error:function(){
+                alert('error');
+
+            }
+        });
+                    
+        var chart = new Highcharts.Chart({
+	    
+            chart: {
+                renderTo: 'container',
+                type: 'gauge',
+                plotBackgroundColor: null,
+                plotBackgroundImage: null,
+                plotBorderWidth: 0,
+                plotShadow: false,
+                events: {
+                    load: requestData()
+                }
+            },
+	        
+            title: {
+                text: 'Download Meter'
+            },
+	        
+            pane: {
+                startAngle: -150,
+                endAngle: 150,
+                background: [{
+                        backgroundColor: {
+                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                            stops: [
+                                [0, '#FFF'],
+                                [1, '#333']
+                            ]
+                        },
+                        borderWidth: 0,
+                        outerRadius: '109%'
+                    }, {
+                        backgroundColor: {
+                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                            stops: [
+                                [0, '#333'],
+                                [1, '#FFF']
+                            ]
+                        },
+                        borderWidth: 1,
+                        outerRadius: '107%'
+                    }, {
+                        // default background
+                    }, {
+                        backgroundColor: '#DDD',
+                        borderWidth: 0,
+                        outerRadius: '105%',
+                        innerRadius: '103%'
+                    }]
+            },
+	           
+            // the value axis
+            yAxis: {
+                min: 0,
+                max: 200,
+	            
+                minorTickInterval: 'auto',
+                minorTickWidth: 1,
+                minorTickLength: 10,
+                minorTickPosition: 'inside',
+                minorTickColor: '#666',
+	    
+                tickPixelInterval: 30,
+                tickWidth: 2,
+                tickPosition: 'inside',
+                tickLength: 10,
+                tickColor: '#666',
+                labels: {
+                    step: 2,
+                    rotation: 'auto'
+                },
+                title: {
+                    text: 'Download'
+                },
+                plotBands: [{
+                        from: 0,
+                        to: 120,
+                        color: '#55BF3B' // green
+                    }, {
+                        from: 120,
+                        to: 160,
+                        color: '#DDDF0D' // yellow
+                    }, {
+                        from: 160,
+                        to: 200,
+                        color: '#DF5353' // red
+                    }]        
+            },
+	    
+            series: [{
+                    name: 'Speed',
+                    data: [],
+                    tooltip: {
+                        valueSuffix: 'Download'
+                    }
+                }]
+        });
+
+
+        $("#btnLogIn").click(function(){
+            var e = document.getElementById("rateing");
+            var strSel =e.options[e.selectedIndex].value;
+            var rev=$("#review_desc").val();
+            //                        alert(rev);
+            if(rev)
+            {
+                $("#emessage").html("");
+
+                $.ajax({
+                    url:"Servletreview",
+                    type:"POST",
+                    data:{
+                        type:"review",
+                        drop:strSel,
+                        review:rev,
+                        projId:projId
+                    },       
+                    success:function(dt){
+                        $.ajax({
+                            url:"review",
+                            type:"POST",
+                            data:{
+                                type:"loadreview",
+                                projId:projId
+                            },       
+                            success:function(dt){
+                                console.log(dt.reviews);
+                                $("#emessage").html("");
+                                var temp=Handlebars.compile($("#reviewscript").html());
+                                $("#ReviewList").html(temp(dt.reviews));
                             }
                         });
                     }
-                    $.ajax({
-                        url:"Servletreview",
-                        type:"POST",
-                        data:{
-                            type:"loadreview",
-                            projId:projId
-                        },       
-                        success:function(dt){
-                            console.log("-------");
-                            console.log(dt);
-                            var temp=Handlebars.compile($("#reviewscript").html());
-                            $("#ReviewList").html(temp(dt.reviews));
-                            var temp1=Handlebars.compile($("#projectde").html());
-                            $("#project_detail").html(temp1(dt.project));
-                            $("ul.paging").quickPager({
-                                pageSize:"7", 
-                                currentPage:"1", 
-                                pagerLocation:"before"
-                            });
-                            if(dt.checkUser!="login"){
-                                $("#reviewdiv").html('<a id="lnkSignIn" href="index.jsp" >Review</a>');
-
-                            }
-                            
-                            else{
-
-                                $("#reviewdiv").html('<a id="lnkSignIn" href="#myModal" data-toggle="modal">Review</a>');
-                            }
-                        },
-                        error:function(){
-                            alert('error');
-
-                        }
-                    });
-                    
-                    var chart = new Highcharts.Chart({
-	    
-                        chart: {
-                            renderTo: 'container',
-                            type: 'gauge',
-                            plotBackgroundColor: null,
-                            plotBackgroundImage: null,
-                            plotBorderWidth: 0,
-                            plotShadow: false,
-                            events: {
-                                load: requestData()
-                            }
-                        },
-	        
-                        title: {
-                            text: 'Download Meter'
-                        },
-	        
-                        pane: {
-                            startAngle: -150,
-                            endAngle: 150,
-                            background: [{
-                                    backgroundColor: {
-                                        linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                                        stops: [
-                                            [0, '#FFF'],
-                                            [1, '#333']
-                                        ]
-                                    },
-                                    borderWidth: 0,
-                                    outerRadius: '109%'
-                                }, {
-                                    backgroundColor: {
-                                        linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                                        stops: [
-                                            [0, '#333'],
-                                            [1, '#FFF']
-                                        ]
-                                    },
-                                    borderWidth: 1,
-                                    outerRadius: '107%'
-                                }, {
-                                    // default background
-                                }, {
-                                    backgroundColor: '#DDD',
-                                    borderWidth: 0,
-                                    outerRadius: '105%',
-                                    innerRadius: '103%'
-                                }]
-                        },
-	           
-                        // the value axis
-                        yAxis: {
-                            min: 0,
-                            max: 200,
-	            
-                            minorTickInterval: 'auto',
-                            minorTickWidth: 1,
-                            minorTickLength: 10,
-                            minorTickPosition: 'inside',
-                            minorTickColor: '#666',
-	    
-                            tickPixelInterval: 30,
-                            tickWidth: 2,
-                            tickPosition: 'inside',
-                            tickLength: 10,
-                            tickColor: '#666',
-                            labels: {
-                                step: 2,
-                                rotation: 'auto'
-                            },
-                            title: {
-                                text: 'Download'
-                            },
-                            plotBands: [{
-                                    from: 0,
-                                    to: 120,
-                                    color: '#55BF3B' // green
-                                }, {
-                                    from: 120,
-                                    to: 160,
-                                    color: '#DDDF0D' // yellow
-                                }, {
-                                    from: 160,
-                                    to: 200,
-                                    color: '#DF5353' // red
-                                }]        
-                        },
-	    
-                        series: [{
-                                name: 'Speed',
-                                data: [],
-                                tooltip: {
-                                    valueSuffix: 'Download'
-                                }
-                            }]
-                    });
-
-
-                    $("#btnLogIn").click(function(){
-                        var e = document.getElementById("rateing");
-                        var strSel =e.options[e.selectedIndex].value;
-                        var rev=$("#review_desc").val();
-                        //                        alert(rev);
-                        if(rev)
-                        {
-                            $("#emessage").html("");
-
-                            $.ajax({
-                                url:"Servletreview",
-                                type:"POST",
-                                data:{
-                                    type:"review",
-                                    drop:strSel,
-                                    review:rev,
-                                    projId:projId
-                                },       
-                                success:function(dt){
-                                    $.ajax({
-                                        url:"review",
-                                        type:"POST",
-                                        data:{
-                                            type:"loadreview",
-                                            projId:projId
-                                        },       
-                                        success:function(dt){
-                                            console.log(dt.reviews);
-                                            $("#emessage").html("");
-                                            var temp=Handlebars.compile($("#reviewscript").html());
-                                            $("#ReviewList").html(temp(dt.reviews));
-                                        }
-                                    });
-                                }
-                            });
-                        }else
-                        {
-                            $("#emessage").html("Please Write Review!!!");
-                        }
-                    });
-                    
-	    
                 });
-            </script>
-        </div>
-    </body>  
+            }else
+            {
+                $("#emessage").html("Please Write Review!!!");
+            }
+        });
+                    
+	    
+    });
+</script>
+
+</body>  
 </html>

@@ -642,10 +642,19 @@ public class DatabaseManager {
         Projectmaster objproj = null;
         try {
             connect();
-            Statement st = con.createStatement();
-            rs = st.executeQuery("Select * from projectmaster where projectmaster.projId "
-                    + "IN (Select projectdetail.projectId from projectdetail where "
-                    + "projectdetail.userId=" + uid + ")");
+            PreparedStatement pst = con.prepareCall("select a.projId, projOwner, "
+                    + "projdesc, projName, downloads, likes, projType "
+                    + "from projectmaster a, projectdetail b where b.projectId=a.projId and "
+                    + "userId=? union select projId, projOwner, "
+                    + "projdesc, projName, downloads, likes, projType from projectmaster "
+                    + "where projOwner=?; ");
+            pst.setInt(1, uid);
+            pst.setInt(2, uid);
+            /*Statement st = con.createStatement();
+             rs = st.executeQuery("Select * from projectmaster where projectmaster.projId "
+             + "IN (Select projectdetail.projectId from projectdetail where "
+             + "projectdetail.userId=" + uid + ")");*/
+            rs = pst.executeQuery();
             while (rs.next()) {
                 objproj = new Projectmaster();
                 objproj.setProjId(rs.getInt("projId"));
@@ -1565,8 +1574,10 @@ public class DatabaseManager {
         Statement stm = con.createStatement();
         //String name=umc.getName();
         name += '%';
-        PreparedStatement stmt = con.prepareStatement("select * from usermaster where username "
-                + "like ?;");
+        PreparedStatement stmt = con.prepareStatement("select distinct userName "
+                + "from usermaster u, projectinvitation i  "
+                + "where u.userId!=i.toUser and i.status like "
+                + "'decline' and userName like ?;");
         stmt.setString(1, name);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
@@ -1666,6 +1677,11 @@ public class DatabaseManager {
             Statement st = con.createStatement();
             Statement st1 = con.createStatement();
             if (type.equals("accept")) {
+                rs = st.executeQuery("select * projectdetail where userId="
+                        + UserId + " and projectId=" + projId + ";");
+                if (!rs.next()) {
+                    return false;
+                }
                 PreparedStatement pstobj = con.prepareStatement("Insert into projectdetail("
                         + "projectId,userId,jDate) values (?,?,?);");
                 pstobj.setInt(1, obj.getProjectId());
@@ -2062,6 +2078,118 @@ public class DatabaseManager {
                 e.printStackTrace();
             }
 
+        }
+        return result;
+    }
+
+    public String checkUserTypeProject(int projId, int userId) {
+        String result;
+        try {
+            connect();
+            PreparedStatement pst = con.prepareStatement("select userId from projectdetail where "
+                    + "projectId=? and userId=?;");
+            pst.setInt(1, projId);
+            pst.setInt(2, userId);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                result = "developer";
+            } else {
+                PreparedStatement p = con.prepareStatement("select * from projectmaster "
+                        + "where projId=? and projOwner=?;");
+                p.setInt(1, projId);
+                p.setInt(2, userId);
+                ResultSet rs1 = p.executeQuery();
+                if (rs1.next()) {
+                    result = "owner";
+                } else {
+                    result = "none";
+                }
+            }
+        } catch (Exception e) {
+            result = "fail";
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<chat> getchatlog(int projId) {
+        ArrayList<chat> log_list = new ArrayList();
+        try {
+            connect();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT projId,chat,u.nick FROM "
+                    + "projectchat p JOIN usermaster u ON u.userId=p.userId "
+                    + "WHERE p.projId =" + projId + " order by time;");
+            chat user_chat = null;
+            while (rs.next()) {
+                user_chat = new chat();
+                user_chat.setUsername(rs.getString("nick"));
+                user_chat.setProjId(rs.getInt("projId"));
+                user_chat.setChat(rs.getString("chat"));
+                log_list.add(user_chat);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println(log_list);
+        return log_list;
+    }
+
+    public boolean insertchat(chat ch) {
+        boolean result;
+        try {
+            connect();
+            PreparedStatement pst = con.prepareCall("Insert into projectchat("
+                    + "projId,userId,chat,time)" + "values(?,?,?,?)");
+            pst.setInt(1, ch.getProjId());
+            pst.setInt(2, ch.getUserId());
+            pst.setString(3, ch.getChat());
+            pst.setTimestamp(4, ch.getTime());
+            pst.executeUpdate();
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = false;
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public boolean updateprojectfile(int userId, String name) {
+        boolean result;
+        try {
+            connect();
+            Statement st = con.createStatement();
+            name = "images/projFile/" + name;
+            st.executeUpdate("Update projectmaster set codeUrl='" + name
+                    + "'where projId='" + userId + "'");
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = false;
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return result;
     }

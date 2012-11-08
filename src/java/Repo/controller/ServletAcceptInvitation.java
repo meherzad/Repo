@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -90,13 +91,13 @@ public class ServletAcceptInvitation extends HttpServlet {
         DatabaseManager dm1 = new DatabaseManager();
         java.util.Date timestamp = new java.util.Date();
         java.sql.Date creationDate = new java.sql.Date(timestamp.getTime());
-
+        
         pd.setUserId(UserId);
         pd.setProjectId(ProjectId);
         pd.setjDate(creationDate);
-
+        
         Notification nt = new Notification();
-
+        
         String notify = "New Member Added";
         String notType = "New User";
         //setting value for Notification.  
@@ -104,20 +105,20 @@ public class ServletAcceptInvitation extends HttpServlet {
         nt.setNotType(notType);
         nt.setNotification(notify);
         nt.setTimeStamp(creationDate);
-
+        
         if (dm1.update(pd, type, ProjectId, UserId, nt)) {
             result = "success";
         } else {
             result = "fail";
         }
+        JSONObject json = new JSONObject();
         System.out.println("----->" + result);
-        RequestDispatcher rd = request.getRequestDispatcher("AcceptInvitation.jsp");
-        //response.sendRedirect("resp.jsp");
-        rd.forward(request, response);
         System.out.println(pd);
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        json.put("result", result);
+        out.print(json);
     }
 
     /**

@@ -66,25 +66,26 @@ public class ServletShowBugDetail extends HttpServlet {
         int bug_id = Integer.parseInt(request.getParameter("BugId"));
         DatabaseManager dbCon = new DatabaseManager();
         ArrayList<Projectbugtrackcomment> bug_comm_list = null;
+        String projiurl = request.getParameter("projiurl");
+        String Projname = request.getParameter("ProjName");
+        int bugid = Integer.parseInt(request.getParameter("BugId"));
+        String bugissue = request.getParameter("bugissue");
+
         String status = "";
-        String issue = request.getParameter("BugIssue");
-        System.out.println("servlet created .....");
-
-
         try {
-            bug_comm_list = dbCon.selectbug_detail(bug_id);
-            System.out.println("hello");
+            bug_comm_list = dbCon.selectbug_detail(bugid);
             status = "success";
+
         } catch (Exception e) {
-            e.printStackTrace();
             status = "fail";
         }
-
-        request.setAttribute("status", status);
+        request.setAttribute("bugissue", bugissue);
+        request.setAttribute("status", "success");
         request.setAttribute("bug_comm_list", bug_comm_list);
-        request.setAttribute("issue", issue);
+        request.setAttribute("issue", bugissue);
+        request.setAttribute("Projname", Projname);
+        request.setAttribute("Projiurl", projiurl);
         RequestDispatcher rd = request.getRequestDispatcher("showBugDetail.jsp");
-
         rd.forward(request, response);
     }
 

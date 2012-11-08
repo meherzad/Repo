@@ -17,6 +17,24 @@
         <script src="js/jquery-1.7.2.min.js" ></script>
         <script type="text/javascript" src="http://cloud.github.com/downloads/wycats/handlebars.js/handlebars-1.0.0.beta.6.js"></script>
         <script src="js/bootstrap.min.js" type="text/javascript"></script>
+        <style>
+            .notimage{
+                width: 40px;
+                height: 40px;
+
+            }
+            .notimage1{
+                width: 40px;
+                height: 40px;
+
+            }
+            #proj_name{
+
+                font-size: 30px;
+                margin-left: 10px;
+                color:#6A747E;
+            }
+        </style>
     </head>
     <body>
         <header class="navbar">
@@ -86,40 +104,52 @@
             <div class="container conatiner_support">
                 <div class="row">
                     <div class="float_left">
-                        <img id="imgUser" style="float: left;margin-right: 10px;" 
+                        <img id="imgUser" style="float: left;" 
                              src="${requestScope.user.iurl}" width="50" height="50" alt="" />
-                        <h2 id="welcome_msg">${requestScope.user.nick}</h3>
+                        <h2 id="welcome_msg">${requestScope.user.nick}</h2>
 
                     </div>
-                    <div class="float_right">
+                    <div class="float_right" id="createProject">
                         <a href="">Create Project</a>
                         <a href="">Join a Project</a>
+                        <a href="UserEditProfile.jsp?userId="${requestScope.user.userId}>Edit profile</a>
                     </div>
                 </div>
             </div>
 
             <div class="container conatiner_support">
-                <div class="row">
+                <div class="row"> 
                     <div class="float_left">
                         <c:forEach items="${requestScope.allprojlist}" var="proj">
-                            <div class="row">
-                                <a href="ServletProjectHome?projId=${proj.projId}">
+                            <div id="proj_name">
+                                <a href="ServletProjectHome?projId=${proj.projId}" style="color:#999999">
                                     ${proj.projName}
-                                </a>
+                                </a><br/><br/>
                             </div>
                         </c:forEach>
                     </div>
                     <div class="float_right">
-                        <c:forEach items="${requestScope.notifications}" var="notification">
-                            <div class="row">
-                                <a href="?projId=${notification.notId}">
-                                    ${notification.notification}
-                                </a>
-                            </div>
-                        </c:forEach>
+
+                        <img class="notimage"
+                             src="images/MB_0020_light.png"
+                             rel="popover"
+                             data-placement="bottom"
+                             data-content=" " 
+                             data-original-title="Hello">
+
+                        <div id="popoverdata" style="display: none;">
+                            <c:forEach items="${requestScope.notifications}" var="notification">
+                                <div id="row">
+
+                                    <a href="?projId=${notification.notId}">
+                                        ${notification.notification}</a>
+                                </div>  
+                            </c:forEach>
+                        </div>
                     </div>
                 </div>
             </div>
+
             <div class="container conatiner_support">
                 <c:forEach items="${requestScope.projectList}" var="proj">
                     <div class="row">
@@ -145,11 +175,15 @@
                 </ul>
             </div>
         </div>
-
         <script>
             (function(){
-                
-            })();
+                $('.notimage').popover({trigger: 'click'}); 
+                var data = $("#popoverdata").html();
+                var url="images/MB_0020_light1.png";
+                console.log(data);
+                $('.notimage').attr('data-content',data);
+            })();                
         </script>
+
     </body>
 </html>

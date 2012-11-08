@@ -23,24 +23,26 @@ and open the template in the editor.
         <header class="navbar">
             <div class="navbar-inner">
                 <div class="container conatiner_support">
-                    <div class="float_left">
+                    <div class="float_left" style="margin-left:-45px;">
                         <p id="logo">
-                            <a href="http://localhost:8080/FinalDesign/index.html">Site
+                            <a href="index.html">Site
                                 Logo</a> <span class="tagline">Free project hosting</span>
                         </p>
                     </div>
                     <div class="float_right">
-                        <ul>
+                        <ul class="ul_list">
                             <li>
                                 <ul class="ul_list" id="nav">
-                                    <li><a id="lnkSignUp"> Sign Up</a></li>
-                                    <li><a id="lnkSignIn">Sign In</a></li>
+                                    <li class="liSout" style="display: none;"><a id="lnkSignOut" >SignOut</a></li>
+                                    <li>
+                                        <input id="searchSite" name="searchSite" maxlength="500"
+                                               type="text" value="" autocomplete="off"
+                                               title="Search all projects"
+                                               style="color: rgb(170, 170, 170);
+                                               font-style: italic;margin-top: -5px;"
+                                               placeholder="Search">
+                                    </li>
                                 </ul>
-                            </li>
-                            <li><input id="searchSite" name="searchSite" maxlength="500"
-                                       type="text" value="" autocomplete="off"
-                                       title="Search all projects"
-                                       style="color: rgb(170, 170, 170); font-style: italic;">
                             </li>
                         </ul>
                     </div>
@@ -59,7 +61,7 @@ and open the template in the editor.
                         <div>
                             <a href="#">
                                 Sample project 
-                            </a>
+                            requestScope.user</a>
                         </div>
                     </h1>
                 </div>
@@ -69,7 +71,7 @@ and open the template in the editor.
         <div class="container conatiner_support">
             <div class="row">
                 <ul id="project_menu">
-                  <li>
+                    <li>
                         <a class="menuLink" href="ServletProjectHome?projId=" >Home</a>
                     </li>
                     <li id="projDash">
@@ -93,10 +95,11 @@ and open the template in the editor.
                     <li>
                         <a class="menuLink" href="ProjectLicense.html?projId=" >License</a>
                     </li>
+                   
                 </ul>
             </div>
         </div>
-        <div class ="conatiner_support container">
+        <div class ="conatiner_support container" style="min-height: 400px;">
             <div class="row">
                 <div class="addTask">
                     <a >Add new task</a>
@@ -163,7 +166,7 @@ and open the template in the editor.
         <div id="footer">
             <div class="row">
                 <hr style="color:">
-                <ul class="ul_list">
+                <ul class="ul_list footer_link">
                     <li class="list"></li>
                     <li class="list"><a href="#">Get Help</a></li>
                     <li class="list"><a href="#">Privacy Statement</a></li>
@@ -282,6 +285,35 @@ and open the template in the editor.
                         return decodeURIComponent(results[1].replace(/\+/g, " "));
                 }
                 var projId=getParameterByName("projId");
+                $.ajax({
+                    url:'ServletCheckUserSession',
+                    type:'post',
+                    success:function(dt){
+                        console.log(dt);
+                        if (dt.status=='fail'){
+                            $("ul.ul_list li.liSin").css('display','inline');
+                            $("ul.ul_list li.liSout").css('display','none');
+                        }else{
+                            $("ul.ul_list li.liSout").css('display','inline');
+                            $("ul.ul_list li.liSin").css('display','inline');
+                        }
+                    }
+                });
+                $("#lnkSignOut").live('click',function(){
+                    $.ajax({
+                        url:'ServletSignOut',
+                        type:'post',
+                        success:function(dt){
+                            console.log(dt);
+                            if (dt.status=='success'){
+                                $("ul.ul_list li.liSout").css('display','none');
+                            }else{
+                                $("ul.ul_list li.liSin").css('display','inline');
+                            }
+                        }
+                    });
+                });
+       
                 $.each($('a.menuLink'), function(key,val){
                     var link=$(val).attr('href');
                     link=link+projId;

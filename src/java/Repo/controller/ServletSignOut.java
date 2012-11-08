@@ -4,7 +4,6 @@
  */
 package Repo.controller;
 
-import Repo.model.DatabaseManager;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -18,7 +17,7 @@ import org.json.simple.JSONObject;
  *
  * @author meherzad
  */
-public class ServletCheckUserType extends HttpServlet {
+public class ServletSignOut extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -38,10 +37,10 @@ public class ServletCheckUserType extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ServletCheckUserType</title>");
+            out.println("<title>Servlet ServletSignOut</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ServletCheckUserType at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ServletSignOut at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -77,26 +76,17 @@ public class ServletCheckUserType extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int userId, projId;
-        HttpSession session = request.getSession(true);
-        String type = "", status, str = request.getParameter("projId");
-        Object obj = session.getAttribute("userId");
-        if (obj == null || str == null || str == "") {
-            status = "false";
-        } else {
-            DatabaseManager ob = new DatabaseManager();
-            userId = Integer.parseInt(obj.toString());
-            projId = Integer.parseInt(str);
-            if (ob.checkUserInProject(projId, userId)) {
-                status = "true";
-                type = ob.checkUserTypeProject(projId, userId);
-            } else {
-                status = "false";
-            }
-        }
         JSONObject json = new JSONObject();
+        String status;
+        try {
+            HttpSession session = request.getSession(true);
+            session.removeAttribute("userId");
+            status = "success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            status = "fail";
+        }
         json.put("status", status);
-        json.put("type", type);
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

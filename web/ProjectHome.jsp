@@ -17,7 +17,7 @@
         <header class="navbar">
             <div class="navbar-inner">
                 <div class="container conatiner_support">
-                    <div class="float_left">
+                    <div class="float_left" style="margin-left:-45px;">
                         <p id="logo">
                             <a href="index.html">Site
                                 Logo</a> <span class="tagline">Free project hosting</span>
@@ -27,54 +27,19 @@
                         <ul class="ul_list">
                             <li>
                                 <ul class="ul_list" id="nav">
-                                    <li><a id="lnkSignUp" href="frmRegistration.html"> Sign Up</a></li>
-                                    <li><a id="lnkSignIn" href="#myModal" data-toggle="modal">Sign In</a></li>
-                                    <form action="ServletSearch" method="post">
-                                        <li><input id="searchSite" name="searchSite" maxlength="500"
-                                                   type="text" value="" autocomplete="off"
-                                                   title="Search all projects"
-                                                   style="color: rgb(170, 170, 170); font-style: italic;">
-                                            <input type="submit" value="Search">
-                                        </li>
-                                    </form>
+                                    <li class="liSout" style="display: none;"><a id="lnkSignOut" >SignOut</a></li>
+                                    <li>
+                                        <input id="searchSite" name="searchSite" maxlength="500"
+                                               type="text" value="" autocomplete="off"
+                                               title="Search all projects"
+                                               style="color: rgb(170, 170, 170);
+                                               font-style: italic;margin-top: -5px;"
+                                               placeholder="Search">
+                                    </li>
                                 </ul>
                             </li>
 
                         </ul>
-                        <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                                <h3 id="myModalLabel" style="color: #6A747E;"><center>Sign In</center></h3>
-                            </div>
-                            <div class="modal-body">
-                                <form class="form-horizontal" method="post" action="">
-                                    <div class="control-group">
-                                        <label class="loginLabel" for="inputEmail">Email</label>
-                                        <div class="controls">
-                                            <input type="text" id="username" name="username" placeholder="Email">
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="loginLabel" for="inputPassword">Password</label>
-                                        <div class="controls">
-                                            <input type="password" id="password" name="password" placeholder="Password">
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <div class="controls">
-                                            <label class="checkbox">
-                                                <input type="checkbox"> 
-                                                <label class="loginLabel" style="text-align: left !important;padding-top: 0px !important; ">Remember me</label>
-                                            </label><br>
-                                            <div style="color: red;" id="loginStatus"></div>
-
-                                            <button type="button" class="btn" id="btnLogIn">Sign in</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-
-                        </div>
 
                     </div>
                 </div>
@@ -86,10 +51,10 @@
                 <div class="float_left">
                     <img id="imgUser" style="float: left;margin-right: 10px;" 
                          src="${requestScope.project.iUrl}" width="50" height="50"  />
-                    <h2 id="welcome_msg">${requestScope.project.projName}</h3>
+                    <h2 id="welcome_msg" style="clear: none !important;" >${requestScope.project.projName}</h3>
 
                 </div>
-
+                <a class="menuLink" href="projectEditDetail.html?projId=">Edit</a>
             </div>
         </div>
 
@@ -124,10 +89,17 @@
             </div>
         </div>
 
-        <div class="container conatiner_support">
+        <div class="container conatiner_support" style="min-height: 400px;">
             <div class="row">
                 <div class="float_left">
-                    ${requestScope.project.projDesc}
+                    <div class="row" style="margin-left: 10px;margin-top: 10px;">
+                        <h2>Project Description</h2>
+                    </div>
+                    <div class="row" style="margin-left: 10px;">
+                        <p> 
+                            ${requestScope.project.projDesc}
+                        </p>
+                    </div>
                 </div>
                 <div class="float_right">
                     <a id="download_button" href="${requestScope.project.codeUrl}">Download</a>
@@ -189,6 +161,35 @@
                         console.log('error');
                     }
                 });
+                $.ajax({
+                    url:'ServletCheckUserSession',
+                    type:'post',
+                    success:function(dt){
+                        console.log(dt);
+                        if (dt.status=='fail'){
+                            $("ul.ul_list li.liSin").css('display','inline');
+                            $("ul.ul_list li.liSout").css('display','none');
+                        }else{
+                            $("ul.ul_list li.liSout").css('display','inline');
+                            $("ul.ul_list li.liSin").css('display','inline');
+                        }
+                    }
+                });
+                $("#lnkSignOut").live('click',function(){
+                    $.ajax({
+                        url:'ServletSignOut',
+                        type:'post',
+                        success:function(dt){
+                            console.log(dt);
+                            if (dt.status=='success'){
+                                $("ul.ul_list li.liSout").css('display','none');
+                            }else{
+                                $("ul.ul_list li.liSin").css('display','inline');
+                            }
+                        }
+                    });
+                });
+                            
             })();
         </script>
     </body>

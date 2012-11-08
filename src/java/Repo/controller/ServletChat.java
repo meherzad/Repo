@@ -5,20 +5,24 @@
 package Repo.controller;
 
 import Repo.model.DatabaseManager;
+import Repo.model.chat;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
  *
  * @author meherzad
  */
-public class ServletCheckUserType extends HttpServlet {
+public class ServletChat extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -38,10 +42,10 @@ public class ServletCheckUserType extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ServletCheckUserType</title>");
+            out.println("<title>Servlet ServletChat</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ServletCheckUserType at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ServletChat at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -77,30 +81,51 @@ public class ServletCheckUserType extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int userId, projId;
+        DatabaseManager db = new DatabaseManager();
+        Integer projId = Integer.parseInt(request.getParameter("projId"));
         HttpSession session = request.getSession(true);
-        String type = "", status, str = request.getParameter("projId");
-        Object obj = session.getAttribute("userId");
-        if (obj == null || str == null || str == "") {
-            status = "false";
-        } else {
-            DatabaseManager ob = new DatabaseManager();
-            userId = Integer.parseInt(obj.toString());
-            projId = Integer.parseInt(str);
-            if (ob.checkUserInProject(projId, userId)) {
-                status = "true";
-                type = ob.checkUserTypeProject(projId, userId);
-            } else {
-                status = "false";
-            }
-        }
-        JSONObject json = new JSONObject();
-        json.put("status", status);
-        json.put("type", type);
+        Integer userId = Integer.parseInt(session.getAttribute("userId").toString());
+        JSONObject result = new JSONObject();
         PrintWriter out = response.getWriter();
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        out.print(json);
+        String status, type = request.getParameter("type");
+
+        if (type.equals("chatonload")) {
+            ArrayList<chat> chat_log = db.getchatlog(projId);
+            
+            JSONArray jArray = new JSONArray();
+            JSONObject task = null;
+            result.put("user", session.getAttribute("userName").toString());
+            for (chat ch : chat_log) {
+                task = new JSONObject();
+                task.put("username", ch.getUsername());
+                task.put("projId", ch.getProjId());
+                task.put("chat", ch.getChat());
+                jArray.add(task);
+            }
+            result.put("chat_log", jArray);
+            System.out.println("-------------->" + result);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            out.print(result);
+            out.close();
+        } else if (type.equals("insertchat")) {
+            chat ch = new chat();
+            String chat = request.getParameter("chat");
+            ch.setChat(chat);
+            ch.setProjId(projId);
+            ch.setUserId(userId);
+            ch.setTime(new Timestamp(new java.util.Date().getTime()));
+            Boolean ins = db.insertchat(ch);
+            if (ins) {
+                status = "success";
+            } else {
+                status = "fail";
+            }
+            result.put("status", status);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            out.print(result);
+        }
     }
 
     /**

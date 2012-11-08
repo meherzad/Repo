@@ -10,9 +10,6 @@ import Repo.model.Usermaster;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -91,7 +88,7 @@ public class ServletLoginVerification extends HttpServlet {
         String result, status;
         try {
             pd = request.getParameter("pass");
-            System.out.println(pd+" -----***");
+            System.out.println(pd + " -----***");
             if (pd != null) {
                 System.out.println("========" + pd);
                 pd = Hashing.getHashValue(pd);
@@ -118,6 +115,7 @@ public class ServletLoginVerification extends HttpServlet {
         if (verifUser != null) {
             result = "Valid User";
             session.setAttribute("userId", verifUser.getUserId());
+            session.setAttribute("userName", user.toString());
         } else {
             result = "Invalid User";
         }

@@ -19,9 +19,64 @@
         <script type="text/javascript" src="http://cloud.github.com/downloads/wycats/handlebars.js/handlebars-1.0.0.beta.6.js"></script>
         <script src="js/bootstrap.min.js" type="text/javascript"></script>
         <script src="js/quickpager.jquery.js" type="text/javascript"></script>
+        <style>
+            .issuelist{
+                margin-left:13%;
+                font: 18px 'Segoe UI',Tahoma,Arial,Helvetica,sans-serif;
+                color: #253340;
+                font-weight: lighter;
+                position: relative;
+            }
+        </style>
     </head>
     <body>
-
+        <header class="navbar">
+            <div class="navbar-inner">
+                <div class="container conatiner_support">
+                    <div class="float_left" style="margin-left:-45px;">
+                        <p id="logo">
+                            <a href="index.html">Site
+                                Logo</a> <span class="tagline">Free project hosting</span>
+                        </p>
+                    </div>
+                    <div class="float_right">
+                        <ul class="ul_list">
+                            <li>
+                                <ul class="ul_list" id="nav">
+                                    <li class="liSout" style="display: none;"><a id="lnkSignOut" >SignOut</a></li>
+                                    <li>
+                                        <input id="searchSite" name="searchSite" maxlength="500"
+                                               type="text" value="" autocomplete="off"
+                                               title="Search all projects"
+                                               style="color: rgb(170, 170, 170);
+                                               font-style: italic;margin-top: -5px;"
+                                               placeholder="Search">
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="container conatiner_support">
+            <div class="row" style="position: relative;">
+                <div class="project_head">
+                    <div class="project_head_image">
+                        <a href="#" >
+                            <img src="images/p1.jpg" />
+                        </a>
+                    </div>
+                    <h1 class="project_title">
+                        <div>
+                            <a href="#">
+                                Sample project 
+                            </a>
+                        </div>
+                    </h1>
+                </div>
+            </div>
+        </div>
 
         <div class="container conatiner_support">
             <div class="row">
@@ -54,27 +109,20 @@
             </div>
         </div>
 
-        <table border="1" bgcolor="yellow">
-
+        <div class="issuelist"> 
             <c:if test="${requestScope.status eq 'success'}">
 
-                <tr>
-                    <th> Issue </th>
-                </tr>
-
+                <h3>
+                    <img src="images/bugs.png"/>&nbspBugs ..!!</h3>
 
                 <c:forEach items="${requestScope.buglist}" var="bug">
 
-                    <tr>
-                        <td> <a class="bugDetail"  href="ServletShowBugDetail?BugId=${bug.bugId}&
-                                BugIssue=${bug.issue}&projId=">
-                                ${bug.issue}</a></td>
-                    </tr>
+                    <a href="ServletShowBugDetail?BugId=${bug.bugId}&ProjName=${requestScope.projname}&projiurl=${requestScope.projiurl}&bugissue=${bug.issue}" style="color: #253340;">
+                        ${bug.issue}</a>
+                    <p class="muted"><small>${bug.timeStamp}</small></p>
                 </c:forEach>
-
             </c:if>
-            <a id="createBug" href="CreateBug.jsp?projId=">Create bug</a>
-        </table>
+        </div>
 
 
         <script type="text/javascript">
@@ -118,6 +166,40 @@
                     error:function(){
                         console.log('error');
                     }
+                });
+                $.ajax({
+                    url:'ServletCheckUserSession',
+                    type:'post',
+                    success:function(dt){
+                        console.log(dt);
+                        if (dt.status=='fail'){
+                            $("ul.ul_list li.liSin").css('display','inline');
+                            $("ul.ul_list li.liSout").css('display','none');
+                        }else{
+                            $("ul.ul_list li.liSout").css('display','inline');
+                            $("ul.ul_list li.liSin").css('display','inline');
+                        }
+                    }
+                });
+                $("#lnkSignOut").live('click',function(){
+                    $.ajax({
+                        url:'ServletSignOut',
+                        type:'post',
+                        success:function(dt){
+                            console.log(dt);
+                            if (dt.status=='success'){
+                                $("ul.ul_list li.liSout").css('display','none');
+                            }else{
+                                $("ul.ul_list li.liSin").css('display','inline');
+                            }
+                        }
+                    });
+                });
+       
+                $.each($('a.menuLink'), function(key,val){
+                    var link=$(val).attr('href');
+                    link=link+projId;
+                    $(val).attr('href',link);
                 });
             })();
         </script>

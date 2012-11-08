@@ -18,9 +18,64 @@
         <link type="text/css" rel="stylesheet" href="css/style.css">
         <script src="js/jquery-1.7.2.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
-
+        <style>
+            #buglist{
+                width: 60%;
+                font: 15px 'Segoe UI',Tahoma,Arial,Helvetica,sans-serif;
+                margin-left: 13%;
+                margin-top: 5%;
+            }
+        </style>
     </head>
     <body>
+        <header class="navbar">
+            <div class="navbar-inner">
+                <div class="container conatiner_support">
+                    <div class="float_left" style="margin-left:-45px;">
+                        <p id="logo">
+                            <a href="index.html">Site
+                                Logo</a> <span class="tagline">Free project hosting</span>
+                        </p>
+                    </div>
+                    <div class="float_right">
+                        <ul class="ul_list">
+                            <li>
+                                <ul class="ul_list" id="nav">
+                                    <li class="liSout" style="display: none;"><a id="lnkSignOut" >SignOut</a></li>
+                                    <li>
+                                        <input id="searchSite" name="searchSite" maxlength="500"
+                                               type="text" value="" autocomplete="off"
+                                               title="Search all projects"
+                                               style="color: rgb(170, 170, 170);
+                                               font-style: italic;margin-top: -5px;"
+                                               placeholder="Search">
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="container conatiner_support">
+            <div class="row" style="position: relative;">
+                <div class="project_head">
+                    <div class="project_head_image">
+                        <a href="#" >
+                            <img src="images/p1.jpg" />
+                        </a>
+                    </div>
+                    <h1 class="project_title">
+                        <div>
+                            <a href="#">
+                                Sample project 
+                            </a>
+                        </div>
+                    </h1>
+                </div>
+            </div>
+        </div>
+
         <div class="container conatiner_support">
             <div class="row">
                 <ul id="project_menu">
@@ -53,18 +108,34 @@
         </div>
 
         <c:if test="${requestScope.status eq 'success'}">
-            <table border ="1" bgcolor="yellow">
-                <tr>
-                    <td> ${requestScope.issue} </td>
-                </tr>
-                <c:forEach items="${requestScope.bug_comm_list}" var="bug_comm">
-                    <tr>
-                        <td> ${bug_comm.comment}</td>
-                    </tr>   
-
-                </c:forEach>
-            </table>
+             <div id="buglist">
+                      <legend> ${requestScope.bugissue} </legend>
+                      <blockquote> 
+                        <p> <br/><c:forEach items="${requestScope.bug_comm_list}" var="comment">
+                                                      
+                            ${comment.comment}<br/>
+                            
+                            <small> ${comment.timeSatmp}</small>
+                        </c:forEach>
+                    </p>
+                      </blockquote>
+                      
+                    </div>   
         </c:if>
+         <div id="footer">
+            <div class="row">
+                <hr style="color:">
+                <ul class="ul_list footer_link">
+                    <li class="list"></li>
+                    <li class="list"><a href="#">Get Help</a></li>
+                    <li class="list"><a href="#">Privacy Statement</a></li>
+                    <li class="list"><a href="#">Terms of Use</a></li>
+                    <li class="list"><a href="#">Code of Conduct</a></li>
+                    <li class="list"><a href="#">Advertise With Us</a></li>
+
+                </ul>
+            </div>
+        </div>
         <script>
             (function(){
                 function getParameterByName(name) {
@@ -78,6 +149,34 @@
                         return decodeURIComponent(results[1].replace(/\+/g, " "));
                 }
                 var projId=getParameterByName("projId");
+                $.ajax({
+                    url:'ServletCheckUserSession',
+                    type:'post',
+                    success:function(dt){
+                        console.log(dt);
+                        if (dt.status=='fail'){
+                            $("ul.ul_list li.liSin").css('display','inline');
+                            $("ul.ul_list li.liSout").css('display','none');
+                        }else{
+                            $("ul.ul_list li.liSout").css('display','inline');
+                            $("ul.ul_list li.liSin").css('display','inline');
+                        }
+                    }
+                });
+                $("#lnkSignOut").live('click',function(){
+                    $.ajax({
+                        url:'ServletSignOut',
+                        type:'post',
+                        success:function(dt){
+                            console.log(dt);
+                            if (dt.status=='success'){
+                                $("ul.ul_list li.liSout").css('display','none');
+                            }else{
+                                $("ul.ul_list li.liSin").css('display','inline');
+                            }
+                        }
+                    });
+                });
                 console.log(projId);
                 $("#hdnProjId").attr('value',projId);
                 $.each($('a.menuLink'), function(key,val){

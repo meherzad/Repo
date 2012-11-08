@@ -180,6 +180,22 @@
         <servlet-name>ServletAddProject</servlet-name>
         <servlet-class>Repo.controller.ServletAddProject</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletSignOut</servlet-name>
+        <servlet-class>Repo.controller.ServletSignOut</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletCheckUserSession</servlet-name>
+        <servlet-class>Repo.controller.ServletCheckUserSession</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletChat</servlet-name>
+        <servlet-class>Repo.controller.ServletChat</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletProjectFile</servlet-name>
+        <servlet-class>Repo.controller.ServletProjectFile</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServleTCheckUserName</servlet-name>
         <url-pattern>/ServleTCheckUserName</url-pattern>
@@ -343,6 +359,22 @@
     <servlet-mapping>
         <servlet-name>ServletAddProject</servlet-name>
         <url-pattern>/ServletAddProject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletSignOut</servlet-name>
+        <url-pattern>/ServletSignOut</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletCheckUserSession</servlet-name>
+        <url-pattern>/ServletCheckUserSession</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletChat</servlet-name>
+        <url-pattern>/ServletChat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletProjectFile</servlet-name>
+        <url-pattern>/ServletProjectFile</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

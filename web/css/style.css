@@ -437,7 +437,7 @@ h2#welcome_msg {
     float: left;
     font: 28px'Segoe UI Light',Segoe UI,Tahoma Light,Arial Light,Helvetica Light,sans-serif;
     font-weight: lighter;
-    padding-bottom: 20px;
+  /*  padding-bottom: 20px; reduce gap */
     position: relative;
     top: 0;
     width: 250px;
@@ -445,8 +445,12 @@ h2#welcome_msg {
 
 .row .float_right a:hover {
     text-decoration: none;
-    cursor: alias;
+   /* cursor: alias;*/
     /*border-bottom: 3px #7B4F9D solid;*/
+}
+
+div#createProject a:hover{
+    border-bottom: 3px #7B4F9D solid;
 }
 
 a#download_button {
@@ -525,4 +529,9 @@ anim_h2 {
     padding: 5px 0 0 0;
     position: relative;
     width: 140px;
+}
+
+
+.ul_list li a:hover{
+    cursor: pointer;
 }
