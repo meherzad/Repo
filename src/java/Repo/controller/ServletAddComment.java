@@ -4,21 +4,22 @@
  */
 package Repo.controller;
 
+import Repo.model.DatabaseManager;
+import Repo.model.Projectbugtrackcomment;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.mail.Session;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.json.simple.JSONObject;
 
 /**
  *
  * @author meherzad
  */
-public class ServletCheckUserSession extends HttpServlet {
+public class ServletAddComment extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -38,10 +39,10 @@ public class ServletCheckUserSession extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ServletCheckUserSession</title>");
+            out.println("<title>Servlet ServletAddComment</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ServletCheckUserSession at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ServletAddComment at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -77,25 +78,35 @@ public class ServletCheckUserSession extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String status;
+        String tempp1 = request.getParameter("txtbugid");
+        int p1 = Integer.parseInt(tempp1);
+        HttpSession session = request.getSession(true);
+        
+        String tempp2 = session.getAttribute("userId").toString();
+        int p2 = Integer.parseInt(tempp2);
+        String p3 = request.getParameter("txtbugcomm");
+        Date p4 = new java.util.Date();
+        DatabaseManager dbcon = new DatabaseManager();
+        Projectbugtrackcomment objbug_comm = new Projectbugtrackcomment();
+
+        objbug_comm.setBugId(p1);
+        objbug_comm.setUserId(p2);
+        objbug_comm.setComment(p3);
+        objbug_comm.setTimeSatmp(p4);
+
+        System.out.println("servlet created");
         try {
-            HttpSession session = request.getSession(false);
-            if (session.getAttribute("userId") == null) {
-                status = "fail";
+
+            if (dbcon.addBug_comm(objbug_comm)) {
+                System.out.println("Done");
             } else {
-                status = "success";
+                System.out.println("Notdone");
             }
+
         } catch (Exception e) {
-            status = "fail";
-            e.printStackTrace();
+            System.out.println(e);
         }
-        System.out.println("********" + status);
-        JSONObject json = new JSONObject();
-        PrintWriter out = response.getWriter();
-        json.put("status", status);
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        out.print(json);
+
     }
 
     /**

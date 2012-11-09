@@ -32,6 +32,9 @@
                         <ul class="ul_list">
                             <li>
                                 <ul class="ul_list" id="nav">
+                                    <li class="liSin" style="display: none;">
+                                        <a id="lnkSignUp" href="ServletUserDashBoard">Home</a>
+                                    </li>
                                     <li class="liSout" style="display: none;"><a id="lnkSignOut" >SignOut</a></li>
                                     <li>
                                         <input id="searchSite" name="searchSite" maxlength="500"
@@ -53,14 +56,11 @@
                 <div class="project_head">
                     <div class="project_head_image">
                         <a href="#" >
-                            <img src="images/p1.jpg" />
+                            <img id="projImg" src="" />
                         </a>
                     </div>
                     <h1 class="project_title">
-                        <div>
-                            <a href="#">
-                                Sample project 
-                            </a>
+                        <div id="projTitle">
                         </div>
                     </h1>
                 </div>
@@ -208,6 +208,8 @@
                             $(".editDoc").attr('href',link);
                             console.log('oen')
                         }
+                        $("#projTitle").html(dt.projName);
+                        $('#projImg').attr('src',dt.iUrl);
                     },
                     error:function(){
                         console.log('error');

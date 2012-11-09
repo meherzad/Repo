@@ -79,6 +79,7 @@ public class ServletShowBugDetail extends HttpServlet {
         } catch (Exception e) {
             status = "fail";
         }
+        request.setAttribute("bugId", bug_id);
         request.setAttribute("bugissue", bugissue);
         request.setAttribute("status", "success");
         request.setAttribute("bug_comm_list", bug_comm_list);

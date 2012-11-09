@@ -54,7 +54,11 @@
                     <h2 id="welcome_msg" style="clear: none !important;" >${requestScope.project.projName}</h3>
 
                 </div>
-                <a class="menuLink" href="projectEditDetail.html?projId=">Edit</a>
+                <div class="float_right">
+                    <a style="color: white;background-color: #7B4F9D;display: none;"
+                        class="menuLink" id="editBtn" href="projectEditDetail.html?projId=">Edit</a>
+                </div>
+
             </div>
         </div>
 
@@ -155,6 +159,9 @@
                     success:function(dt){
                         if (dt.status!='true'){
                             $("#projDash").css('display','none');
+                        }
+                        if (dt.type=='owner'){
+                            $('#editBtn').css('display','inline');
                         }
                     },
                     error:function(){

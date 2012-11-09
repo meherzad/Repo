@@ -14,27 +14,31 @@
         <header class="navbar">
             <div class="navbar-inner">
                 <div class="container conatiner_support">
-                    <div class="float_left">
+                    <div class="float_left" style="margin-left:-45px;">
                         <p id="logo">
-                            <a href="http://localhost:8080/FinalDesign/index.html">Site
-                                Logo</a> <span class="tagline">Free project hosting</span>
+                            <a href="index.html">Site
+                                Logo
+                            </a> 
+                            <span class="tagline">Free project hosting</span>
                         </p>
                     </div>
                     <div class="float_right">
-                        <ul>
+                        <ul class="ul_list">
                             <li>
                                 <ul class="ul_list" id="nav">
-                                    <li><a id="lnkSignUp"> Sign Up</a></li>
-                                    <li><a id="lnkSignIn">Sign In</a></li>
+                                    <li>
+                                        <input id="searchSite" name="searchSite" maxlength="500"
+                                               type="text" value="" autocomplete="off"
+                                               title="Search all projects"
+                                               style="color: rgb(170, 170, 170);
+                                               font-style: italic;margin-top: -5px;"
+                                               placeholder="Search">
+                                    </li>
                                 </ul>
-                            </li>
-                            <li><input id="searchSite" name="searchSite" maxlength="500"
-                                       type="text" value="" autocomplete="off"
-                                       title="Search all projects"
-                                       style="color: rgb(170, 170, 170); font-style: italic;">
                             </li>
                         </ul>
                     </div>
+
                 </div>
             </div>
         </header>
@@ -70,6 +74,7 @@
                     </div>
                     <div class="row">
                         <input type="submit" id="btnSubmit" name="btnSubmit" value="Submit"/>
+                        <input type="hidden" id="hdnStatus"/><
                     </div>
                 </form>
             </div>
@@ -77,7 +82,7 @@
         <div id="footer">
             <div class="row">
                 <hr style="color:">
-                <ul class="ul_list">
+                <ul class="ul_list footer_link">
                     <li class="list"></li>
                     <li class="list"><a href="#">Get Help</a></li>
                     <li class="list"><a href="#">Privacy Statement</a></li>
@@ -90,6 +95,14 @@
         </div>
         <script type="text/javascript">
             (function(){
+                var res;
+                $('#btnSubmit').click(function(){
+                    if (res==='Success')
+                        return true;
+                    else
+                        return false;
+                        
+                });
                 $("#txtName").change(function(){
                     var value=$("#txtName").val();
                     var length=value.length;
@@ -102,7 +115,7 @@
                             "username":$("#txtName").val()
                         }                          
                         ,function(result){
-                            var res=result.resp;//  result.resp);
+                            res=result.resp;//  result.resp);
                             if (res==='Success'){
                                 resp.css("color", "green")
                                 resp.html('<img src="images/accepted.png" />' + res);

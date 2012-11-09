@@ -196,6 +196,14 @@
         <servlet-name>ServletProjectFile</servlet-name>
         <servlet-class>Repo.controller.ServletProjectFile</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Servletbugfile</servlet-name>
+        <servlet-class>Repo.controller.Servletbugfile</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletAddComment</servlet-name>
+        <servlet-class>Repo.controller.ServletAddComment</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServleTCheckUserName</servlet-name>
         <url-pattern>/ServleTCheckUserName</url-pattern>
@@ -375,6 +383,14 @@
     <servlet-mapping>
         <servlet-name>ServletProjectFile</servlet-name>
         <url-pattern>/ServletProjectFile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Servletbugfile</servlet-name>
+        <url-pattern>/Servletbugfile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAddComment</servlet-name>
+        <url-pattern>/ServletAddComment</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -43,6 +43,9 @@
                         <ul class="ul_list">
                             <li>
                                 <ul class="ul_list" id="nav">
+                                    <li class="liSin" style="display: none;">
+                                        <a id="lnkSignUp" href="ServletUserDashBoard">Home</a>
+                                    </li>
                                     <li class="liSout" style="display: none;"><a id="lnkSignOut" >SignOut</a></li>
                                     <li>
                                         <input id="searchSite" name="searchSite" maxlength="500"
@@ -62,16 +65,13 @@
         <div class="container conatiner_support">
             <div class="row" style="position: relative;">
                 <div class="project_head">
-                    <div class="project_head_image">
+                   <div class="project_head_image">
                         <a href="#" >
-                            <img src="images/p1.jpg" />
+                            <img id="projImg" src="" />
                         </a>
                     </div>
                     <h1 class="project_title">
-                        <div>
-                            <a href="#">
-                                Sample project 
-                            </a>
+                        <div id="projTitle">
                         </div>
                     </h1>
                 </div>
@@ -110,6 +110,7 @@
         </div>
 
         <div class="issuelist"> 
+            <a id="createBug" href="CreateBug.jsp?projId=">Create bug</a>
             <c:if test="${requestScope.status eq 'success'}">
 
                 <h3>
@@ -162,6 +163,8 @@
                         if (dt.status!='true'){
                             $("#projDash").css('display','none');
                         }
+                        $("#projTitle").html(dt.projName);
+                        $('#projImg').attr('src',dt.iUrl);
                     },
                     error:function(){
                         console.log('error');
@@ -196,11 +199,6 @@
                     });
                 });
        
-                $.each($('a.menuLink'), function(key,val){
-                    var link=$(val).attr('href');
-                    link=link+projId;
-                    $(val).attr('href',link);
-                });
             })();
         </script>
     </body>

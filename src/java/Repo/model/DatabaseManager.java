@@ -890,7 +890,7 @@ public class DatabaseManager {
             ResultSet rs = pst.executeQuery();
             rs.next();
             InputStream is = rs.getBinaryStream("projDoc");
-            System.out.println(is);
+            //System.out.println(is);
             java.io.BufferedReader in = new BufferedReader(new java.io.InputStreamReader(is));
             String total = "";
             String str1;
@@ -899,8 +899,10 @@ public class DatabaseManager {
             }
             // doc.setData(total);
             doc.setProjId(projId);
+            doc.setProjName(rs.getString("projName"));
             doc.setProjectDoc(total);
             doc.setProjOwner(rs.getInt("projOwner"));
+            doc.setiUrl(rs.getString("iUrl"));
             //doc.setDateCreate(rs.getDate("dateOfCreation"));
             //doc.setDateModify(rs.getDate("dateOfModification"));
 
@@ -1265,8 +1267,9 @@ public class DatabaseManager {
             PreparedStatement pst = con.prepareStatement("Select userId from usermaster "
                     + "where rand like '" + rnd + "'");
             ResultSet rs = pst.executeQuery();
-            rs.next();
-            userid = rs.getInt("userId");
+            if (rs.next()) {
+                userid = rs.getInt("userId");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -2191,6 +2194,69 @@ public class DatabaseManager {
                 e.printStackTrace();
             }
         }
+        return result;
+    }
+
+    public boolean addbugfile(String file, String id) throws SQLException {
+        boolean result;
+        PreparedStatement pst = null;
+        int t = Integer.parseInt(id);
+        System.out.println(file);
+        ResultSet rs = null;
+        try {
+            connect();
+            /* Statement st = dbCon.createStatement();
+
+             rs = st.executeQuery("select LAST_INSERT_ID();");
+             rs.next();
+             int temp = rs.getInt(1);
+             System.out.println(temp); */
+            System.out.println("i m here ......");
+            pst = con.prepareCall("Update projectbugtrack set fileUrl = ? where bugId = ?;");
+
+            pst.setString(1, file);
+            pst.setInt(2, t);
+            pst.executeUpdate();
+            result = true;
+        } catch (Exception e) {
+            System.out.println(e);
+            result = false;
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
+    }
+
+    public boolean addBug_comm(Projectbugtrackcomment obug_comm) {
+        boolean result;
+        try {
+            connect();
+            PreparedStatement pst = con.prepareStatement("Insert into projectbugtrackcomment(bugId, "
+                    + "userId,comment,timeStamp)"
+                    + "values (?,?,?,?);");
+            pst.setInt(1, obug_comm.getBugId());
+            pst.setInt(2, obug_comm.getUserId());
+            pst.setString(3, obug_comm.getComment());
+            pst.setDate(4, new java.sql.Date(obug_comm.getTimeSatmp().getTime()));
+
+            pst.executeUpdate();
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = false;
+        } finally {
+            try {
+                disConnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         return result;
     }
 }

@@ -50,51 +50,25 @@
                         <ul class="ul_list">
                             <li>
                                 <ul class="ul_list" id="nav">
-                                    <li><a id="lnkSignUp" href="frmRegistration.html"> Sign Up</a></li>
-                                    <li><a id="lnkSignIn" href="#myModal" data-toggle="modal">Sign In</a></li>
+                                    <li class="liSin" style="display: none;">
+                                        <a id="lnkSignUp" href="ServletUserDashBoard">Home</a>
+                                    </li>
+                                    <li class="liSin" style="display: none;">
+                                        <a id="lnkSignUp" href="frmRegistration.html"> Sign Up</a></li>
+                                    <li class="liSin" style="display: none;"><a id="lnkSignIn" href="#myModal" data-toggle="modal">Sign In</a></li>
+                                    <li class="liSout" style="display: none;">
+                                        <a id="lnkSignOut" >SignOut</a>
+                                    </li>
 
-                                    <li><input id="searchSite" name="searchSite" maxlength="500"
-                                               type="text" value="" autocomplete="off"
-                                               title="Search all projects"
-                                               style="color: rgb(170, 170, 170); font-style: italic;">
+                                    <li style="margin-top: -5px;"><input id="searchSite" name="searchSite" maxlength="500"
+                                                                         type="text" value="" autocomplete="off"
+                                                                         title="Search all projects"
+                                                                         style="color: rgb(170, 170, 170); font-style: italic;">
                                     </li>
                                 </ul>
                             </li>
 
                         </ul>
-                        <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                                <h3 id="myModalLabel" style="color: #6A747E;"><center>Sign In</center></h3>
-                            </div>
-                            <div class="modal-body">
-                                <form class="form-horizontal" method="post" action="">
-                                    <div class="control-group">
-                                        <label class="loginLabel" for="inputEmail">Email</label>
-                                        <div class="controls">
-                                            <input type="text" id="username" name="username" placeholder="Email">
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="loginLabel" for="inputPassword">Password</label>
-                                        <div class="controls">
-                                            <input type="password" id="password" name="password" placeholder="Password">
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <div class="controls">
-                                            <label class="checkbox">
-                                                <input type="checkbox"> 
-                                                <label class="loginLabel" style="text-align: left !important;padding-top: 0px !important; ">Remember me</label>
-                                            </label><br>
-                                            <div style="color: red;" id="loginStatus"></div>
-                                            <button type="button" class="btn" id="btnLogIn">Sign in</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-
-                        </div>
 
                     </div>
                 </div>
@@ -110,7 +84,7 @@
 
                     </div>
                     <div class="float_right" id="createProject">
-                        <a href="">Create Project</a>
+                        <a href="CreateProject.jsp">Create Project</a>
                         <a href="">Join a Project</a>
                         <a href="UserEditProfile.jsp?userId="${requestScope.user.userId}>Edit profile</a>
                     </div>
@@ -154,7 +128,7 @@
                 <c:forEach items="${requestScope.projectList}" var="proj">
                     <div class="row">
                         <div class="float_left">
-                            <a href="?projId=${proj.projId}">
+                            <a href="ServletProjectHome?projId=${proj.projId}">
                                 ${proj.projName}
                         </div>
                     </div>
@@ -182,6 +156,39 @@
                 var url="images/MB_0020_light1.png";
                 console.log(data);
                 $('.notimage').attr('data-content',data);
+                $.ajax({
+                    url:'ServletCheckUserSession',
+                    type:'post',
+                    success:function(dt){
+                        console.log(dt);
+                        if (dt.status=='fail'){
+                            $("ul.ul_list li.liSin").css('display','inline');
+                            $("ul.ul_list li.liSout").css('display','none');
+                        }else{
+                            $("ul.ul_list li.liSin").css('display','none');
+                            $("ul.ul_list li.liSout").css('display','inline');
+
+                        }
+                    }
+                });
+                $("#lnkSignOut").live('click',function(){
+                    $.ajax({
+                        url:'ServletSignOut',
+                        type:'post',
+                        success:function(dt){
+                            console.log(dt);
+                            if (dt.status=='success'){
+                                $("ul.ul_list li.liSin").css('display','inline');
+                                $("ul.ul_list li.liSout").css('display','none');
+                            }else{
+                                $("ul.ul_list li.liSin").css('display','none');
+                                $("ul.ul_list li.liSout").css('display','inline');
+
+                            }
+                        }
+                    });
+                });
+                   
             })();                
         </script>
 

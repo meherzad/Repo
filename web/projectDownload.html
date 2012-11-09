@@ -31,11 +31,14 @@
                     <div class="float_right" style="margin-top: 10px;">
                         <ul class="ul_list">
                             <li>
-                                <ul class="ul_list" id="nav">
+                                <ul class="ul_list" id="nav" style="margin-top: 10px;">
+                                    <li class="liSin" style="display: none;">
+                                        <a id="lnkSignUp" href="ServletUserDashBoard">Home</a>
+                                    </li>
                                     <li class="liSout" style="display: none;">
                                         <a id="lnkSignOut" >SignOut</a>
                                     </li>
-                                    <li>
+                                    <li >
                                         <input id="searchSite" name="searchSite" maxlength="500"
                                                type="text" value="" autocomplete="off"
                                                title="Search all projects"
@@ -56,14 +59,11 @@
                 <div class="project_head">
                     <div class="project_head_image">
                         <a href="#" >
-                            <img src="images/p1.jpg" />
+                            <img id="projImg" src="" />
                         </a>
                     </div>
                     <h1 class="project_title">
-                        <div>
-                            <a href="#">
-                                Sample project 
-                            </a>
+                        <div id="projTitle">
                         </div>
                     </h1>
                 </div>
@@ -217,7 +217,23 @@
             else
                 return decodeURIComponent(results[1].replace(/\+/g, " "));
         }
+        
         var projId=getParameterByName("projId");
+        
+        $.ajax({
+            url:'ServletCheckUserSession',
+            type:'post',
+            success:function(dt){
+                console.log(dt);
+                if (dt.status=='fail'){
+                    $("ul.ul_list li.liSin").css('display','inline');
+                    $("ul.ul_list li.liSout").css('display','none');
+                }else{
+                    $("ul.ul_list li.liSout").css('display','inline');
+                    $("ul.ul_list li.liSin").css('display','inline');
+                }
+            }
+        });
         $.each($('a.menuLink'), function(key,val){
             var link=$(val).attr('href');
             link=link+projId;
@@ -233,10 +249,27 @@
                 if (dt.status!='true'){
                     $("#projDash").css('display','none');
                 }
+                $("#projTitle").html(dt.projName);
+                $('#projImg').attr('src',dt.iUrl);
             },
             error:function(){
                 console.log('error');
             }
+        });
+        
+        $("#lnkSignOut").live('click',function(){
+            $.ajax({
+                url:'ServletSignOut',
+                type:'post',
+                success:function(dt){
+                    console.log(dt);
+                    if (dt.status=='success'){
+                        $("ul.ul_list li.liSout").css('display','none');
+                    }else{
+                        $("ul.ul_list li.liSin").css('display','inline');
+                    }
+                }
+            });
         });
         function requestData() {
             $.ajax({

@@ -43,7 +43,28 @@ and open the template in the editor.
                                 Logo</a> <span class="tagline">Free project hosting</span>
                         </p>
                     </div>
-
+                    <div class="float_right">
+                        <ul class="ul_list">
+                            <li>
+                                <ul class="ul_list" id="nav">
+                                    <li class="liSin" style="display: none;">
+                                        <a id="lnkSignUp" href="ServletUserDashBoard">Home</a>
+                                    </li>
+                                    <li class="liSout" style="display: none;">
+                                        <a id="lnkSignOut" >SignOut</a>
+                                    </li>
+                                    <li>
+                                        <input id="searchSite" name="searchSite" maxlength="500"
+                                               type="text" value="" autocomplete="off"
+                                               title="Search all projects"
+                                               style="color: rgb(170, 170, 170);
+                                               font-style: italic;margin-top: -5px;"
+                                               placeholder="Search">
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
                     <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
@@ -89,14 +110,11 @@ and open the template in the editor.
                 <div class="project_head">
                     <div class="project_head_image">
                         <a href="#" >
-                            <img src="images/p1.jpg" />
+                            <img id="projImg" src="" />
                         </a>
                     </div>
                     <h1 class="project_title">
-                        <div>
-                            <a href="#">
-                                Sample project 
-                            </a>
+                        <div id="projTitle">
                         </div>
                     </h1>
                 </div>
@@ -107,7 +125,7 @@ and open the template in the editor.
             <div class="row">
                 <ul id="project_menu">
                     <li>
-                        <a class="menuLink" href="ProjectHome?projId=" >Home</a>
+                        <a class="menuLink" href="ServletProjectHome?projId=" >Home</a>
                     </li>
                     <li id="projDash">
                         <a class="menuLink" href="frmProjectDashboard.html?projId=" >Project Management</a>
@@ -138,7 +156,7 @@ and open the template in the editor.
 
                 <form name="selectLicense" action="" method="POST">
                     <center>
-                        <div id="SelectLicense"><br> Select license: 
+                        <div id="SelectLicense" ><br> Select license: 
                             <select id="selectLicense" >
                                 <option value="0">Select license </option>
                                 <option value="1">Apache License 2.0 (Apache)</option>
@@ -150,7 +168,7 @@ and open the template in the editor.
                                 <option value="9" >The MIT License (MIT)</option>
                             </select><br>
                             <input type="button" value="Save" name="btnlicSave" id="contentbtnsave" />
-                        </div>>
+                        </div>
                         <label style="color:red" id="labelcheck"></label>
                         <h1 id="contentHeader"></h1> 
                     </center>
@@ -163,7 +181,20 @@ and open the template in the editor.
                 </form>
             </div>
         </div>
+        <div id="footer">
+            <div class="row">
+                <hr style="color:">
+                <ul class="ul_list footer_link">
+                    <li class="list"></li>
+                    <li class="list"><a href="#">Get Help</a></li>
+                    <li class="list"><a href="#">Privacy Statement</a></li>
+                    <li class="list"><a href="#">Terms of Use</a></li>
+                    <li class="list"><a href="#">Code of Conduct</a></li>
+                    <li class="list"><a href="#">Advertise With Us</a></li>
 
+                </ul>
+            </div>
+        </div>
         <script type="text/javascript">
             (function(){
                 function getParameterByName(name) {
@@ -178,6 +209,21 @@ and open the template in the editor.
                 }
                 var projId=getParameterByName("projId");
 
+                
+                $.ajax({
+                    url:'ServletCheckUserSession',
+                    type:'post',
+                    success:function(dt){
+                        console.log(dt);
+                        if (dt.status=='fail'){
+                            $("ul.ul_list li.liSin").css('display','inline');
+                            $("ul.ul_list li.liSout").css('display','none');
+                        }else{
+                            $("ul.ul_list li.liSout").css('display','inline');
+                            $("ul.ul_list li.liSin").css('display','inline');
+                        }
+                    }
+                });
                 $.each($('a.menuLink'), function(key,val){
                     var link=$(val).attr('href');
                     link=link+projId;
@@ -193,10 +239,30 @@ and open the template in the editor.
                         if (dt.status!='true'){
                             $("#projDash").css('display','none');
                         }
+                        if (dt.type!='owner'){
+                            $("#SelectLicense").css('display', 'none');
+                        }
+                        $("#projTitle").html(dt.projName);
+                        $('#projImg').attr('src',dt.iUrl);
                     },
                     error:function(){
                         console.log('error');
                     }
+                });
+        
+                $("#lnkSignOut").live('click',function(){
+                    $.ajax({
+                        url:'ServletSignOut',
+                        type:'post',
+                        success:function(dt){
+                            console.log(dt);
+                            if (dt.status=='success'){
+                                $("ul.ul_list li.liSout").css('display','none');
+                            }else{
+                                $("ul.ul_list li.liSin").css('display','inline');
+                            }
+                        }
+                    });
                 });
                 $.ajax({
                     url:'ServletGetLicense',
@@ -206,6 +272,8 @@ and open the template in the editor.
                         'projId':projId
                     },
                     success:function(data){
+                        console.log('asdasdas');
+                        console.log(data);
                         $("#content").html(data.licenseDesc)  ;
                         $("#contentHeader").html(data.licenseName);
                     },

@@ -82,7 +82,7 @@ public class ServletAddProject extends HttpServlet {
         String status, p1 = request.getParameter("txtprojname");
         String p2 = request.getParameter("txtprojdescrip");
         HttpSession session = request.getSession(true);
-        String tempp3 = "8";//session.getAttribute("userId").toString();
+        String tempp3 = session.getAttribute("userId").toString();
         int p3 = Integer.parseInt(tempp3);
         String p4 = request.getParameter("visibility");
         ArrayList<Integer> tagids = new ArrayList<Integer>();

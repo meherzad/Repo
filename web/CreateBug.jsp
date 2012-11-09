@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-         <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/paging.css">
@@ -20,6 +20,53 @@
         <script src="js/quickpager.jquery.js" type="text/javascript"></script>
     </head>
     <body>
+        <header class="navbar">
+            <div class="navbar-inner">
+                <div class="container conatiner_support">
+                    <div class="float_left" style="margin-left:-45px;">
+                        <p id="logo">
+                            <a href="index.html">Site
+                                Logo</a> <span class="tagline">Free project hosting</span>
+                        </p>
+                    </div>
+                    <div class="float_right">
+                        <ul class="ul_list">
+                            <li>
+                                <ul class="ul_list" id="nav">
+                                    <li class="liSin" style="display: none;">
+                                        <a id="lnkSignUp" href="ServletUserDashBoard">Home</a>
+                                    </li>
+                                    <li class="liSout" style="display: none;"><a id="lnkSignOut" >SignOut</a></li>
+                                    <li>
+                                        <input id="searchSite" name="searchSite" maxlength="500"
+                                               type="text" value="" autocomplete="off"
+                                               title="Search all projects"
+                                               style="color: rgb(170, 170, 170);
+                                               font-style: italic;margin-top: -5px;"
+                                               placeholder="Search">
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="container conatiner_support">
+            <div class="row" style="position: relative;">
+                <div class="project_head">
+                    <div class="project_head_image">
+                        <a href="#" >
+                            <img id="projImg" src="" />
+                        </a>
+                    </div>
+                    <h1 class="project_title">
+                        <div id="projTitle">
+                        </div>
+                    </h1>
+                </div>
+            </div>
+        </div>
 
         <div class="container conatiner_support">
             <div class="row">
@@ -51,12 +98,35 @@
                 </ul>
             </div>
         </div>
+        <div class="container conatiner_support">
+            <div class="row">
+                <div style="margin-left: 30%; margin-right: 30%;"><h2>Project Bug</h2></div>  
+            </div>
+        </div>
+        <div class="container conatiner_support">
+            <div class="row">
+                <form method="post" action="ServletAddBug">
+                    <input type="text" id="txtissue" name="txtissue">
+                    <input type="submit" value="Submit">
+                    <input type="hidden" name="hdnProj" id="hdnProj">
+                </form>
+            </div>
+        </div>
+        <div id="footer">
+            <div class="row">
+                <hr style="color:">
+                <ul class="ul_list footer_link">
+                    <li class="list"></li>
+                    <li class="list"><a href="#">Get Help</a></li>
+                    <li class="list"><a href="#">Privacy Statement</a></li>
+                    <li class="list"><a href="#">Terms of Use</a></li>
+                    <li class="list"><a href="#">Code of Conduct</a></li>
+                    <li class="list"><a href="#">Advertise With Us</a></li>
 
-        <form method="post" action="ServletAddBug">
-            <input type="text" id="txtissue" name="txtissue">
-            <input type="submit" value="Submit">
-            <input type="hidden" name="hdnProj" id="hdnProj">
-        </form>
+                </ul>
+            </div>
+        </div>
+
         <script>
             (function(){
                 function getParameterByName(name) {
@@ -90,7 +160,36 @@
                     error:function(){
                         console.log('error');
                     }
-                });                
+                });   
+                $.ajax({
+                    url:'ServletCheckUserSession',
+                    type:'post',
+                    success:function(dt){
+                        console.log(dt);
+                        if (dt.status=='fail'){
+                            $("ul.ul_list li.liSin").css('display','inline');
+                            $("ul.ul_list li.liSout").css('display','none');
+                        }else{
+                            $("ul.ul_list li.liSout").css('display','inline');
+                            $("ul.ul_list li.liSin").css('display','inline');
+                        }
+                    }
+                });
+                $("#lnkSignOut").live('click',function(){
+                    $.ajax({
+                        url:'ServletSignOut',
+                        type:'post',
+                        success:function(dt){
+                            console.log(dt);
+                            if (dt.status=='success'){
+                                $("ul.ul_list li.liSout").css('display','none');
+                            }else{
+                                $("ul.ul_list li.liSin").css('display','inline');
+                            }
+                        }
+                    });
+                });
+      
             })();
         </script>
     </body>

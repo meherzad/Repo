@@ -74,7 +74,7 @@ and open the template in the editor.
         </div>
         <script id="chatscript" type="text/x-handlebars-template">
             {{#each this}}
-            {{username}}:&nbsp;{{chat}}<br>
+            <span>  {{username}}:&nbsp;{{chat}}</span><br>
             {{/each}}
         </script>
         <script type="text/javascript">
@@ -119,8 +119,13 @@ and open the template in the editor.
                     var code=(e.keyCode?e.keyCode:e.which);
                     if(code==13)
                     {
-                        $("#chat_log").append(user+ ": "+$("#chat_text").val());
+                        $("#chat_log").append(user+ ": <span>"+$("#chat_text").val()+"</span>");
+                        $("#chat_log").scrollTop(-100);
                         //add 
+                       /* var container = $("#chat_log");
+                        var body = $("#chat_log  span:last-child");
+                        container.animate({ scrollTop: body.offset().top - container.offset().top + container.scrollTop() });
+*/
                         $.ajax({
                             url:'ServletChat',
                             data:{
@@ -131,6 +136,7 @@ and open the template in the editor.
                             type:'post',
                             success:function(dt){
                                 $("#chat_text").val("");
+                                $("#chat_text").focus();
                             },
                             error:function(){
                                 console.log('error');
@@ -138,6 +144,62 @@ and open the template in the editor.
                         });
                     }
                 });
+                var projId=getParameterByName("projId");
+
+                
+                $.ajax({
+                    url:'ServletCheckUserSession',
+                    type:'post',
+                    success:function(dt){
+                        console.log(dt);
+                        if (dt.status=='fail'){
+                            $("ul.ul_list li.liSin").css('display','inline');
+                            $("ul.ul_list li.liSout").css('display','none');
+                        }else{
+                            $("ul.ul_list li.liSout").css('display','inline');
+                            $("ul.ul_list li.liSin").css('display','inline');
+                        }
+                    }
+                });
+                $.each($('a.menuLink'), function(key,val){
+                    var link=$(val).attr('href');
+                    link=link+projId;
+                    $(val).attr('href',link);
+                });
+                $.ajax({
+                    url:'ServletCheckUserType',
+                    data:{
+                        projId:projId
+                    },
+                    type:'post',
+                    success:function(dt){
+                        if (dt.status!='true'){
+                            $("#projDash").css('display','none');
+                        }
+                        if (dt.type!='owner'){
+                            $("#SelectLicense").css('display', 'none');
+                        }
+                    },
+                    error:function(){
+                        console.log('error');
+                    }
+                });
+        
+                $("#lnkSignOut").live('click',function(){
+                    $.ajax({
+                        url:'ServletSignOut',
+                        type:'post',
+                        success:function(dt){
+                            console.log(dt);
+                            if (dt.status=='success'){
+                                $("ul.ul_list li.liSout").css('display','none');
+                            }else{
+                                $("ul.ul_list li.liSin").css('display','inline');
+                            }
+                        }
+                    });
+                });
+      
             })();
         </script>
     </body>

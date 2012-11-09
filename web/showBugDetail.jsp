@@ -108,21 +108,26 @@
         </div>
 
         <c:if test="${requestScope.status eq 'success'}">
-             <div id="buglist">
-                      <legend> ${requestScope.bugissue} </legend>
-                      <blockquote> 
-                        <p> <br/><c:forEach items="${requestScope.bug_comm_list}" var="comment">
-                                                      
+            <div id="buglist">
+                <a href="" id="addComment">Add comment</a>
+                <legend> ${requestScope.bugissue} </legend>
+                <blockquote> 
+                    <p> <br/><c:forEach items="${requestScope.bug_comm_list}" var="comment">
+
                             ${comment.comment}<br/>
-                            
+
                             <small> ${comment.timeSatmp}</small>
                         </c:forEach>
                     </p>
-                      </blockquote>
-                      
-                    </div>   
+                    <div id="msgResult"></div>
+                    <p>
+                        <input type="text" id="addComment" >
+                        <input type="button" id="add" value="Add"> 
+                    </p>
+                </blockquote>
+            </div>   
         </c:if>
-         <div id="footer">
+        <div id="footer">
             <div class="row">
                 <hr style="color:">
                 <ul class="ul_list footer_link">
@@ -132,7 +137,6 @@
                     <li class="list"><a href="#">Terms of Use</a></li>
                     <li class="list"><a href="#">Code of Conduct</a></li>
                     <li class="list"><a href="#">Advertise With Us</a></li>
-
                 </ul>
             </div>
         </div>
@@ -162,6 +166,22 @@
                             $("ul.ul_list li.liSin").css('display','inline');
                         }
                     }
+                });
+                $('#add').click(function(){
+                   if ($('#addComment').val()==''){
+                       $('#msgResult').html('Add comment');
+                       return;
+                   } 
+                   $.ajax({
+                      url:'ServletAddComment',
+                      data:{
+                          
+                      },
+                      type:'post',
+                      success:function(dt){
+                          
+                      }
+                   });
                 });
                 $("#lnkSignOut").live('click',function(){
                     $.ajax({
@@ -199,6 +219,9 @@
                         console.log('error');
                     }
                 });
+                $("#addComment").click(function(){
+                    
+                })
             })();
         </script>
 

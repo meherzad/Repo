@@ -26,7 +26,9 @@ and open the template in the editor.
                     <div class="float_left" style="margin-left:-45px;">
                         <p id="logo">
                             <a href="index.html">Site
-                                Logo</a> <span class="tagline">Free project hosting</span>
+                                Logo
+                            </a> 
+                            <span class="tagline">Free project hosting</span>
                         </p>
                     </div>
                     <div class="float_right">
@@ -54,16 +56,16 @@ and open the template in the editor.
                 <div class="project_head">
                     <div class="project_head_image">
                         <a href="#" >
-                            <img src="images/p1.jpg" />
+                            <img id="projImg" src="" />
                         </a>
                     </div>
                     <h1 class="project_title">
-                        <div>
-                            <a href="#">
-                                Sample project 
-                            requestScope.user</a>
+                        <div id="projTitle">
                         </div>
                     </h1>
+                </div>
+                <div class="float_right" style="margin-top: -50px;">
+                    <a id="chatBtn" href="userChat.html?projId=">Chat</a>
                 </div>
             </div>
         </div>
@@ -95,13 +97,13 @@ and open the template in the editor.
                     <li>
                         <a class="menuLink" href="ProjectLicense.html?projId=" >License</a>
                     </li>
-                   
+
                 </ul>
             </div>
         </div>
         <div class ="conatiner_support container" style="min-height: 400px;">
-            <div class="row">
-                <div class="addTask">
+            <div class="row" style="margin-top: 25px;">
+                <div class="addTask" style="display: none;margin-top: 25px;padding-top: 25px;">
                     <a >Add new task</a>
                 </div>
             </div>
@@ -161,6 +163,7 @@ and open the template in the editor.
                     </div>
                 </div>
                 <input type="hidden" id="requestType"/>
+                <div id="msg" style="margin-left: 20px;color: red;"></div>
             </div>
         </div>
         <div id="footer">
@@ -181,7 +184,7 @@ and open the template in the editor.
         <input type="hidden" id="hiddenProjId" />
         <script id="templateToDo" type="text/x-handlebars-template">
             {{#each this}}
-            <div class="accordion-group">
+            <div class="accordion-group" id="acc{{taskId}}">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-taskId="{{taskId}}" data-parent="#accordion2" href="#select{{taskId}}">
                         {{taskDescription}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -192,7 +195,7 @@ and open the template in the editor.
 
                 </div>
                 <div id="select{{taskId}}" class="accordion-body collapse">
-                    <input type="button" data-taskId="{{taskId}}" value="Remove"/>
+                    <input class="btn" style="background-color: #E6E6E6;" type="button" data-taskId="{{taskId}}" value="Remove"/>
                     <div class="accordion-inner">
                         <div class="row">
                             <div class="progress active">
@@ -211,7 +214,7 @@ and open the template in the editor.
         </script>
         <script id="templateDoing" type="text/x-handlebars-template">
             {{#each this}}
-            <div class="accordion-group">
+            <div class="accordion-group" id="acc{{taskId}}">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-taskId="{{taskId}}" data-parent="#accordion2" href="#select{{taskId}}">
                         {{taskDescription}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -219,6 +222,8 @@ and open the template in the editor.
                     </a>
                 </div>
                 <div id="select{{taskId}}" class="accordion-body collapse">
+                    <input type="button" class="btn" style="background-color: #E6E6E6;" 
+                           data-taskId="{{taskId}}" value="Remove"/>
 
                     <div class="accordion-inner">
                         <div class="row">
@@ -238,7 +243,7 @@ and open the template in the editor.
         </script>
         <script id="templateDone" type="text/x-handlebars-template">
             {{#each this}}
-            <div class="accordion-group">
+            <div class="accordion-group" id="acc{{taskId}}">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-taskId="{{taskId}}" data-parent="#accordion2" href="#select{{taskId}}">
                         {{taskDescription}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -246,6 +251,7 @@ and open the template in the editor.
                     </a>
                 </div>
                 <div id="select{{taskId}}" class="accordion-body collapse">
+                    <input type="button" class="btn" style="background-color: #E6E6E6;" data-taskId="{{taskId}}" value="Remove"/>
 
                     <div class="accordion-inner">
                         <div class="row">
@@ -285,6 +291,10 @@ and open the template in the editor.
                         return decodeURIComponent(results[1].replace(/\+/g, " "));
                 }
                 var projId=getParameterByName("projId");
+                
+                var link=$('#chatBtn').attr('href');
+                link=link+projId;
+                $('#chatBtn').attr('href',link);
                 $.ajax({
                     url:'ServletCheckUserSession',
                     type:'post',
@@ -329,6 +339,12 @@ and open the template in the editor.
                         if (dt.status!='true'){
                             $("#projDash").css('display','none');
                         }
+                        if (dt.type=='owner'){
+                            $(".addTask").css('display', 'inline');
+                        }
+                        $("#projTitle").html(dt.projName);
+                        $('#projImg').attr('src',dt.iUrl);
+                        console.log(dt.iUrl);
                     },
                     error:function(){
                         console.log('error');
@@ -503,7 +519,19 @@ and open the template in the editor.
                     buttons : {
                         "Add Task" : function() {
                             var requestType=$("#requestType").attr('value');
-                                        
+                          //  alert(selectedMember);
+                            if (selectedMember==undefined){
+                                $("#msg").html('Select member');
+                                return;
+                            }          
+                            if ($('#txtDeadLine').val()==''){
+                                $("#msg").html('Select date');
+                                return;
+                            }
+                            if ($("#txtTaskName").val()==''){
+                                $("#msg").html('Add task');
+                                return;
+                            }
                             $.ajaxSetup({
                                 url:"ServletAddSubtask",
                                 data: {"type":2, 
@@ -534,6 +562,10 @@ and open the template in the editor.
                     }
                 });
                 $("#btnAddSubTask").click(function(){
+                    if ($("#txtSubTask").val()==''){
+                        $('#msg').html('Add subtask');
+                        return;
+                    }
                     var taskName=$(txtSubTask).attr('value');
                     $(subtaskAdd).append("<input type='checkbox' /><span>"+ taskName + "</span><br>");
                     $(txtSubTask).attr('value','');
@@ -601,7 +633,8 @@ and open the template in the editor.
                 });
                 $(".accordion-body input:button").live('click',function(){
                     var taskId=$(this).attr('data-taskId');
-                    alert(taskId);
+                    // alert(taskId);
+                    var mainBody='#acc'+taskId;
                     $.ajax({
                         url:"ServletTask",
                         data: {
@@ -610,7 +643,10 @@ and open the template in the editor.
                         type: "POST",
                         dataType: 'json',
                         success:function(dt){
+                            console.log('-----');
                             console.log(dt);
+                            console.log($(this).parent());
+                            $(mainBody).css('display','none');
                         },
                         error:function(e){
                             console.log(e)

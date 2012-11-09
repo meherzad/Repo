@@ -58,17 +58,15 @@
                 <div class="project_head">
                     <div class="project_head_image">
                         <a href="#" >
-                            <img src="images/p1.jpg" />
+                            <img id="projImg" src="" />
                         </a>
                     </div>
                     <h1 class="project_title">
-                        <div>
-                            <a href="#">
-                                Sample project 
-                            </a>
+                        <div id="projTitle">
                         </div>
                     </h1>
                 </div>
+
             </div>
         </div>
 
@@ -102,15 +100,13 @@
                 </ul>
             </div>
         </div>
-        <div id="membersManage" class="container conatiner_support" style="margin-top: 10px;
-             display: none;">
-            <div class="row">
-                <a href="">Manage members</a>
-            </div>
+        <div id="membersManage" class="container conatiner_support" style="display: none;">
         </div>
         <div class="container conatiner_support" style="min-height: 400px;">
             <div class="row">
                 <h2>People</h2>
+                <a id="manageMember" href="">Manage members</a>
+
                 <div id="ProjectMembers" class="top_border">
                     <div class="ProjectMembersLeft" style="float:left;">
                         <div id="CoordinatordContainer" style="margin-bottom:10px;">
@@ -139,6 +135,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
         <div id="footer">
@@ -252,7 +249,7 @@
                             console.log(dt);
                             if (dt.status=='success'){
                                 $("ul.ul_list li.liSout").css('display','none');
-                                $("#membersManage").css('display','none');
+                                $("#manageMember").css('display','none');
                             }else{
                                 $("ul.ul_list li.liSin").css('display','inline');
                             }
@@ -271,8 +268,11 @@
                             $("#projDash").css('display','none');
                         }
                         if (dt.type=='owner'){
-                            $("#membersManage").css('display','inline');
+                            $("#manageMember").css('display','inline');
+                            $('#manageMember').attr('href','ProjectMember?projId='+projId);
                         }
+                        $("#projTitle").html(dt.projName);
+                        $('#projImg').attr('src',dt.iUrl);
                     },
                     error:function(){
                         console.log('error');

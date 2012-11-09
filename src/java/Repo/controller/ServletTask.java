@@ -85,7 +85,7 @@ public class ServletTask extends HttpServlet {
         if (obj.deleteTask(task)) {
             json.put("status", "Success");
         } else {
-            json.put("status", "Success");
+            json.put("status", "fail");
         }
         PrintWriter out = response.getWriter();
         System.out.println("ServletTask------>" + json);

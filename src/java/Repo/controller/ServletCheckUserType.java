@@ -5,6 +5,7 @@
 package Repo.controller;
 
 import Repo.model.DatabaseManager;
+import Repo.model.Projectmaster;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -79,8 +80,9 @@ public class ServletCheckUserType extends HttpServlet {
             throws ServletException, IOException {
         int userId, projId;
         HttpSession session = request.getSession(true);
-        String type = "", status, str = request.getParameter("projId");
+        String projName = "", type = "", status, str = request.getParameter("projId");
         Object obj = session.getAttribute("userId");
+        Projectmaster p=null;
         if (obj == null || str == null || str == "") {
             status = "false";
         } else {
@@ -93,10 +95,15 @@ public class ServletCheckUserType extends HttpServlet {
             } else {
                 status = "false";
             }
+            p = ob.viewDocument(projId);
+            projName = p.getProjName();
+            System.out.println(p);
         }
         JSONObject json = new JSONObject();
         json.put("status", status);
         json.put("type", type);
+        json.put("projName", projName);
+        json.put("iUrl", p.getiUrl());
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

@@ -59,17 +59,16 @@
                                     <div class="control-group">
                                         <label class="loginLabel" for="inputPassword">Password</label>
                                         <div class="controls">
-                                            <input type="password" id="Userpass" name="password" placeholder="Password">
+                                            <input type="password" id="Userpass" name="password" 
+                                                   placeholder="Password">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <div class="controls">
-                                            <label class="checkbox">
-                                                <input type="checkbox"> 
-                                                <label class="loginLabel" style="text-align: left !important;padding-top: 0px !important; ">Remember me</label>
-                                            </label><br>
-                                            <div style="color: red;" id="loginStatus"></div>
+                                            <br>
                                             <a href="userForgetPassword.jsp">Forget Password</a>
+                                            <div style="color: red;" id="loginStatus">
+                                            </div>
                                             <button type="button" class="btn" id="btnLogIn">Sign in</button>
                                         </div>
                                     </div>
@@ -90,9 +89,12 @@
                     <div id="intro_tagline" class="semi_light">let your voice be
                         heard</div>
                 </div>
-                <a id="create_project" href="#"> <span class="project_create">Create
-                        Project</span> <br> <span class="start_project">start a
-                        project</span>
+                <a id="create_project" href="CreateProject.jsp"> 
+                    <span class="project_create">
+                        Create Project
+                    </span> 
+                    <br> 
+                    <span class="start_project">start a project</span>
                 </a>
             </div>
 
@@ -198,6 +200,12 @@
                                 $("#topFollowed div").append(temp(dt.content));
                             });
                             $("#btnLogIn").click(function(){
+                                if ($('#username').val()==''){
+                                    $('#loginStatus').html('Enter username');
+                                }
+                                if ($('#Userpass').val()==''){
+                                    $('#loginStatus').html('Enter password');
+                                }
                                 console.log($('#password').val());
                                 $.ajax({
                                     url:'ServletLoginVerification',
